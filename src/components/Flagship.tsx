@@ -27,7 +27,7 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
         ScrollTrigger.create({
           trigger: sectionRef.current,
           start: "top 28%",
-          end: "bottom 72%",
+          end: "bottom bottom",
           pin: titleRef.current,
           pinSpacing: false,
           invalidateOnRefresh: true,

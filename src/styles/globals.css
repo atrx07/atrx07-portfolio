@@ -677,6 +677,7 @@ section[id] {
 /* Flagship */
 
 .flagship {
+  overflow: clip;
   padding-bottom: 190px;
 }
 

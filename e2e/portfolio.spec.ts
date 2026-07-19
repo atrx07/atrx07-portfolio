@@ -109,6 +109,31 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   await expect(page.locator(".field-note-art")).toHaveAttribute("src", "/atrx-portrait.jpg");
   await expect(page.locator(".inline-system-image")).toHaveCSS("display", "inline-flex");
 
+  const viewport = page.viewportSize();
+  if (viewport && viewport.width > 900) {
+    await page.goto("/#projects");
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.waitForTimeout(250);
+    const flagshipGeometry = await page.evaluate(() => {
+      const flagship = document.querySelector<HTMLElement>("#now");
+      const title = document.querySelector<HTMLElement>(".flagship-title");
+      const projects = document.querySelector<HTMLElement>("#projects");
+      if (!flagship || !title || !projects) {
+        return { clears: false, clipped: false, flagshipBottom: 0, projectsTop: 0 };
+      }
+      const flagshipBottom = flagship.getBoundingClientRect().bottom;
+      const projectsTop = projects.getBoundingClientRect().top;
+      return {
+        clears: flagshipBottom <= projectsTop + 1,
+        clipped: getComputedStyle(flagship).overflowY === "clip",
+        flagshipBottom,
+        projectsTop,
+      };
+    });
+    expect(flagshipGeometry).toMatchObject({ clears: true, clipped: true });
+    await page.goto("/");
+  }
+
   const runtimeVisual = page.locator(".project-slice.is-expanded .runtime-visual");
   const runtimePartsFit = await runtimeVisual.evaluate((visual) => {
     const frame = visual.getBoundingClientRect();
