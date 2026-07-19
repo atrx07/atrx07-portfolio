@@ -105,12 +105,40 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   const headerMark = page.getByRole("link", { name: "ATRX07 home" });
   await expect(headerMark).toContainText("ATRX07");
   await expect(headerMark.locator("img")).toHaveCount(0);
+  await expect(headerMark.locator(".header-signal i")).toHaveCount(5);
   await expect(page.locator(".hero-scan, .hero-identity-scan")).toHaveCount(0);
   await expect(page.locator(".field-note-art")).toHaveAttribute("src", "/atrx-portrait.jpg");
   await expect(page.locator(".inline-system-image")).toHaveCSS("display", "inline-flex");
 
   const viewport = page.viewportSize();
   if (viewport && viewport.width > 900) {
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await page.evaluate(() => {
+      const flagship = document.querySelector<HTMLElement>("#now");
+      const title = document.querySelector<HTMLElement>(".flagship-title");
+      const header = document.querySelector<HTMLElement>(".site-header");
+      if (!flagship || !title || !header) return;
+
+      const flagshipTop = flagship.getBoundingClientRect().top + window.scrollY;
+      const paddingTop = Number.parseFloat(getComputedStyle(flagship).paddingTop) || 0;
+      const centeredTop = Math.max(
+        header.getBoundingClientRect().height + 4,
+        (window.innerHeight - title.offsetHeight) / 2,
+      );
+      window.scrollTo(0, flagshipTop + paddingTop - centeredTop + 160);
+    });
+    await page.waitForTimeout(250);
+
+    const pinnedTitle = await page.locator(".flagship-title").evaluate((title) => {
+      const bounds = title.getBoundingClientRect();
+      return {
+        centerOffset: Math.abs(bounds.top + bounds.height / 2 - window.innerHeight / 2),
+        pinned: getComputedStyle(title).position === "fixed",
+      };
+    });
+    expect(pinnedTitle.pinned).toBe(true);
+    expect(pinnedTitle.centerOffset).toBeLessThanOrEqual(2);
+
     await page.goto("/#projects");
     await page.evaluate(() => document.fonts.ready.then(() => true));
     await page.waitForTimeout(250);
@@ -145,9 +173,11 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   }
 
   const runtimeVisual = page.locator(".project-slice.is-expanded .runtime-visual");
-  const runtimePartsFit = await runtimeVisual.evaluate((visual) => {
+  const runtimeGeometry = await runtimeVisual.evaluate((visual) => {
     const frame = visual.getBoundingClientRect();
-    return [visual.querySelector(".runtime-ring"), visual.querySelector(".runtime-bars")].every((part) => {
+    const center = visual.querySelector<HTMLElement>(".runtime-center");
+    const ring = visual.querySelector<HTMLElement>(".runtime-ring");
+    const partsFit = [ring, visual.querySelector(".runtime-bars")].every((part) => {
       if (!part) return false;
       const bounds = part.getBoundingClientRect();
       return (
@@ -157,8 +187,18 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
         bounds.bottom <= frame.bottom
       );
     });
+    if (!center || !ring) return { partsFit, ringOffset: Number.POSITIVE_INFINITY };
+    const centerBounds = center.getBoundingClientRect();
+    const ringBounds = ring.getBoundingClientRect();
+    return {
+      partsFit,
+      ringOffset: Math.abs(
+        ringBounds.left + ringBounds.width / 2 - (centerBounds.left + centerBounds.width / 2),
+      ),
+    };
   });
-  expect(runtimePartsFit).toBe(true);
+  expect(runtimeGeometry.partsFit).toBe(true);
+  expect(runtimeGeometry.ringOffset).toBeLessThanOrEqual(1);
 
   await page.getByRole("button", { name: "Music tech", exact: true }).click();
   const styleForgeButton = page.getByRole("button", { name: "Open StyleForge Lite project details" });
@@ -222,17 +262,30 @@ test("mobile project rack opens the card nearest the viewport", async ({ page })
   const heroMobileLayout = await page.locator(".hero").evaluate((hero) => {
     const identity = hero.querySelector<HTMLElement>(".hero-identity");
     const modes = hero.querySelector<HTMLElement>(".hero-bottom .mode-switch");
-    if (!identity || !modes) return { centered: false, stacked: false, modesOnLeft: false };
+    const wideSource = hero.querySelector<HTMLSourceElement>(
+      '.hero-identity source[media="(max-width: 640px)"]',
+    );
+    if (!identity || !modes) {
+      return { centered: false, fullBleed: false, horizontal: false, modesBelow: false, wideArt: false };
+    }
     const heroBounds = hero.getBoundingClientRect();
     const identityBounds = identity.getBoundingClientRect();
     const modeBounds = modes.getBoundingClientRect();
     return {
       centered: Math.abs(identityBounds.left + identityBounds.width / 2 - heroBounds.width / 2) <= 2,
-      stacked: getComputedStyle(modes).flexDirection === "column",
-      modesOnLeft: modeBounds.left < identityBounds.left + identityBounds.width / 2,
+      fullBleed: identityBounds.width >= heroBounds.width - 1,
+      horizontal: getComputedStyle(modes).flexDirection === "row",
+      modesBelow: modeBounds.top >= identityBounds.bottom,
+      wideArt: wideSource?.getAttribute("srcset") === "/atrx-wide.jpg",
     };
   });
-  expect(heroMobileLayout).toEqual({ centered: true, stacked: true, modesOnLeft: true });
+  expect(heroMobileLayout).toEqual({
+    centered: true,
+    fullBleed: true,
+    horizontal: true,
+    modesBelow: true,
+    wideArt: true,
+  });
 
   const first = page.getByRole("button", { name: "Open NeuraLoc-Core project details" });
   const second = page.getByRole("button", { name: "Open void.chat project details" });
@@ -240,6 +293,8 @@ test("mobile project rack opens the card nearest the viewport", async ({ page })
 
   await second.evaluate((element) => element.scrollIntoView({ block: "center" }));
 
+  await page.waitForTimeout(120);
+  await expect(first).toHaveAttribute("aria-expanded", "true");
   await expect(second).toHaveAttribute("aria-expanded", "true");
   await expect(first).toHaveAttribute("aria-expanded", "false");
 });

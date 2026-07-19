@@ -26,10 +26,23 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
       media.add("(min-width: 1024px)", () => {
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: "top 28%",
+          start: () => {
+            const section = sectionRef.current;
+            const title = titleRef.current;
+            if (!section || !title) return 0;
+
+            const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+            const sectionPadding = Number.parseFloat(window.getComputedStyle(section).paddingTop) || 0;
+            const headerHeight =
+              document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().height ?? 72;
+            const centeredTop = Math.max(headerHeight + 4, (window.innerHeight - title.offsetHeight) / 2);
+
+            return sectionTop + sectionPadding - centeredTop;
+          },
           end: "bottom bottom",
           pin: titleRef.current,
           pinSpacing: false,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         });
 

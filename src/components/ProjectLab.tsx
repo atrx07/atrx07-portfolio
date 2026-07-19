@@ -22,6 +22,8 @@ export function ProjectLab({
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [expandedSlug, setExpandedSlug] = useState("neuraloc");
   const sliceNodes = useRef(new Map<string, HTMLElement>());
+  const activationTimer = useRef<number | null>(null);
+  const pendingSlug = useRef<string | null>(null);
 
   const visibleProjects = useMemo(
     () =>
@@ -45,10 +47,23 @@ export function ProjectLab({
     const mobileQuery = window.matchMedia("(max-width: 900px)");
     if (!mobileQuery.matches) return;
 
+    const clearPendingActivation = () => {
+      if (activationTimer.current !== null) {
+        window.clearTimeout(activationTimer.current);
+      }
+      activationTimer.current = null;
+      pendingSlug.current = null;
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-        if (visibleEntries.length === 0) return;
+        const visibleEntries = entries.filter(
+          (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.6,
+        );
+        if (visibleEntries.length === 0) {
+          clearPendingActivation();
+          return;
+        }
 
         const viewportCenter = window.innerHeight / 2;
         const closest = visibleEntries.sort((left, right) => {
@@ -59,11 +74,19 @@ export function ProjectLab({
 
         const slug = (closest.target as HTMLElement).closest<HTMLElement>("[data-project-slug]")?.dataset
           .projectSlug;
-        if (slug) setExpandedSlug(slug);
+        if (!slug || pendingSlug.current === slug) return;
+
+        clearPendingActivation();
+        pendingSlug.current = slug;
+        activationTimer.current = window.setTimeout(() => {
+          setExpandedSlug(slug);
+          activationTimer.current = null;
+          pendingSlug.current = null;
+        }, 280);
       },
       {
-        rootMargin: "-28% 0px -28% 0px",
-        threshold: [0, 0.25, 0.5, 0.75],
+        rootMargin: "-39% 0px -39% 0px",
+        threshold: [0, 0.6, 1],
       },
     );
 
@@ -73,7 +96,10 @@ export function ProjectLab({
       if (trigger) observer.observe(trigger);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      clearPendingActivation();
+      observer.disconnect();
+    };
   }, [visibleProjects]);
 
   const openProject = (project: Project) => {

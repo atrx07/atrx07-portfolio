@@ -53,8 +53,14 @@ export function Header({
       </a>
       <div className="header-inner">
         <a className="wordmark header-wordmark" href="#top" aria-label="ATRX07 home">
-          <span>ATRX07</span>
-          <i aria-hidden="true" />
+          <span className="header-wordmark-label">ATRX07</span>
+          <span className="header-signal" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
         </a>
 
         <nav className="desktop-nav" aria-label="Primary navigation">

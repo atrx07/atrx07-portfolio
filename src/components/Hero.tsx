@@ -52,12 +52,15 @@ export function Hero({ mode, onModeChange }: Props) {
         </div>
 
         <div className="hero-identity" aria-hidden="true">
-          <img
-            src="/atrx-portrait.jpg"
-            alt=""
-            width="1080"
-            height="1080"
-          />
+          <picture>
+            <source media="(max-width: 640px)" srcSet="/atrx-wide.jpg" />
+            <img
+              src="/atrx-portrait.jpg"
+              alt=""
+              width="1080"
+              height="1080"
+            />
+          </picture>
         </div>
 
         <div className="hero-bottom">

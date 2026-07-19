@@ -327,24 +327,56 @@ section[id] {
   text-transform: uppercase;
 }
 
-.header-wordmark span {
+.header-wordmark-label {
   transition: opacity 180ms ease;
 }
 
-.header-wordmark i {
-  width: 26px;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--signal-light) 0 33.333%,
-    var(--signal-blue) 33.333% 66.666%,
-    var(--signal-red) 66.666% 100%
-  );
-  transform: skewX(-18deg);
+.header-signal {
+  display: grid;
+  width: 24px;
+  height: 18px;
+  grid-template-columns: repeat(5, 3px);
+  align-items: end;
+  gap: 2px;
 }
 
-.header-wordmark:hover span {
+.header-signal i {
+  width: 3px;
+  height: 4px;
+  background: var(--signal-light);
+  transform-origin: bottom;
+  transition: transform 240ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.header-signal i:nth-child(2) {
+  height: 11px;
+  background: var(--signal-blue);
+}
+
+.header-signal i:nth-child(3) {
+  height: 18px;
+  background: var(--ink);
+}
+
+.header-signal i:nth-child(4) {
+  height: 11px;
+  background: var(--signal-red);
+}
+
+.header-signal i:nth-child(5) {
+  background: var(--signal-blue);
+}
+
+.header-wordmark:hover .header-wordmark-label {
   opacity: 0.8;
+}
+
+.header-wordmark:hover .header-signal i:nth-child(odd) {
+  transform: scaleY(0.62);
+}
+
+.header-wordmark:hover .header-signal i:nth-child(even) {
+  transform: scaleY(1.18);
 }
 
 .desktop-nav {
@@ -552,6 +584,12 @@ section[id] {
     linear-gradient(90deg, #000 0, transparent 18%, transparent 82%, #000 100%);
   content: "";
   pointer-events: none;
+}
+
+.hero-identity picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-identity img {
@@ -1026,17 +1064,22 @@ section[id] {
   z-index: 2;
   display: grid;
   min-width: 0;
-  grid-template-columns: minmax(110px, 1fr) minmax(70px, 0.72fr);
+  max-width: 100%;
+  grid-template-columns:
+    clamp(72px, 25cqw, 190px)
+    clamp(110px, 31cqw, 230px)
+    clamp(72px, 25cqw, 190px);
   align-items: center;
-  gap: clamp(24px, 7cqw, 92px);
-  padding-inline: clamp(4px, 4cqw, 42px);
+  justify-content: center;
+  gap: clamp(8px, 3cqw, 42px);
 }
 
 .runtime-ring {
   display: grid;
-  width: clamp(110px, 31cqw, 230px);
+  width: 100%;
   aspect-ratio: 1;
-  justify-self: end;
+  grid-column: 2;
+  justify-self: center;
   place-items: center;
   border: 1px solid var(--signal-blue);
   border-radius: 50%;
@@ -1054,9 +1097,10 @@ section[id] {
 
 .runtime-bars {
   display: flex;
-  width: clamp(72px, 25cqw, 190px);
+  width: 100%;
   height: clamp(120px, 29cqw, 220px);
   align-items: end;
+  grid-column: 3;
   justify-self: start;
   gap: 10px;
 }
@@ -2754,8 +2798,8 @@ dialog::backdrop {
     border-right: 0;
     border-bottom: 1px solid var(--line);
     transition:
-      min-height 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      grid-template-rows 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      min-height 760ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      grid-template-rows 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .project-slice.is-expanded {
@@ -2787,7 +2831,7 @@ dialog::backdrop {
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
-    transition: opacity 240ms ease 100ms;
+    transition: opacity 360ms ease 180ms;
   }
 
   .project-slice.is-expanded .project-slice-body {
@@ -2967,38 +3011,57 @@ dialog::backdrop {
     position: absolute;
     top: auto;
     right: auto;
-    bottom: 30px;
+    bottom: 78px;
     left: 50%;
-    width: min(82vw, 300px);
+    width: 100vw;
+    height: clamp(190px, 56.25vw, 290px);
+    aspect-ratio: auto;
     margin: 0;
-    opacity: 0.88;
+    opacity: 0.94;
     transform: translateX(-50%);
   }
 
+  .hero-identity::before {
+    background: linear-gradient(180deg, #000 0, transparent 18%, transparent 82%, #000 100%);
+  }
+
+  .hero-identity img {
+    object-position: center;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 16%,
+      #000 84%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+  }
+
   .hero-bottom {
-    right: auto;
-    bottom: 72px;
+    right: 0;
+    bottom: 16px;
     left: 0;
-    display: block;
-    width: 92px;
+    display: grid;
+    width: auto;
+    grid-template-columns: 1fr;
   }
 
   .hero-bottom .mode-switch {
-    display: flex;
-    width: 92px;
-    flex-direction: column;
+    display: inline-flex;
+    width: 100%;
+    flex-direction: row;
   }
 
   .hero-bottom .mode-switch button {
-    width: 100%;
+    width: auto;
     min-width: 0;
-    flex: none;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
+    flex: 1;
+    border-right: 1px solid var(--line);
+    border-bottom: 0;
   }
 
   .hero-bottom .mode-switch button:last-child {
-    border-bottom: 0;
+    border-right: 0;
   }
 
   .current-build {
@@ -3048,18 +3111,22 @@ dialog::backdrop {
   }
 
   .runtime-center {
-    gap: 26px;
+    grid-template-columns:
+      clamp(54px, 22cqw, 72px)
+      clamp(104px, 38cqw, 130px)
+      clamp(54px, 22cqw, 72px);
+    gap: clamp(4px, 2cqw, 8px);
   }
 
   .runtime-ring {
-    width: 130px;
+    width: 100%;
     box-shadow:
       inset 0 0 0 10px var(--canvas),
       inset 0 0 0 11px var(--line);
   }
 
   .runtime-bars {
-    width: 72px;
+    width: 100%;
     height: 140px;
     gap: 5px;
   }
