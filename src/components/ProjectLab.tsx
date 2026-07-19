@@ -1,5 +1,5 @@
 import { ArrowUpRight, Expand } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { projectCategories, projects } from "../data/projects";
 import type { Project, VisitorMode } from "../types";
 import { ProjectDetail } from "./ProjectDetail";
@@ -21,6 +21,7 @@ export function ProjectLab({
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [expandedSlug, setExpandedSlug] = useState("neuraloc");
+  const sliceNodes = useRef(new Map<string, HTMLElement>());
 
   const visibleProjects = useMemo(
     () =>
@@ -31,6 +32,49 @@ export function ProjectLab({
   );
 
   const activeProject = requestedProject ?? selectedProject;
+
+  useEffect(() => {
+    if (!visibleProjects.some((project) => project.slug === expandedSlug)) {
+      setExpandedSlug(visibleProjects[0]?.slug ?? "");
+    }
+  }, [expandedSlug, visibleProjects]);
+
+  useEffect(() => {
+    if (!window.matchMedia || !window.IntersectionObserver) return;
+
+    const mobileQuery = window.matchMedia("(max-width: 900px)");
+    if (!mobileQuery.matches) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (visibleEntries.length === 0) return;
+
+        const viewportCenter = window.innerHeight / 2;
+        const closest = visibleEntries.sort((left, right) => {
+          const leftCenter = left.boundingClientRect.top + left.boundingClientRect.height / 2;
+          const rightCenter = right.boundingClientRect.top + right.boundingClientRect.height / 2;
+          return Math.abs(leftCenter - viewportCenter) - Math.abs(rightCenter - viewportCenter);
+        })[0];
+
+        const slug = (closest.target as HTMLElement).closest<HTMLElement>("[data-project-slug]")?.dataset
+          .projectSlug;
+        if (slug) setExpandedSlug(slug);
+      },
+      {
+        rootMargin: "-28% 0px -28% 0px",
+        threshold: [0, 0.25, 0.5, 0.75],
+      },
+    );
+
+    visibleProjects.forEach((project) => {
+      const node = sliceNodes.current.get(project.slug);
+      const trigger = node?.querySelector<HTMLElement>(".project-slice-hit");
+      if (trigger) observer.observe(trigger);
+    });
+
+    return () => observer.disconnect();
+  }, [visibleProjects]);
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -71,11 +115,17 @@ export function ProjectLab({
 
       <div className="project-accordions" data-count={visibleProjects.length}>
         {visibleProjects.map((project) => {
-          const expanded = expandedSlug === project.slug;
+          const expanded = visibleProjects.length === 1 || expandedSlug === project.slug;
+          const bodyId = `${project.slug}-project-body`;
           return (
             <article
               key={project.slug}
               className={expanded ? "project-slice is-expanded" : "project-slice"}
+              data-project-slug={project.slug}
+              ref={(node) => {
+                if (node) sliceNodes.current.set(project.slug, node);
+                else sliceNodes.current.delete(project.slug);
+              }}
               onMouseEnter={() => setExpandedSlug(project.slug)}
               onFocus={() => setExpandedSlug(project.slug)}
             >
@@ -87,6 +137,8 @@ export function ProjectLab({
                   openProject(project);
                 }}
                 aria-label={`Open ${project.name} project details`}
+                aria-expanded={expanded}
+                aria-controls={bodyId}
               >
                 <span className={`status status--${project.status}`}>{project.status}</span>
                 <span className="project-index">
@@ -96,7 +148,7 @@ export function ProjectLab({
                 <Expand size={18} />
               </button>
 
-              <div className="project-slice-body">
+              <div id={bodyId} className="project-slice-body">
                 <div className="project-slice-visual">
                   <ProjectVisual project={project} />
                 </div>

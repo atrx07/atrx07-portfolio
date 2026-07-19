@@ -33,6 +33,7 @@
 
 html {
   scroll-behavior: auto;
+  scroll-padding-top: calc(var(--header-height) + 24px);
   background: var(--canvas);
   scrollbar-color: var(--line) var(--canvas);
 }
@@ -101,6 +102,10 @@ img {
   width: min(100% - 48px, 1440px);
   margin-inline: auto;
   padding-block: 152px;
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
 .eyebrow {
@@ -310,6 +315,38 @@ img {
   transform: scale(1.035);
 }
 
+.header-wordmark {
+  width: auto;
+  min-width: 92px;
+  justify-content: flex-start;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.header-wordmark span {
+  transition: opacity 180ms ease;
+}
+
+.header-wordmark i {
+  width: 26px;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--signal-light) 0 33.333%,
+    var(--signal-blue) 33.333% 66.666%,
+    var(--signal-red) 66.666% 100%
+  );
+  transform: skewX(-18deg);
+}
+
+.header-wordmark:hover span {
+  opacity: 0.8;
+}
+
 .desktop-nav {
   display: flex;
   align-items: center;
@@ -419,26 +456,6 @@ img {
 
 .hero-grid::after {
   right: 33.333%;
-}
-
-.hero-scan {
-  position: absolute;
-  top: var(--header-height);
-  right: 0;
-  width: 34%;
-  height: 1px;
-  background: var(--signal-red);
-  opacity: 0.7;
-  animation: scan-line 6s ease-in-out infinite alternate;
-}
-
-@keyframes scan-line {
-  from {
-    transform: translateY(10vh);
-  }
-  to {
-    transform: translateY(70vh);
-  }
 }
 
 .hero-inner {
@@ -570,28 +587,6 @@ img {
   transform: scale(1.012);
 }
 
-.hero-identity-scan {
-  position: absolute;
-  z-index: 2;
-  top: 24%;
-  right: 8%;
-  left: 12%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--signal-blue) 35%, var(--signal-red) 72%, transparent);
-  box-shadow: 0 8px 0 rgb(255 255 255 / 9%);
-  opacity: 0.42;
-  animation: identity-scan 7s ease-in-out infinite alternate;
-}
-
-@keyframes identity-scan {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(38vh);
-  }
-}
-
 .hero-bottom {
   position: absolute;
   z-index: 4;
@@ -692,6 +687,7 @@ img {
 }
 
 .flagship-title {
+  min-width: 0;
   align-self: start;
 }
 
@@ -913,6 +909,7 @@ img {
   display: grid;
   grid-column: span 5;
   grid-template-columns: 1fr 1fr;
+  padding: 0;
   background: var(--panel);
 }
 
@@ -922,6 +919,7 @@ img {
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid var(--line);
+  padding: 38px 30px;
 }
 
 .proof-side > div:last-child {
@@ -949,6 +947,7 @@ img {
 .proof-side--next {
   display: block;
   border-top: 1px solid var(--line);
+  padding: 38px;
   background: var(--canvas);
 }
 
@@ -974,13 +973,14 @@ img {
   min-height: 320px;
   overflow: hidden;
   background: var(--panel);
+  container-type: inline-size;
 }
 
 .runtime-visual {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 30px;
+  padding: clamp(18px, 4cqw, 30px);
   background-color: #080808;
 }
 
@@ -1023,16 +1023,19 @@ img {
 .runtime-center {
   position: relative;
   z-index: 2;
-  display: flex;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(110px, 1fr) minmax(70px, 0.72fr);
   align-items: center;
-  justify-content: center;
-  gap: clamp(46px, 8vw, 110px);
+  gap: clamp(24px, 7cqw, 92px);
+  padding-inline: clamp(4px, 4cqw, 42px);
 }
 
 .runtime-ring {
   display: grid;
-  width: clamp(150px, 22vw, 250px);
+  width: clamp(110px, 31cqw, 230px);
   aspect-ratio: 1;
+  justify-self: end;
   place-items: center;
   border: 1px solid var(--signal-blue);
   border-radius: 50%;
@@ -1044,22 +1047,22 @@ img {
 
 .runtime-ring span {
   font-family: Consolas, monospace;
-  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-size: clamp(2.35rem, 10cqw, 5rem);
   font-weight: 700;
 }
 
 .runtime-bars {
   display: flex;
-  width: min(32%, 190px);
-  height: 220px;
+  width: clamp(72px, 25cqw, 190px);
+  height: clamp(120px, 29cqw, 220px);
   align-items: end;
+  justify-self: start;
   gap: 10px;
 }
 
 .runtime-bars i {
   flex: 1;
   background: var(--signal-blue);
-  animation: runtime-pulse 1.6s ease-in-out infinite alternate;
 }
 
 .runtime-bars i:nth-child(3n) {
@@ -1068,14 +1071,6 @@ img {
 
 .runtime-bars i:nth-child(2n) {
   background: var(--signal-light);
-}
-
-@keyframes runtime-pulse {
-  to {
-    transform: scaleY(0.68);
-    transform-origin: bottom;
-    opacity: 0.65;
-  }
 }
 
 .chat-visual {
@@ -1349,16 +1344,19 @@ img {
 }
 
 .inline-system-image {
-  display: inline-grid;
-  width: 2.05em;
-  height: 0.55em;
-  place-items: center;
-  vertical-align: 0.12em;
+  display: inline-flex;
+  min-width: 3.2em;
+  min-height: 1.7em;
+  align-items: center;
+  justify-content: center;
+  vertical-align: 0.1em;
   border: 1px solid var(--signal-blue);
+  padding: 0.1em 0.34em 0;
   background: var(--panel);
   color: var(--signal-light);
   font-family: Consolas, monospace;
   font-size: 0.28em;
+  line-height: 1;
 }
 
 .project-filters {
@@ -1447,7 +1445,8 @@ img {
 .project-slice-hit strong {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 0.84rem;
+  font-size: 1.02rem;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -1476,11 +1475,29 @@ img {
 .project-slice-visual .project-visual {
   height: 100%;
   min-height: 100%;
-  transition: transform 700ms ease-out;
+  transition: filter 220ms ease;
 }
 
 .project-slice:hover .project-slice-visual .project-visual {
-  transform: scale(1.035);
+  filter: brightness(1.06);
+}
+
+@media (min-width: 901px) {
+  .project-accordions[data-count="1"] .project-slice {
+    min-width: 0;
+    flex: 0 0 100%;
+    transition: none;
+  }
+
+  .project-accordions[data-count="1"] .project-slice-body {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
+    grid-template-rows: 1fr;
+  }
+
+  .project-accordions[data-count="1"] .sequencer-visual {
+    grid-template-columns: repeat(16, minmax(0, 1fr));
+  }
 }
 
 .project-slice-copy {
@@ -1544,6 +1561,7 @@ dialog::backdrop {
 
 .project-dialog {
   width: min(1180px, calc(100% - 44px));
+  overflow: hidden;
   max-height: calc(100svh - 44px);
   border: 1px solid var(--line);
   background: var(--canvas);
@@ -1552,7 +1570,9 @@ dialog::backdrop {
 .project-dialog-inner {
   position: relative;
   display: grid;
-  min-height: 670px;
+  width: 100%;
+  height: min(760px, calc(100svh - 46px));
+  min-width: 0;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
 }
 
@@ -1571,20 +1591,29 @@ dialog::backdrop {
 
 .project-dialog-visual .project-visual {
   height: 100%;
-  min-height: 670px;
+  min-height: 100%;
 }
 
 .project-dialog-copy {
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 70px 48px 44px;
+  container-type: inline-size;
 }
 
 .dialog-heading h2 {
+  max-width: 100%;
   margin: 18px 0 12px;
-  font-size: clamp(2.6rem, 5vw, 5.3rem);
+  font-size: clamp(2.4rem, 9cqw, 4.8rem);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 0.94;
   text-transform: uppercase;
+}
+
+.dialog-heading h2.dialog-title--long {
+  font-size: clamp(2.1rem, 7.3cqw, 3.8rem);
+  overflow-wrap: anywhere;
 }
 
 .dialog-heading p {
@@ -1943,9 +1972,11 @@ dialog::backdrop {
 
 .terminal-window {
   display: grid;
+  height: min(590px, 75svh);
   min-width: 0;
-  min-height: 590px;
-  grid-template-rows: 52px 1fr 54px 34px;
+  min-height: 0;
+  grid-template-rows: 52px minmax(0, 1fr) 54px 34px;
+  overflow: hidden;
   border: 1px solid var(--line);
   background: #050505;
   font-family: Consolas, monospace;
@@ -1968,7 +1999,10 @@ dialog::backdrop {
 }
 
 .terminal-output {
-  overflow: auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 22px;
   color: #a8c6a8;
   font-size: 0.78rem;
@@ -2107,21 +2141,25 @@ dialog::backdrop {
     var(--panel);
 }
 
-.field-note-portrait .field-note-mark {
+.field-note-portrait .field-note-art {
   position: relative;
   z-index: 1;
-  width: min(92%, 620px);
-  height: auto;
-  object-fit: contain;
-  opacity: 0.96;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.94;
+  filter: contrast(1.06);
+  -webkit-mask-image: radial-gradient(ellipse 82% 84% at 50% 48%, #000 45%, rgb(0 0 0 / 88%) 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 82% 84% at 50% 48%, #000 45%, rgb(0 0 0 / 88%) 68%, transparent 100%);
   transition:
     opacity 320ms ease,
     transform 700ms ease-out;
 }
 
-.field-note-portrait:hover .field-note-mark {
+.field-note-portrait:hover .field-note-art {
   opacity: 1;
-  transform: scale(1.025);
+  transform: scale(1.015);
 }
 
 .portrait-stack {
@@ -2556,6 +2594,10 @@ dialog::backdrop {
   .project-slice-hit {
     width: 76px;
   }
+
+  .project-slice-hit strong {
+    font-size: 0.94rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2676,6 +2718,15 @@ dialog::backdrop {
     padding: 28px;
   }
 
+  .proof-bento .proof-side {
+    padding: 0;
+  }
+
+  .proof-bento .proof-side > div,
+  .proof-bento .proof-side--next {
+    padding: 28px;
+  }
+
   .section-heading,
   .section-heading--wide {
     grid-template-columns: minmax(0, 1fr);
@@ -2692,16 +2743,23 @@ dialog::backdrop {
     border-bottom: 0;
   }
 
-  .project-slice,
-  .project-slice.is-expanded {
+  .project-slice {
     display: grid;
     min-width: 0;
-    min-height: 560px;
+    min-height: 70px;
     flex: none;
     grid-template-columns: 1fr;
-    grid-template-rows: 70px 1fr;
+    grid-template-rows: 70px 0fr;
     border-right: 0;
     border-bottom: 1px solid var(--line);
+    transition:
+      min-height 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      grid-template-rows 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .project-slice.is-expanded {
+    min-height: 560px;
+    grid-template-rows: 70px minmax(0, 1fr);
   }
 
   .project-slice-hit {
@@ -2722,6 +2780,19 @@ dialog::backdrop {
   .project-slice-body {
     display: grid;
     min-width: 0;
+    overflow: hidden;
+    grid-template-columns: 1fr;
+    grid-template-rows: 58% 42%;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 240ms ease 100ms;
+  }
+
+  .project-slice.is-expanded .project-slice-body {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
   }
 
   .architecture-stage {
@@ -2779,13 +2850,14 @@ dialog::backdrop {
     min-height: 500px;
   }
 
-  .field-note-portrait .field-note-mark {
-    width: min(88%, 540px);
-    height: auto;
+  .field-note-portrait .field-note-art {
+    width: 100%;
+    height: 100%;
   }
 
   .project-dialog-inner {
     grid-template-columns: 1fr;
+    grid-template-rows: minmax(300px, 0.82fr) minmax(0, 1.18fr);
   }
 
   .project-dialog-visual {
@@ -2830,7 +2902,7 @@ dialog::backdrop {
   }
 
   .hero {
-    min-height: 96svh;
+    min-height: max(760px, 96svh);
   }
 
   .hero-inner {
@@ -2893,25 +2965,39 @@ dialog::backdrop {
   .hero-identity {
     position: absolute;
     top: auto;
-    right: -18px;
-    bottom: 92px;
-    width: min(72vw, 260px);
+    right: auto;
+    bottom: 30px;
+    left: 50%;
+    width: min(82vw, 300px);
     margin: 0;
-    opacity: 0.78;
+    opacity: 0.88;
+    transform: translateX(-50%);
   }
 
   .hero-bottom {
-    grid-template-columns: 1fr;
-    bottom: 16px;
+    right: auto;
+    bottom: 72px;
+    left: 0;
+    display: block;
+    width: 92px;
   }
 
   .hero-bottom .mode-switch {
-    width: 100%;
+    display: flex;
+    width: 92px;
+    flex-direction: column;
   }
 
   .hero-bottom .mode-switch button {
+    width: 100%;
     min-width: 0;
-    flex: 1;
+    flex: none;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-bottom .mode-switch button:last-child {
+    border-bottom: 0;
   }
 
   .current-build {
@@ -3033,7 +3119,10 @@ dialog::backdrop {
     font-size: 0.65rem;
   }
 
-  .project-slice,
+  .project-slice {
+    min-height: 70px;
+  }
+
   .project-slice.is-expanded {
     min-height: 540px;
   }
@@ -3070,7 +3159,9 @@ dialog::backdrop {
   }
 
   .project-dialog-inner {
+    height: 100%;
     min-height: 100%;
+    grid-template-rows: minmax(280px, 0.72fr) minmax(0, 1.28fr);
   }
 
   .project-dialog-copy {
@@ -3117,15 +3208,24 @@ dialog::backdrop {
   }
 
   .terminal-window {
+    height: 520px;
     min-height: 520px;
   }
 
   .terminal-input-row > span:first-child {
-    display: none;
+    display: block;
+    padding-left: 10px;
+    font-size: 0.6rem;
+    white-space: nowrap;
   }
 
   .terminal-input-row {
-    grid-template-columns: minmax(0, 1fr) 44px;
+    grid-template-columns: auto minmax(42px, 1fr) 44px;
+  }
+
+  .terminal-input-row input {
+    min-width: 0;
+    padding-inline: 6px;
   }
 
   .terminal-output {
@@ -3154,9 +3254,9 @@ dialog::backdrop {
     height: 420px;
   }
 
-  .field-note-portrait .field-note-mark {
-    width: 88%;
-    height: auto;
+  .field-note-portrait .field-note-art {
+    width: 100%;
+    height: 100%;
   }
 
   .contact-section,

@@ -21,7 +21,6 @@ export function Hero({ mode, onModeChange }: Props) {
   return (
     <section id="top" className="hero" aria-labelledby="hero-title">
       <div className="hero-grid" aria-hidden="true" />
-      <div className="hero-scan" aria-hidden="true" />
 
       <div className="hero-inner">
         <div className="hero-copy" data-reveal>
@@ -52,14 +51,13 @@ export function Hero({ mode, onModeChange }: Props) {
           </div>
         </div>
 
-        <div className="hero-identity motion-visual" aria-hidden="true">
+        <div className="hero-identity" aria-hidden="true">
           <img
             src="/atrx-portrait.jpg"
             alt=""
             width="1080"
             height="1080"
           />
-          <i className="hero-identity-scan" />
         </div>
 
         <div className="hero-bottom">

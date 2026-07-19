@@ -17,5 +17,9 @@ describe("ProjectLab", () => {
     expect(screen.getByRole("button", { name: /Open StyleForge Lite/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Open void.chat/ })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Music tech" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: /Open StyleForge Lite/ })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
   });
 });

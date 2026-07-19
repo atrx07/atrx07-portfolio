@@ -52,9 +52,9 @@ export function Header({
         Skip to content
       </a>
       <div className="header-inner">
-        <a className="wordmark" href="#top" aria-label="ATRX home">
-          <img src="/atrx-mark.png" alt="" width="1396" height="1127" />
-          <span className="sr-only">ATRX</span>
+        <a className="wordmark header-wordmark" href="#top" aria-label="ATRX07 home">
+          <span>ATRX07</span>
+          <i aria-hidden="true" />
         </a>
 
         <nav className="desktop-nav" aria-label="Primary navigation">

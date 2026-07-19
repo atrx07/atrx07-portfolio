@@ -98,3 +98,113 @@ test("critical mobile copy stays inside its layout", async ({ page }) => {
     })),
   );
 });
+
+test("identity, project, dialog, and terminal layout repairs hold", async ({ page }) => {
+  await page.goto("/");
+
+  const headerMark = page.getByRole("link", { name: "ATRX07 home" });
+  await expect(headerMark).toContainText("ATRX07");
+  await expect(headerMark.locator("img")).toHaveCount(0);
+  await expect(page.locator(".hero-scan, .hero-identity-scan")).toHaveCount(0);
+  await expect(page.locator(".field-note-art")).toHaveAttribute("src", "/atrx-portrait.jpg");
+  await expect(page.locator(".inline-system-image")).toHaveCSS("display", "inline-flex");
+
+  const runtimeVisual = page.locator(".project-slice.is-expanded .runtime-visual");
+  const runtimePartsFit = await runtimeVisual.evaluate((visual) => {
+    const frame = visual.getBoundingClientRect();
+    return [visual.querySelector(".runtime-ring"), visual.querySelector(".runtime-bars")].every((part) => {
+      if (!part) return false;
+      const bounds = part.getBoundingClientRect();
+      return (
+        bounds.left >= frame.left &&
+        bounds.right <= frame.right &&
+        bounds.top >= frame.top &&
+        bounds.bottom <= frame.bottom
+      );
+    });
+  });
+  expect(runtimePartsFit).toBe(true);
+
+  await page.getByRole("button", { name: "Music tech", exact: true }).click();
+  const styleForgeButton = page.getByRole("button", { name: "Open StyleForge Lite project details" });
+  await expect(styleForgeButton).toHaveAttribute("aria-expanded", "true");
+
+  const filteredCardUsesRack = await page.locator(".project-accordions").evaluate((rack) => {
+    const card = rack.querySelector(".project-slice");
+    if (!card) return false;
+    const rackBounds = rack.getBoundingClientRect();
+    const cardBounds = card.getBoundingClientRect();
+    return cardBounds.width >= rackBounds.width * 0.95;
+  });
+  expect(filteredCardUsesRack).toBe(true);
+
+  await page.getByRole("button", { name: "Web / PWA", exact: true }).click();
+  await page.getByRole("button", { name: "Open AtrxInstaDown project details" }).click();
+
+  const dialog = page.getByRole("dialog", { name: /AtrxInstaDown/ });
+  const dialogTitleFits = await dialog.evaluate((element) => {
+    const title = element.querySelector("h2");
+    const copy = element.querySelector(".project-dialog-copy");
+    if (!title || !copy) return false;
+    const titleBounds = title.getBoundingClientRect();
+    const copyBounds = copy.getBoundingClientRect();
+    return titleBounds.left >= copyBounds.left && titleBounds.right <= copyBounds.right + 1;
+  });
+  expect(dialogTitleFits).toBe(true);
+  await page.getByRole("button", { name: "Close project details" }).click();
+
+  await page.locator("#terminal").scrollIntoViewIfNeeded();
+  const terminalWindow = page.locator(".terminal-window");
+  const initialHeight = (await terminalWindow.boundingBox())?.height;
+  const terminalInput = page.getByLabel("Portfolio terminal command");
+
+  for (const command of ["help", "projects", "stack", "now", "about", "contact"]) {
+    await terminalInput.fill(command);
+    await terminalInput.press("Enter");
+  }
+
+  await expect(page.locator(".terminal-input-row > span").first()).toBeVisible();
+  const terminalState = await terminalWindow.evaluate((element) => {
+    const output = element.querySelector<HTMLElement>(".terminal-output");
+    return {
+      height: element.getBoundingClientRect().height,
+      overflowY: output ? getComputedStyle(output).overflowY : "",
+      scrollsInternally: Boolean(output && output.scrollHeight > output.clientHeight && output.scrollTop > 0),
+    };
+  });
+
+  expect(terminalState.height).toBeCloseTo(initialHeight ?? terminalState.height, 0);
+  expect(terminalState.overflowY).toBe("auto");
+  expect(terminalState.scrollsInternally).toBe(true);
+});
+
+test("mobile project rack opens the card nearest the viewport", async ({ page }) => {
+  const viewport = page.viewportSize();
+  test.skip(!viewport || viewport.width > 900, "Mobile-only scroll behavior");
+
+  await page.goto("/#projects");
+
+  const heroMobileLayout = await page.locator(".hero").evaluate((hero) => {
+    const identity = hero.querySelector<HTMLElement>(".hero-identity");
+    const modes = hero.querySelector<HTMLElement>(".hero-bottom .mode-switch");
+    if (!identity || !modes) return { centered: false, stacked: false, modesOnLeft: false };
+    const heroBounds = hero.getBoundingClientRect();
+    const identityBounds = identity.getBoundingClientRect();
+    const modeBounds = modes.getBoundingClientRect();
+    return {
+      centered: Math.abs(identityBounds.left + identityBounds.width / 2 - heroBounds.width / 2) <= 2,
+      stacked: getComputedStyle(modes).flexDirection === "column",
+      modesOnLeft: modeBounds.left < identityBounds.left + identityBounds.width / 2,
+    };
+  });
+  expect(heroMobileLayout).toEqual({ centered: true, stacked: true, modesOnLeft: true });
+
+  const first = page.getByRole("button", { name: "Open NeuraLoc-Core project details" });
+  const second = page.getByRole("button", { name: "Open void.chat project details" });
+  await expect(first).toHaveAttribute("aria-expanded", "true");
+
+  await second.evaluate((element) => element.scrollIntoView({ block: "center" }));
+
+  await expect(second).toHaveAttribute("aria-expanded", "true");
+  await expect(first).toHaveAttribute("aria-expanded", "false");
+});

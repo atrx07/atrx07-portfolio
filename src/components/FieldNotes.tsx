@@ -13,7 +13,7 @@ export function FieldNotes() {
   return (
     <section className="field-notes section-shell" aria-labelledby="field-notes-title">
       <div className="field-note-portrait motion-visual" aria-hidden="true">
-        <img className="field-note-mark" src="/atrx-mark.png" alt="" width="1396" height="1127" />
+        <img className="field-note-art" src="/atrx-portrait.jpg" alt="" width="1080" height="1080" />
         <div className="portrait-stack" aria-hidden="true">
           <i />
           <i />

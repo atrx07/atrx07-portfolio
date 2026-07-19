@@ -1,5 +1,5 @@
 import { CornerDownLeft, TerminalSquare } from "lucide-react";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { commandStrings } from "../data/commands";
 import { profile } from "../data/profile";
 import { completeTerminalCommand, executeTerminalCommand } from "../lib/terminalEngine";
@@ -30,6 +30,7 @@ export const PortfolioTerminal = forwardRef<HTMLInputElement, Props>(function Po
   ref,
 ) {
   const [input, setInput] = useState("");
+  const outputRef = useRef<HTMLDivElement>(null);
   const nextLineId = useRef(3);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -37,6 +38,11 @@ export const PortfolioTerminal = forwardRef<HTMLInputElement, Props>(function Po
     { id: 1, text: "ATRX portfolio shell / fixed command parser", kind: "output" },
     { id: 2, text: "Type help. Nothing here reaches a real shell.", kind: "output" },
   ]);
+
+  useEffect(() => {
+    const output = outputRef.current;
+    if (output) output.scrollTop = output.scrollHeight;
+  }, [lines]);
 
   const appendLines = (nextLines: string[], kind: OutputLine["kind"] = "output") => {
     setLines((current) => [
@@ -127,7 +133,7 @@ export const PortfolioTerminal = forwardRef<HTMLInputElement, Props>(function Po
           </span>
           <span>ALLOWLISTED / LOCAL</span>
         </div>
-        <div className="terminal-output" role="log" aria-live="polite">
+        <div ref={outputRef} className="terminal-output" role="log" aria-live="polite">
           {lines.map((line) => (
             <div key={line.id} className={line.kind === "command" ? "terminal-command" : ""}>
               {line.text}

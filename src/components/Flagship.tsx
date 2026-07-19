@@ -26,10 +26,11 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
       media.add("(min-width: 1024px)", () => {
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: "top top+=104",
-          end: "bottom bottom-=80",
+          start: "top 28%",
+          end: "bottom 72%",
           pin: titleRef.current,
           pinSpacing: false,
+          invalidateOnRefresh: true,
         });
       });
 

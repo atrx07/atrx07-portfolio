@@ -48,7 +48,12 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
           <div className="project-dialog-copy">
             <div className="dialog-heading">
               <span className={`status status--${project.status}`}>{project.status}</span>
-              <h2 id={`${project.slug}-dialog-title`}>{project.name}</h2>
+              <h2
+                id={`${project.slug}-dialog-title`}
+                className={project.name.length > 12 ? "dialog-title dialog-title--long" : "dialog-title"}
+              >
+                {project.name}
+              </h2>
               <p>{project.summary}</p>
             </div>
 
