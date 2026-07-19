@@ -52,13 +52,14 @@ export function Hero({ mode, onModeChange }: Props) {
           </div>
         </div>
 
-        <div className="hero-sticker motion-visual" aria-hidden="true">
+        <div className="hero-identity motion-visual" aria-hidden="true">
           <img
-            src="/atrx-sticker.png"
+            src="/atrx-portrait.jpg"
             alt=""
-            width="960"
-            height="751"
+            width="1080"
+            height="1080"
           />
+          <i className="hero-identity-scan" />
         </div>
 
         <div className="hero-bottom">

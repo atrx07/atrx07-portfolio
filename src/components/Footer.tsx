@@ -10,7 +10,8 @@ export function Footer() {
       </div>
       <div className="footer-inner">
         <a className="wordmark" href="#top" aria-label="Back to top">
-          <span>ATRX</span>
+          <img src="/atrx-mark.png" alt="" width="1396" height="1127" />
+          <span className="sr-only">ATRX</span>
         </a>
         <p>Useful systems at the edge of practical and unusual.</p>
         <div>

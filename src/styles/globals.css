@@ -289,31 +289,25 @@ img {
 
 .wordmark {
   display: inline-flex;
+  width: 78px;
   min-height: 44px;
   align-items: center;
-  gap: 11px;
-  font-size: 1.18rem;
-  font-weight: 900;
+  justify-content: center;
 }
 
-.wordmark i {
-  display: grid;
-  width: 26px;
-  height: 4px;
-  grid-template-columns: repeat(3, 1fr);
-  transform: skewX(-21deg);
+.wordmark img {
+  display: block;
+  width: 72px;
+  height: 40px;
+  object-fit: contain;
+  transition:
+    opacity 180ms ease,
+    transform 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 
-.wordmark i b:nth-child(1) {
-  background: var(--signal-light);
-}
-
-.wordmark i b:nth-child(2) {
-  background: var(--signal-blue);
-}
-
-.wordmark i b:nth-child(3) {
-  background: var(--signal-red);
+.wordmark:hover img {
+  opacity: 0.82;
+  transform: scale(1.035);
 }
 
 .desktop-nav {
@@ -519,45 +513,83 @@ img {
   margin-top: 32px;
 }
 
-.hero-sticker {
+.hero-identity {
   position: absolute;
   z-index: 2;
   top: 50%;
-  right: clamp(8px, 2.5vw, 42px);
-  width: min(28vw, 420px);
-  min-width: 290px;
-  transform: translateY(-48%);
+  right: clamp(-42px, -1.4vw, -12px);
+  width: min(41vw, 590px);
+  min-width: 420px;
+  aspect-ratio: 1;
+  transform: translateY(-49%);
   transform-origin: center;
   isolation: isolate;
 }
 
-.hero-sticker::before {
+.hero-identity::before {
   position: absolute;
-  z-index: -1;
-  top: 49%;
-  right: -10%;
-  left: -14%;
-  height: 8px;
-  border-top: 1px solid var(--signal-blue);
-  border-bottom: 1px solid var(--signal-red);
+  z-index: 1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 42%, transparent 48%, rgb(0 0 0 / 34%) 68%, #000 94%),
+    linear-gradient(90deg, #000 0, transparent 18%, transparent 82%, #000 100%);
   content: "";
-  opacity: 0.68;
   pointer-events: none;
 }
 
-.hero-sticker img {
+.hero-identity img {
   display: block;
   width: 100%;
-  height: auto;
-  opacity: 1;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.94;
+  filter: contrast(1.08);
+  -webkit-mask-image: radial-gradient(
+    ellipse 77% 79% at 50% 46%,
+    #000 44%,
+    rgb(0 0 0 / 94%) 58%,
+    rgb(0 0 0 / 64%) 71%,
+    rgb(0 0 0 / 20%) 84%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 77% 79% at 50% 46%,
+    #000 44%,
+    rgb(0 0 0 / 94%) 58%,
+    rgb(0 0 0 / 64%) 71%,
+    rgb(0 0 0 / 20%) 84%,
+    transparent 100%
+  );
   transition:
     opacity 320ms ease,
     transform 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 
-.hero-sticker:hover img {
-  opacity: 1;
-  transform: translateY(-5px);
+.hero-identity:hover img {
+  opacity: 0.98;
+  transform: scale(1.012);
+}
+
+.hero-identity-scan {
+  position: absolute;
+  z-index: 2;
+  top: 24%;
+  right: 8%;
+  left: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--signal-blue) 35%, var(--signal-red) 72%, transparent);
+  box-shadow: 0 8px 0 rgb(255 255 255 / 9%);
+  opacity: 0.42;
+  animation: identity-scan 7s ease-in-out infinite alternate;
+}
+
+@keyframes identity-scan {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(38vh);
+  }
 }
 
 .hero-bottom {
@@ -2069,19 +2101,27 @@ dialog::backdrop {
   min-height: 620px;
   overflow: hidden;
   place-items: center;
-  background: var(--panel);
+  background:
+    linear-gradient(90deg, transparent 49.9%, rgb(255 255 255 / 5%) 50%, transparent 50.1%),
+    linear-gradient(0deg, transparent 49.9%, rgb(255 255 255 / 5%) 50%, transparent 50.1%),
+    var(--panel);
 }
 
-.field-note-portrait img {
-  width: min(86%, 540px);
+.field-note-portrait .field-note-mark {
+  position: relative;
+  z-index: 1;
+  width: min(92%, 620px);
   height: auto;
   object-fit: contain;
-  opacity: 0.78;
-  transition: transform 700ms ease-out;
+  opacity: 0.96;
+  transition:
+    opacity 320ms ease,
+    transform 700ms ease-out;
 }
 
-.field-note-portrait:hover img {
-  transform: translateY(-5px);
+.field-note-portrait:hover .field-note-mark {
+  opacity: 1;
+  transform: scale(1.025);
 }
 
 .portrait-stack {
@@ -2241,6 +2281,15 @@ dialog::backdrop {
   align-items: center;
   gap: 40px;
   margin-inline: auto;
+}
+
+.footer-inner .wordmark {
+  width: 112px;
+}
+
+.footer-inner .wordmark img {
+  width: 108px;
+  height: 82px;
 }
 
 .footer-inner > p {
@@ -2474,11 +2523,11 @@ dialog::backdrop {
     display: none;
   }
 
-  .hero-sticker {
-    right: -4px;
-    width: min(30vw, 350px);
-    min-width: 260px;
-    opacity: 0.78;
+  .hero-identity {
+    right: -26px;
+    width: min(44vw, 500px);
+    min-width: 360px;
+    opacity: 0.88;
   }
 
   .flagship-grid {
@@ -2579,14 +2628,14 @@ dialog::backdrop {
     width: 100%;
   }
 
-  .hero-sticker {
+  .hero-identity {
     position: relative;
     top: auto;
     right: auto;
-    width: min(48vw, 320px);
+    width: min(64vw, 400px);
     min-width: 0;
-    margin: -28px 0 70px auto;
-    opacity: 0.82;
+    margin: -24px -24px 66px auto;
+    opacity: 0.9;
     transform: none;
   }
 
@@ -2730,8 +2779,8 @@ dialog::backdrop {
     min-height: 500px;
   }
 
-  .field-note-portrait img {
-    width: min(84%, 500px);
+  .field-note-portrait .field-note-mark {
+    width: min(88%, 540px);
     height: auto;
   }
 
@@ -2796,7 +2845,7 @@ dialog::backdrop {
   }
 
   .hero h1 {
-    font-size: clamp(2.05rem, 9.3vw, 2.55rem);
+    font-size: clamp(1.9rem, 8.5vw, 2.35rem);
     line-height: 0.94;
   }
 
@@ -2841,10 +2890,14 @@ dialog::backdrop {
     font-size: 0.66rem;
   }
 
-  .hero-sticker {
-    width: min(58vw, 220px);
-    margin: 0 4px 82px auto;
-    opacity: 0.8;
+  .hero-identity {
+    position: absolute;
+    top: auto;
+    right: -18px;
+    bottom: 92px;
+    width: min(72vw, 260px);
+    margin: 0;
+    opacity: 0.78;
   }
 
   .hero-bottom {
@@ -3101,7 +3154,7 @@ dialog::backdrop {
     height: 420px;
   }
 
-  .field-note-portrait img {
+  .field-note-portrait .field-note-mark {
     width: 88%;
     height: auto;
   }

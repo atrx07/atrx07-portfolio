@@ -53,12 +53,8 @@ export function Header({
       </a>
       <div className="header-inner">
         <a className="wordmark" href="#top" aria-label="ATRX home">
-          <span>ATRX</span>
-          <i aria-hidden="true">
-            <b />
-            <b />
-            <b />
-          </i>
+          <img src="/atrx-mark.png" alt="" width="1396" height="1127" />
+          <span className="sr-only">ATRX</span>
         </a>
 
         <nav className="desktop-nav" aria-label="Primary navigation">
