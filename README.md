@@ -58,7 +58,25 @@ The build is static and works on Cloudflare Pages, Vercel, or GitHub Pages.
 pnpm.cmd build
 ```
 
-Deploy the generated `dist/` directory. Before production deployment, replace the `https://example.com` canonical placeholders in `public/sitemap.xml` and `public/robots.txt` with the final public domain.
+Deploy the generated `dist/` directory. `wrangler.jsonc` declares that directory as
+the Cloudflare Pages artifact.
+
+For the Git-connected Cloudflare Pages project, use:
+
+```text
+Framework preset: React (Vite)
+Build command: pnpm build
+Build output directory: dist
+Root directory: /
+Production branch: main
+```
+
+Publishing the repository root instead of `dist` returns `index.html` with a
+`/src/main.tsx` entry. That response can still have status `200`, but browsers
+cannot run the uncompiled TypeScript/JSX module and the page stays blank.
+
+The canonical, Open Graph, sitemap, and robots metadata use
+`https://atrx07.pages.dev/` as the production origin.
 
 ## Design source
 
