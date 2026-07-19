@@ -77,7 +77,3 @@ cannot run the uncompiled TypeScript/JSX module and the page stays blank.
 
 The canonical, Open Graph, sitemap, and robots metadata use
 `https://atrx07.pages.dev/` as the production origin.
-
-## Design source
-
-`DESIGN.md` defines the visual source of truth: true-black surfaces, sharp geometry, full-bleed visual bands, high-contrast editorial type, and a restrained blue/blue/red signal signature. `AGENTS.md` defines product scope, public facts, privacy rules, accessibility, and completion criteria.
