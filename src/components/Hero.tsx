@@ -31,7 +31,8 @@ export function Hero({ mode, onModeChange }: Props) {
           </p>
           <h1 id="hero-title">
             <span className="hero-title-desktop">
-              USEFUL SYSTEMS AT THE EDGE OF
+              <span>USEFUL SYSTEMS</span>
+              <span>AT THE EDGE OF</span>
               <strong>PRACTICAL AND UNUSUAL.</strong>
             </span>
             <span className="hero-title-mobile">
@@ -51,20 +52,13 @@ export function Hero({ mode, onModeChange }: Props) {
           </div>
         </div>
 
-        <div className="hero-portrait-wrap motion-visual" aria-hidden="true">
-          <div className="portrait-signal">
-            <span>LOCAL AI</span>
-            <span>REAL-TIME</span>
-            <span>AUTOMATION</span>
-          </div>
+        <div className="hero-sticker motion-visual" aria-hidden="true">
           <img
-            src={profile.avatar}
+            src="/atrx-sticker.png"
             alt=""
-            width="460"
-            height="460"
-            referrerPolicy="no-referrer"
+            width="960"
+            height="751"
           />
-          <div className="portrait-cutline" />
         </div>
 
         <div className="hero-bottom">
