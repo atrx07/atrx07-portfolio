@@ -116,21 +116,31 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
     await page.waitForTimeout(250);
     const flagshipGeometry = await page.evaluate(() => {
       const flagship = document.querySelector<HTMLElement>("#now");
+      const header = document.querySelector<HTMLElement>(".site-header");
       const title = document.querySelector<HTMLElement>(".flagship-title");
       const projects = document.querySelector<HTMLElement>("#projects");
-      if (!flagship || !title || !projects) {
-        return { clears: false, clipped: false, flagshipBottom: 0, projectsTop: 0 };
+      if (!flagship || !header || !title || !projects) {
+        return {
+          clears: false,
+          clipped: false,
+          flagshipBottom: 0,
+          projectsTop: 0,
+          titleHidden: false,
+        };
       }
       const flagshipBottom = flagship.getBoundingClientRect().bottom;
+      const headerBottom = header.getBoundingClientRect().bottom;
       const projectsTop = projects.getBoundingClientRect().top;
+      const titleOpacity = Number.parseFloat(getComputedStyle(title).opacity);
       return {
         clears: flagshipBottom <= projectsTop + 1,
-        clipped: getComputedStyle(flagship).overflowY === "clip",
+        clipped: getComputedStyle(flagship).overflowY === "hidden",
         flagshipBottom,
         projectsTop,
+        titleHidden: projectsTop <= headerBottom + 40 || titleOpacity <= 0.01,
       };
     });
-    expect(flagshipGeometry).toMatchObject({ clears: true, clipped: true });
+    expect(flagshipGeometry).toMatchObject({ clears: true, clipped: true, titleHidden: true });
     await page.goto("/");
   }
 

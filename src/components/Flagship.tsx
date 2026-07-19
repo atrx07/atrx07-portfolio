@@ -32,6 +32,17 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           pinSpacing: false,
           invalidateOnRefresh: true,
         });
+
+        gsap.to(titleRef.current, {
+          autoAlpha: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "bottom 92%",
+            end: "bottom 72%",
+            scrub: true,
+          },
+        });
       });
 
       gsap.utils.toArray<HTMLElement>(".flagship-motion").forEach((element) => {
