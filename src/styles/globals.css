@@ -525,7 +525,7 @@ img {
   right: clamp(8px, 2.5vw, 42px);
   width: min(28vw, 420px);
   min-width: 290px;
-  transform: translateY(-48%) rotate(2.5deg);
+  transform: translateY(-48%);
   transform-origin: center;
   isolation: isolate;
 }
@@ -540,26 +540,23 @@ img {
   border-top: 1px solid var(--signal-blue);
   border-bottom: 1px solid var(--signal-red);
   content: "";
+  opacity: 0.68;
   pointer-events: none;
-  transform: rotate(-7deg);
 }
 
 .hero-sticker img {
   display: block;
   width: 100%;
   height: auto;
-  filter: contrast(1.08);
-  opacity: 0.9;
+  opacity: 1;
   transition:
-    filter 320ms ease,
     opacity 320ms ease,
     transform 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 
 .hero-sticker:hover img {
-  filter: contrast(1.14);
   opacity: 1;
-  transform: translateY(-6px) rotate(-1.25deg);
+  transform: translateY(-5px);
 }
 
 .hero-bottom {
@@ -2564,8 +2561,8 @@ dialog::backdrop {
     width: min(48vw, 320px);
     min-width: 0;
     margin: -28px 0 70px auto;
-    opacity: 0.7;
-    transform: rotate(2.5deg);
+    opacity: 0.82;
+    transform: none;
   }
 
   .hero-bottom {
