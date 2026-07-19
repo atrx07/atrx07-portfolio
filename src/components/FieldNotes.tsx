@@ -12,8 +12,8 @@ export function FieldNotes() {
 
   return (
     <section className="field-notes section-shell" aria-labelledby="field-notes-title">
-      <div className="field-note-portrait motion-visual">
-        <img src={profile.avatar} alt="Arppith Andrews" width="420" height="420" referrerPolicy="no-referrer" />
+      <div className="field-note-portrait motion-visual" aria-hidden="true">
+        <img src="/atrx-sticker.png" alt="" width="960" height="751" />
         <div className="portrait-stack" aria-hidden="true">
           <i />
           <i />
@@ -27,7 +27,7 @@ export function FieldNotes() {
         <h2 id="field-notes-title">{principle.title.toUpperCase()}.</h2>
         <blockquote>{principle.body}</blockquote>
         <p>
-          I’m an engineering student in Kerala, moving between native desktop software, browser interfaces,
+          I'm an engineering student in Kerala, moving between native desktop software, browser interfaces,
           bots, cloud infrastructure, and real hardware. Keyboards and music technology keep the work
           pleasantly strange.
         </p>

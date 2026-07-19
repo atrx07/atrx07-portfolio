@@ -105,12 +105,36 @@ export default function App() {
   }, [lastDiscovered]);
 
   const copyEmail = useCallback(async () => {
+    let didCopy = false;
+
     try {
-      await navigator.clipboard.writeText(profile.email);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(profile.email);
+        didCopy = true;
+      }
+    } catch {
+      // Fall through to the selection-based copy path below.
+    }
+
+    if (!didCopy) {
+      const textarea = document.createElement("textarea");
+      textarea.value = profile.email;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        didCopy = document.execCommand("copy");
+      } finally {
+        textarea.remove();
+      }
+    }
+
+    if (didCopy) {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      window.location.href = `mailto:${profile.email}`;
     }
   }, []);
 

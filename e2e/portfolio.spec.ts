@@ -41,3 +41,60 @@ test("mobile navigation and layout smoke", async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);
 });
+
+test("project, architecture, principles, and contact interaction tour", async ({ page }) => {
+  await page.goto("/#projects");
+
+  await page.getByRole("button", { name: "Music tech", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open StyleForge Lite project details" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Open NeuraLoc-Core project details" })).toHaveCount(0);
+
+  await page.goto("/#architecture");
+  await page.getByRole("tab", { name: "void.chat", exact: true }).click();
+
+  const browserNode = page.getByRole("button", { name: "Browser + Firebase", exact: true });
+  const workerNode = page.getByRole("button", { name: "Cloudflare Worker", exact: true });
+  await browserNode.focus();
+  await browserNode.press("ArrowRight");
+  await expect(workerNode).toBeFocused();
+  await expect(
+    page.locator(".architecture-detail").getByRole("heading", { name: "Cloudflare Worker", level: 3 }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Next principle" }).click();
+  await expect(page.getByRole("heading", { name: "REAL TARGETS BEAT PERFECT MOCKUPS.", level: 2 })).toBeVisible();
+
+  await page.getByRole("button", { name: "Copy email" }).click();
+  await expect(page.getByRole("button", { name: "Email copied" })).toBeVisible();
+});
+
+test("critical mobile copy stays inside its layout", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+
+  const containment = await page.evaluate(() => {
+    const selectors = [
+      "#architecture .section-heading",
+      "#now .proof-main",
+      "#architecture .architecture-detail",
+      "#contact .contact-inner",
+    ];
+
+    return selectors.map((selector) => {
+      const element = document.querySelector<HTMLElement>(selector);
+      if (!element) return { selector, inside: false };
+      const rect = element.getBoundingClientRect();
+      return {
+        selector,
+        inside: rect.left >= 0 && rect.right <= window.innerWidth,
+      };
+    });
+  });
+
+  expect(containment).toEqual(
+    containment.map(({ selector }) => ({
+      selector,
+      inside: true,
+    })),
+  );
+});

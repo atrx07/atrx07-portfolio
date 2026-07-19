@@ -89,8 +89,8 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
     <div className="project-visual mobile-visual" aria-hidden="true">
       <div className="phone-shell">
         <i />
-        <span>PASTE LINK</span>
-        <button tabIndex={-1}>DOWNLOAD</button>
+        <span className="phone-input">PASTE LINK</span>
+        <span className="phone-action">DOWNLOAD</span>
       </div>
     </div>
   );
