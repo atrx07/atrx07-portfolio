@@ -1,9 +1,16 @@
 import { ArrowUpRight, Expand } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { projectCategories, projects } from "../data/projects";
 import type { Project, VisitorMode } from "../types";
 import { ProjectDetail } from "./ProjectDetail";
 import { ProjectVisual } from "./ProjectVisual";
+
+const mobileProjectLayoutQuery = "(max-width: 900px)";
+
+const isMobileProjectLayout = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia(mobileProjectLayoutQuery).matches;
 
 type Props = {
   mode: VisitorMode;
@@ -20,10 +27,8 @@ export function ProjectLab({
 }: Props) {
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [expandedSlug, setExpandedSlug] = useState("neuraloc");
-  const sliceNodes = useRef(new Map<string, HTMLElement>());
-  const activationTimer = useRef<number | null>(null);
-  const pendingSlug = useRef<string | null>(null);
+  const [mobileLayout, setMobileLayout] = useState(isMobileProjectLayout);
+  const [expandedSlug, setExpandedSlug] = useState(() => (isMobileProjectLayout() ? "" : "neuraloc"));
 
   const visibleProjects = useMemo(
     () =>
@@ -37,70 +42,24 @@ export function ProjectLab({
 
   useEffect(() => {
     if (!visibleProjects.some((project) => project.slug === expandedSlug)) {
-      setExpandedSlug(visibleProjects[0]?.slug ?? "");
+      setExpandedSlug(mobileLayout ? "" : (visibleProjects[0]?.slug ?? ""));
     }
-  }, [expandedSlug, visibleProjects]);
+  }, [expandedSlug, mobileLayout, visibleProjects]);
 
   useEffect(() => {
-    if (!window.matchMedia || !window.IntersectionObserver) return;
+    if (typeof window.matchMedia !== "function") return;
 
-    const mobileQuery = window.matchMedia("(max-width: 900px)");
-    if (!mobileQuery.matches) return;
-
-    const clearPendingActivation = () => {
-      if (activationTimer.current !== null) {
-        window.clearTimeout(activationTimer.current);
-      }
-      activationTimer.current = null;
-      pendingSlug.current = null;
+    const media = window.matchMedia(mobileProjectLayoutQuery);
+    const syncLayout = (matches: boolean) => {
+      setMobileLayout(matches);
+      setExpandedSlug((current) => (matches ? "" : current || "neuraloc"));
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter(
-          (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.6,
-        );
-        if (visibleEntries.length === 0) {
-          clearPendingActivation();
-          return;
-        }
-
-        const viewportCenter = window.innerHeight / 2;
-        const closest = visibleEntries.sort((left, right) => {
-          const leftCenter = left.boundingClientRect.top + left.boundingClientRect.height / 2;
-          const rightCenter = right.boundingClientRect.top + right.boundingClientRect.height / 2;
-          return Math.abs(leftCenter - viewportCenter) - Math.abs(rightCenter - viewportCenter);
-        })[0];
-
-        const slug = (closest.target as HTMLElement).closest<HTMLElement>("[data-project-slug]")?.dataset
-          .projectSlug;
-        if (!slug || pendingSlug.current === slug) return;
-
-        clearPendingActivation();
-        pendingSlug.current = slug;
-        activationTimer.current = window.setTimeout(() => {
-          setExpandedSlug(slug);
-          activationTimer.current = null;
-          pendingSlug.current = null;
-        }, 280);
-      },
-      {
-        rootMargin: "-39% 0px -39% 0px",
-        threshold: [0, 0.6, 1],
-      },
-    );
-
-    visibleProjects.forEach((project) => {
-      const node = sliceNodes.current.get(project.slug);
-      const trigger = node?.querySelector<HTMLElement>(".project-slice-hit");
-      if (trigger) observer.observe(trigger);
-    });
-
-    return () => {
-      clearPendingActivation();
-      observer.disconnect();
-    };
-  }, [visibleProjects]);
+    syncLayout(media.matches);
+    const handleChange = (event: MediaQueryListEvent) => syncLayout(event.matches);
+    media.addEventListener("change", handleChange);
+    return () => media.removeEventListener("change", handleChange);
+  }, []);
 
   const openProject = (project: Project) => {
     setSelectedProject(project);
@@ -141,28 +100,37 @@ export function ProjectLab({
 
       <div className="project-accordions" data-count={visibleProjects.length}>
         {visibleProjects.map((project) => {
-          const expanded = visibleProjects.length === 1 || expandedSlug === project.slug;
+          const expanded =
+            (!mobileLayout && visibleProjects.length === 1) || expandedSlug === project.slug;
           const bodyId = `${project.slug}-project-body`;
           return (
             <article
               key={project.slug}
               className={expanded ? "project-slice is-expanded" : "project-slice"}
               data-project-slug={project.slug}
-              ref={(node) => {
-                if (node) sliceNodes.current.set(project.slug, node);
-                else sliceNodes.current.delete(project.slug);
+              onMouseEnter={() => {
+                if (!mobileLayout) setExpandedSlug(project.slug);
               }}
-              onMouseEnter={() => setExpandedSlug(project.slug)}
-              onFocus={() => setExpandedSlug(project.slug)}
+              onFocus={() => {
+                if (!mobileLayout) setExpandedSlug(project.slug);
+              }}
             >
               <button
                 className="project-slice-hit"
                 type="button"
                 onClick={() => {
+                  if (mobileLayout) {
+                    setExpandedSlug((current) => (current === project.slug ? "" : project.slug));
+                    return;
+                  }
                   setExpandedSlug(project.slug);
                   openProject(project);
                 }}
-                aria-label={`Open ${project.name} project details`}
+                aria-label={
+                  mobileLayout
+                    ? `${expanded ? "Collapse" : "Expand"} ${project.name} project card`
+                    : `Open ${project.name} project details`
+                }
                 aria-expanded={expanded}
                 aria-controls={bodyId}
               >

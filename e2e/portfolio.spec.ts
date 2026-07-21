@@ -7,7 +7,20 @@ test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   await page.getByPlaceholder("Navigate, inspect, or switch mode...").fill("Go to Projects");
   await page.getByRole("button", { name: /Go to Projects/ }).click();
 
-  await page.getByRole("button", { name: "Open NeuraLoc-Core project details" }).click();
+  const viewport = page.viewportSize();
+  const neuralocCard = page.locator('[data-project-slug="neuraloc"]');
+  if (viewport && viewport.width <= 900) {
+    const neuralocToggle = neuralocCard.locator(".project-slice-hit");
+    await expect(neuralocToggle).toHaveAccessibleName("Expand NeuraLoc-Core project card");
+    await neuralocToggle.click();
+    await expect(neuralocToggle).toHaveAttribute("aria-expanded", "true");
+    await expect(neuralocToggle).toHaveAccessibleName("Collapse NeuraLoc-Core project card");
+    await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toHaveCount(0);
+    await neuralocCard.getByRole("button", { name: "Inspect system" }).click();
+  } else {
+    await page.getByRole("button", { name: "Open NeuraLoc-Core project details" }).click();
+  }
+
   await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open repository" })).toHaveAttribute(
     "href",
@@ -46,8 +59,8 @@ test("project, architecture, principles, and contact interaction tour", async ({
   await page.goto("/#projects");
 
   await page.getByRole("button", { name: "Music tech", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Open StyleForge Lite project details" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Open NeuraLoc-Core project details" })).toHaveCount(0);
+  await expect(page.locator('[data-project-slug="styleforge"] .project-slice-hit')).toBeVisible();
+  await expect(page.locator('[data-project-slug="neuraloc"]')).toHaveCount(0);
 
   await page.goto("/#architecture");
   await page.getByRole("tab", { name: "void.chat", exact: true }).click();
@@ -172,6 +185,12 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
     await page.goto("/");
   }
 
+  const neuralocCard = page.locator('[data-project-slug="neuraloc"]');
+  if (viewport && viewport.width <= 900) {
+    await neuralocCard.getByRole("button", { name: "Expand NeuraLoc-Core project card" }).click();
+    await page.waitForTimeout(850);
+  }
+
   const runtimeVisual = page.locator(".project-slice.is-expanded .runtime-visual");
   const runtimeGeometry = await runtimeVisual.evaluate((visual) => {
     const frame = visual.getBoundingClientRect();
@@ -187,21 +206,36 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
         bounds.bottom <= frame.bottom
       );
     });
-    if (!center || !ring) return { partsFit, ringOffset: Number.POSITIVE_INFINITY };
+    if (!center || !ring) {
+      return {
+        horizontalOffset: Number.POSITIVE_INFINITY,
+        leftOfSeparator: false,
+        partsFit,
+        verticalOffset: Number.POSITIVE_INFINITY,
+      };
+    }
     const centerBounds = center.getBoundingClientRect();
     const ringBounds = ring.getBoundingClientRect();
+    const ringCenterX = ringBounds.left + ringBounds.width / 2;
+    const ringCenterY = ringBounds.top + ringBounds.height / 2;
     return {
       partsFit,
-      ringOffset: Math.abs(
-        ringBounds.left + ringBounds.width / 2 - (centerBounds.left + centerBounds.width / 2),
-      ),
+      horizontalOffset: Math.abs(ringCenterX - (centerBounds.left + centerBounds.width / 4)),
+      verticalOffset: Math.abs(ringCenterY - (centerBounds.top + centerBounds.height / 2)),
+      leftOfSeparator: ringCenterX < frame.left + frame.width / 2,
     };
   });
   expect(runtimeGeometry.partsFit).toBe(true);
-  expect(runtimeGeometry.ringOffset).toBeLessThanOrEqual(1);
+  expect(runtimeGeometry.horizontalOffset).toBeLessThanOrEqual(1);
+  expect(runtimeGeometry.verticalOffset).toBeLessThanOrEqual(1);
+  expect(runtimeGeometry.leftOfSeparator).toBe(true);
 
   await page.getByRole("button", { name: "Music tech", exact: true }).click();
-  const styleForgeButton = page.getByRole("button", { name: "Open StyleForge Lite project details" });
+  const styleForgeButton = page.locator('[data-project-slug="styleforge"] .project-slice-hit');
+  if (viewport && viewport.width <= 900) {
+    await expect(styleForgeButton).toHaveAttribute("aria-expanded", "false");
+    await styleForgeButton.click();
+  }
   await expect(styleForgeButton).toHaveAttribute("aria-expanded", "true");
 
   const filteredCardUsesRack = await page.locator(".project-accordions").evaluate((rack) => {
@@ -214,7 +248,13 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   expect(filteredCardUsesRack).toBe(true);
 
   await page.getByRole("button", { name: "Web / PWA", exact: true }).click();
-  await page.getByRole("button", { name: "Open AtrxInstaDown project details" }).click();
+  const instaCard = page.locator('[data-project-slug="atrxinstadown"]');
+  if (viewport && viewport.width <= 900) {
+    await instaCard.getByRole("button", { name: "Expand AtrxInstaDown project card" }).click();
+    await instaCard.getByRole("button", { name: "Inspect system" }).click();
+  } else {
+    await page.getByRole("button", { name: "Open AtrxInstaDown project details" }).click();
+  }
 
   const dialog = page.getByRole("dialog", { name: /AtrxInstaDown/ });
   const dialogTitleFits = await dialog.evaluate((element) => {
@@ -253,26 +293,37 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   expect(terminalState.scrollsInternally).toBe(true);
 });
 
-test("mobile project rack opens the card nearest the viewport", async ({ page }) => {
+test("mobile project rack opens only on tap and reserves the dialog for inspection", async ({ page }) => {
   const viewport = page.viewportSize();
-  test.skip(!viewport || viewport.width > 900, "Mobile-only scroll behavior");
+  test.skip(!viewport || viewport.width > 900, "Mobile-only tap behavior");
 
   await page.goto("/#projects");
 
   const heroMobileLayout = await page.locator(".hero").evaluate((hero) => {
     const identity = hero.querySelector<HTMLElement>(".hero-identity");
     const modes = hero.querySelector<HTMLElement>(".hero-bottom .mode-switch");
+    const actions = hero.querySelector<HTMLElement>(".hero-actions");
     const wideSource = hero.querySelector<HTMLSourceElement>(
       '.hero-identity source[media="(max-width: 640px)"]',
     );
-    if (!identity || !modes) {
-      return { centered: false, fullBleed: false, horizontal: false, modesBelow: false, wideArt: false };
+    if (!identity || !modes || !actions) {
+      return {
+        centered: false,
+        gapCovered: false,
+        fullBleed: false,
+        horizontal: false,
+        modesBelow: false,
+        wideArt: false,
+      };
     }
     const heroBounds = hero.getBoundingClientRect();
     const identityBounds = identity.getBoundingClientRect();
     const modeBounds = modes.getBoundingClientRect();
+    const actionBounds = actions.getBoundingClientRect();
+    const mediaGap = identityBounds.top - actionBounds.bottom;
     return {
       centered: Math.abs(identityBounds.left + identityBounds.width / 2 - heroBounds.width / 2) <= 2,
+      gapCovered: mediaGap >= 0 && mediaGap <= 90,
       fullBleed: identityBounds.width >= heroBounds.width - 1,
       horizontal: getComputedStyle(modes).flexDirection === "row",
       modesBelow: modeBounds.top >= identityBounds.bottom,
@@ -281,20 +332,37 @@ test("mobile project rack opens the card nearest the viewport", async ({ page })
   });
   expect(heroMobileLayout).toEqual({
     centered: true,
+    gapCovered: true,
     fullBleed: true,
     horizontal: true,
     modesBelow: true,
     wideArt: true,
   });
 
-  const first = page.getByRole("button", { name: "Open NeuraLoc-Core project details" });
-  const second = page.getByRole("button", { name: "Open void.chat project details" });
-  await expect(first).toHaveAttribute("aria-expanded", "true");
+  const firstCard = page.locator('[data-project-slug="neuraloc"]');
+  const secondCard = page.locator('[data-project-slug="voidchat"]');
+  const first = firstCard.locator(".project-slice-hit");
+  const second = secondCard.locator(".project-slice-hit");
+  await expect(first).toHaveAccessibleName("Expand NeuraLoc-Core project card");
+  await expect(second).toHaveAccessibleName("Expand void.chat project card");
+  await expect(first).toHaveAttribute("aria-expanded", "false");
+  await expect(second).toHaveAttribute("aria-expanded", "false");
 
   await second.evaluate((element) => element.scrollIntoView({ block: "center" }));
-
-  await page.waitForTimeout(120);
-  await expect(first).toHaveAttribute("aria-expanded", "true");
-  await expect(second).toHaveAttribute("aria-expanded", "true");
+  await page.waitForTimeout(500);
   await expect(first).toHaveAttribute("aria-expanded", "false");
+  await expect(second).toHaveAttribute("aria-expanded", "false");
+
+  await first.click();
+  await expect(first).toHaveAttribute("aria-expanded", "true");
+  await expect(first).toHaveAccessibleName("Collapse NeuraLoc-Core project card");
+  await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toHaveCount(0);
+
+  await second.click();
+  await expect(second).toHaveAttribute("aria-expanded", "true");
+  await expect(second).toHaveAccessibleName("Collapse void.chat project card");
+  await expect(first).toHaveAttribute("aria-expanded", "false");
+
+  await secondCard.getByRole("button", { name: "Inspect system" }).click();
+  await expect(page.getByRole("dialog", { name: /void.chat/ })).toBeVisible();
 });

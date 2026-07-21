@@ -17,6 +17,7 @@ playwright.config.d.ts
 # Local design and agent reference material
 AGENTS.md
 DESIGN.md
+PROJECT.md
 .agents/
 
 .DS_Store
