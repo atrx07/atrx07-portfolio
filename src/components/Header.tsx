@@ -24,6 +24,7 @@ const links = [
   { href: "#now", label: "Now building" },
   { href: "#projects", label: "Projects" },
   { href: "#architecture", label: "Architecture" },
+  { href: "#about", label: "About" },
   { href: "#terminal", label: "Terminal" },
   { href: "#contact", label: "Contact" },
 ];
@@ -96,7 +97,7 @@ export function Header({
           >
             <Search size={17} />
             <span>Command</span>
-            <kbd>⌘K</kbd>
+            <kbd>Ctrl K</kbd>
           </button>
           <a
             className="icon-button desktop-only"

@@ -82,6 +82,12 @@ export function CommandPalette({
         run: () => scrollToId("architecture"),
       },
       {
+        label: "Go to About",
+        group: "Navigate",
+        icon: UserRound,
+        run: () => scrollToId("about"),
+      },
+      {
         label: "Open portfolio terminal",
         group: "Tools",
         icon: TerminalSquare,

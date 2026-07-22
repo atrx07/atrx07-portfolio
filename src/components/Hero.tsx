@@ -10,7 +10,7 @@ type Props = {
 
 const supportByMode: Record<VisitorMode, string> = {
   recruiter:
-    "Engineering student turning ambitious ideas into systems that survive real users, real hardware, and repeated testing.",
+    "Engineering student, AI and automation builder, and software developer turning ambitious web and native ideas into dependable systems.",
   developer:
     "Working across Rust orchestration, local inference, durable state, edge real-time infrastructure, and interfaces that expose the truth.",
   chaos:
@@ -59,6 +59,8 @@ export function Hero({ mode, onModeChange }: Props) {
               alt=""
               width="1080"
               height="1080"
+              decoding="async"
+              loading="eager"
             />
           </picture>
         </div>

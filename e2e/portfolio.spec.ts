@@ -1,5 +1,44 @@
 import { expect, test } from "@playwright/test";
 
+test("technical SEO signals agree on the canonical profile", async ({ page, request }) => {
+  await page.goto("/");
+
+  await expect(page).toHaveTitle("Arppith Andrews | AI, Automation & Software Developer");
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    /engineering student, AI and automation builder, software developer, and web developer/i,
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /max-image-preview:large/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://atrx07.pages.dev/");
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "profile");
+
+  const structuredData = await page.locator('script[type="application/ld+json"]').textContent();
+  expect(structuredData).not.toBeNull();
+  const graph = JSON.parse(structuredData ?? "{}") as {
+    "@graph"?: Array<{ "@type"?: string; name?: string; url?: string }>;
+  };
+  expect(graph["@graph"]?.some((item) => item["@type"] === "Person" && item.name === "Arppith Andrews")).toBe(
+    true,
+  );
+  expect(graph["@graph"]?.some((item) => item["@type"] === "ProfilePage")).toBe(true);
+  expect(graph["@graph"]?.filter((item) => item["@type"] === "SoftwareSourceCode")).toHaveLength(3);
+
+  const sitemapResponse = await request.get("/sitemap.xml");
+  expect(sitemapResponse.ok()).toBe(true);
+  const sitemap = await sitemapResponse.text();
+  expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
+  expect(sitemap).toContain("<lastmod>2026-07-22</lastmod>");
+  expect(sitemap).not.toContain("<changefreq>");
+  expect(sitemap).not.toContain("<priority>");
+
+  const robotsResponse = await request.get("/robots.txt");
+  expect(robotsResponse.ok()).toBe(true);
+  const robots = await robotsResponse.text();
+  expect(robots).toContain("User-agent: *");
+  expect(robots).toContain("Allow: /");
+  expect(robots).toContain("Sitemap: https://atrx07.pages.dev/sitemap.xml");
+});
+
 test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   await page.goto("/");
 
@@ -75,7 +114,7 @@ test("project, architecture, principles, and contact interaction tour", async ({
   ).toBeVisible();
 
   await page.getByRole("button", { name: "Next principle" }).click();
-  await expect(page.getByRole("heading", { name: "REAL TARGETS BEAT PERFECT MOCKUPS.", level: 2 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "REAL TARGETS BEAT PERFECT MOCKUPS.", level: 3 })).toBeVisible();
 
   await page.getByRole("button", { name: "Copy email" }).click();
   await expect(page.getByRole("button", { name: "Email copied" })).toBeVisible();

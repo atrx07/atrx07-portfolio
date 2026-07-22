@@ -18,7 +18,7 @@ import { useDiscovery } from "./hooks/useDiscovery";
 import { useSignalAudio } from "./hooks/useSignalAudio";
 import { useSignalMode } from "./hooks/useSignalMode";
 import { useVisitorMode } from "./hooks/useVisitorMode";
-import { profile } from "./data/profile";
+import { profile, siteMetadata } from "./data/profile";
 import type { Project } from "./types";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -84,9 +84,7 @@ export default function App() {
     };
 
     const onVisibilityChange = () => {
-      document.title = document.hidden
-        ? "signal paused // ATRX"
-        : "Arppith Andrews (atrx07) — Local AI, Automation & Real-time Systems";
+      document.title = document.hidden ? "signal paused // ATRX" : siteMetadata.title;
     };
 
     window.addEventListener("keydown", onKeyDown);

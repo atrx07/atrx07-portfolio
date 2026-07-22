@@ -2,7 +2,7 @@ export const profile = {
   name: "Arppith Andrews",
   handle: "atrx07",
   brand: "ATRX",
-  role: "Engineering student focused on Computer Science, AI, and automation",
+  role: "Engineering student, AI and automation builder, software developer, and web developer",
   location: "Kerala, India",
   email: "arppithandrewsee@gmail.com",
   github: "https://github.com/atrx07",
@@ -30,6 +30,13 @@ export const profile = {
       body: "Serious engineering does not require a lifeless interface.",
     },
   ],
+} as const;
+
+export const siteMetadata = {
+  title: "Arppith Andrews | AI, Automation & Software Developer",
+  description:
+    "Arppith Andrews (atrx07) is an engineering student, AI and automation builder, software developer, and web developer creating local AI and real-time systems.",
+  canonicalUrl: "https://atrx07.pages.dev/",
 } as const;
 
 export const capabilityGroups = [
