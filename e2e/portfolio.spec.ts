@@ -165,11 +165,12 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   const viewport = page.viewportSize();
   if (viewport && viewport.width > 900) {
     await page.evaluate(() => document.fonts.ready.then(() => true));
-    await page.evaluate(() => {
+    await page.locator("#now .pin-spacer").waitFor({ state: "attached" });
+    const pinProbeY = await page.evaluate(() => {
       const flagship = document.querySelector<HTMLElement>("#now");
       const title = document.querySelector<HTMLElement>(".flagship-title");
       const header = document.querySelector<HTMLElement>(".site-header");
-      if (!flagship || !title || !header) return;
+      if (!flagship || !title || !header) return 0;
 
       const flagshipTop = flagship.getBoundingClientRect().top + window.scrollY;
       const paddingTop = Number.parseFloat(getComputedStyle(flagship).paddingTop) || 0;
@@ -177,8 +178,9 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
         header.getBoundingClientRect().height + 4,
         (window.innerHeight - title.offsetHeight) / 2,
       );
-      window.scrollTo(0, flagshipTop + paddingTop - centeredTop + 160);
+      return flagshipTop + paddingTop - centeredTop + 60;
     });
+    await page.mouse.wheel(0, pinProbeY);
     await page.waitForTimeout(250);
 
     const pinnedTitle = await page.locator(".flagship-title").evaluate((title) => {
@@ -404,4 +406,38 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
 
   await secondCard.getByRole("button", { name: "Inspect system" }).click();
   await expect(page.getByRole("dialog", { name: /void.chat/ })).toBeVisible();
+});
+
+test("mask actions and visitor mode motion preserve their interaction contracts", async ({ page }) => {
+  await page.goto("/");
+
+  const explore = page.locator('.hero-actions .mask-action[href="#projects"]');
+  const github = page.locator('.hero-actions .mask-action[href="https://github.com/atrx07"]');
+  const modeSwitch = page.locator(".hero-bottom .mode-switch");
+  const modeIndicator = modeSwitch.locator(".mode-switch__indicator");
+
+  await expect(explore).toHaveAttribute("data-mask", "urban");
+  await expect(explore).toHaveAttribute("data-variant", "primary");
+  await expect(github).toHaveAttribute("data-mask", "forest");
+  await expect(github).toHaveAttribute("data-variant", "secondary");
+
+  await explore.dispatchEvent("pointerdown", { pointerType: "touch" });
+  await expect(explore).toHaveAttribute("data-pressed", "true");
+  await explore.dispatchEvent("pointerup", { pointerType: "touch" });
+  await expect(explore).not.toHaveAttribute("data-pressed");
+
+  await page.getByRole("button", { name: "chaos", exact: true }).click();
+  await expect(modeSwitch).toHaveAttribute("data-mode", "chaos");
+  await expect(modeIndicator).not.toHaveCSS("transform", "none");
+
+  await page.goto("/#contact");
+  const conversation = page.locator('.contact-actions .mask-action[href^="mailto:"]');
+  const copy = page.getByRole("button", { name: "Copy email" });
+  await expect(conversation).toHaveAttribute("data-mask", "nature");
+  await expect(copy).toHaveAttribute("data-mask", "forest");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(conversation.locator(".mask-action__fill")).toHaveCSS("animation-name", "none");
+  await page.goto("/");
+  await expect(page.locator(".hero-bottom .mode-switch__indicator")).toHaveCSS("animation-name", "none");
 });

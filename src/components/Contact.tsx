@@ -1,5 +1,6 @@
 import { Check, Clipboard, Github, Instagram, Mail } from "lucide-react";
 import { profile } from "../data/profile";
+import { MaskButton, MaskLink } from "./godui/mask-button";
 
 type Props = {
   copied: boolean;
@@ -20,14 +21,14 @@ export function Contact({ copied, onCopyEmail }: Props) {
           more than a quick demo.
         </p>
         <div className="contact-actions">
-          <a className="button button--light" href={`mailto:${profile.email}`}>
+          <MaskLink className="button" href={`mailto:${profile.email}`} mask="nature" variant="primary">
             <Mail size={18} />
             Start a conversation
-          </a>
-          <button className="button button--outline" type="button" onClick={onCopyEmail}>
+          </MaskLink>
+          <MaskButton className="button" type="button" onClick={onCopyEmail} mask="forest" variant="secondary">
             {copied ? <Check size={18} /> : <Clipboard size={18} />}
             {copied ? "Email copied" : "Copy email"}
-          </button>
+          </MaskButton>
         </div>
         <div className="contact-links">
           <a href={profile.github} target="_blank" rel="noreferrer">

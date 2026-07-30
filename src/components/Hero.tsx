@@ -1,6 +1,7 @@
 import { ArrowDownRight, Github, Radio } from "lucide-react";
 import { profile } from "../data/profile";
 import type { VisitorMode } from "../types";
+import { MaskLink } from "./godui/mask-button";
 import { VisitorModeSwitch } from "./VisitorModeSwitch";
 
 type Props = {
@@ -42,12 +43,19 @@ export function Hero({ mode, onModeChange }: Props) {
           </h1>
           <p className="hero-support">{supportByMode[mode]}</p>
           <div className="hero-actions">
-            <a className="button button--light" href="#projects">
+            <MaskLink className="button" href="#projects" mask="urban" variant="primary">
               Explore systems <ArrowDownRight size={18} />
-            </a>
-            <a className="button button--outline" href={profile.github} target="_blank" rel="noreferrer">
+            </MaskLink>
+            <MaskLink
+              className="button"
+              href={profile.github}
+              target="_blank"
+              rel="noreferrer"
+              mask="forest"
+              variant="secondary"
+            >
               GitHub <Github size={18} />
-            </a>
+            </MaskLink>
           </div>
         </div>
 

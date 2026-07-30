@@ -5,6 +5,14 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: "var(--ink)",
+        primaryForeground: "var(--canvas)",
+        secondary: "var(--card)",
+        secondaryForeground: "var(--ink)",
+        background: "var(--canvas)",
+        foreground: "var(--ink)",
+        border: "var(--line)",
+        ring: "var(--ink)",
         canvas: "#000000",
         panel: "#0d0d0d",
         card: "#1a1a1a",

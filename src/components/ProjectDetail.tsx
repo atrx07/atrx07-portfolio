@@ -1,6 +1,7 @@
 import { ArrowUpRight, Check, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { Project, VisitorMode } from "../types";
+import { MaskLink } from "./godui/mask-button";
 import { ProjectVisual } from "./ProjectVisual";
 
 type Props = {
@@ -89,9 +90,16 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
             )}
 
             {project.repoUrl && (
-              <a className="button button--light" href={project.repoUrl} target="_blank" rel="noreferrer">
+              <MaskLink
+                className="button"
+                href={project.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                mask="urban"
+                variant="primary"
+              >
                 Open repository <ArrowUpRight size={18} />
-              </a>
+              </MaskLink>
             )}
           </div>
         </div>
