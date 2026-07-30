@@ -14,10 +14,12 @@ playwright.config.d.ts
 .env.*
 !.env.example
 
-# Local design and agent reference material
+# Local project control, design, and agent reference material
 AGENTS.md
 DESIGN.md
 PROJECT.md
+STATUS.md
+ARCHETECTURE.md
 .agents/
 
 .DS_Store
