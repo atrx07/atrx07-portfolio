@@ -6,9 +6,11 @@ export default {
     extend: {
       colors: {
         primary: "var(--ink)",
-        primaryForeground: "var(--canvas)",
+        "primary-foreground": "var(--canvas)",
         secondary: "var(--card)",
-        secondaryForeground: "var(--ink)",
+        "secondary-foreground": "var(--ink)",
+        muted: "var(--panel)",
+        "muted-foreground": "var(--muted)",
         background: "var(--canvas)",
         foreground: "var(--ink)",
         border: "var(--line)",
@@ -17,7 +19,6 @@ export default {
         panel: "#0d0d0d",
         card: "#1a1a1a",
         line: "#3c3c3c",
-        muted: "#a6a6a6",
         signalLight: "#36a3ff",
         signalBlue: "#1c69d4",
         signalRed: "#e22718",

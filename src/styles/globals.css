@@ -23,7 +23,31 @@
   --signal-red: #e22718;
   --success: #31b454;
   --warning: #f4b400;
+  --primary: var(--ink);
+  --primary-foreground: var(--canvas);
+  --secondary: var(--card);
+  --secondary-foreground: var(--ink);
+  --muted-foreground: var(--muted);
+  --ring: var(--ink);
   --header-height: 72px;
+  --button-py-sm: 0.5rem;
+  --button-px-sm: 1rem;
+  --button-text-sm: 0.875rem;
+  --button-leading-sm: 1.25rem;
+  --button-py-md: 0.75rem;
+  --button-px-md: 1.5rem;
+  --button-text-md: 0.875rem;
+  --button-leading-md: 1.25rem;
+  --button-py-lg: 1rem;
+  --button-px-lg: 2rem;
+  --button-text-lg: 1rem;
+  --button-leading-lg: 1.5rem;
+  --rainbow-1: var(--signal-light);
+  --rainbow-2: var(--signal-light);
+  --rainbow-3: var(--signal-red);
+  --rainbow-4: var(--signal-blue);
+  --rainbow-5: var(--signal-blue);
+  --rainbow-speed: 3.2s;
 }
 
 * {
@@ -768,81 +792,70 @@ section[id] {
   width: max-content;
   min-height: 44px;
   align-items: stretch;
-  overflow: hidden;
+  gap: 0;
+  overflow: visible;
   border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0;
+  background: var(--canvas);
 }
 
-.mode-switch__indicator {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: calc(100% / 3);
-  padding: 2px;
-  background: linear-gradient(
-    105deg,
-    var(--signal-light),
-    var(--signal-blue),
-    var(--signal-red),
-    var(--signal-blue),
-    var(--signal-light)
-  );
-  background-size: 260% 100%;
-  transform: translate3d(0, 0, 0);
-  transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  animation: mode-signal-loop 3.2s linear infinite;
-  pointer-events: none;
+.animate-magic-rainbow {
+  animation: magic-rainbow var(--rainbow-speed) infinite linear;
 }
 
-.mode-switch__indicator::after {
-  position: absolute;
-  inset: 2px;
-  background: var(--ink);
-  content: "";
+@keyframes magic-rainbow {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 200% 50%;
+  }
 }
 
-.mode-switch[data-mode="developer"] .mode-switch__indicator {
-  transform: translate3d(100%, 0, 0);
-}
-
-.mode-switch[data-mode="chaos"] .mode-switch__indicator {
-  transform: translate3d(200%, 0, 0);
-}
-
-.mode-switch button {
-  position: relative;
-  z-index: 1;
+.mode-switch .magic-tab__button {
   min-height: 44px;
   min-width: 92px;
   border-right: 1px solid var(--line);
-  padding: 0 14px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 0.7rem;
   text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    color 220ms ease,
-    background-color 220ms ease;
 }
 
-.mode-switch button:last-child {
+.mode-switch .magic-tab__button:last-child {
   border-right: 0;
 }
 
-.mode-switch button:hover {
-  color: var(--ink);
-  background: rgb(255 255 255 / 5%);
+.mode-switch .magic-tab__edge,
+.mode-switch .magic-tab__shadow,
+.mode-switch .magic-tab__front {
+  border-radius: 0;
 }
 
-.mode-switch button.is-active {
-  color: var(--canvas);
+.mode-switch .magic-tab__front {
+  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  font-size: 0.7rem;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-@keyframes mode-signal-loop {
-  to {
-    background-position: 260% 0;
+.mode-switch .magic-tab__button:focus-visible {
+  z-index: 2;
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.mode-switch .magic-tab__button[data-selected="true"] .magic-tab__edge {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 14%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mode-switch .magic-tab__button:not([data-selected="true"]):hover .magic-tab__front {
+    filter: brightness(1.08);
   }
 }
 
@@ -3284,6 +3297,9 @@ dialog::backdrop {
   .mode-switch button {
     min-width: 0;
     flex: 1;
+  }
+
+  .mode-switch .magic-tab__front {
     padding-inline: 8px;
     font-size: 0.62rem;
   }
@@ -3594,7 +3610,7 @@ dialog::backdrop {
   }
 
   .mask-action__fill,
-  .mode-switch__indicator {
+  .animate-magic-rainbow {
     animation: none !important;
   }
 }

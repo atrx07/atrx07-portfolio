@@ -67,7 +67,7 @@ test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   );
   await page.getByRole("button", { name: "Close project details" }).click();
 
-  await page.getByRole("button", { name: "developer", exact: true }).click();
+  await page.getByRole("tab", { name: "developer", exact: true }).click();
   await page.keyboard.press("Control+K");
   await page.getByPlaceholder("Navigate, inspect, or switch mode...").fill("Open portfolio terminal");
   await page.getByRole("button", { name: /Open portfolio terminal/ }).click();
@@ -414,7 +414,9 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   const explore = page.locator('.hero-actions .mask-action[href="#projects"]');
   const github = page.locator('.hero-actions .mask-action[href="https://github.com/atrx07"]');
   const modeSwitch = page.locator(".hero-bottom .mode-switch");
-  const modeIndicator = modeSwitch.locator(".mode-switch__indicator");
+  const recruiterTab = modeSwitch.getByRole("tab", { name: "recruiter" });
+  const developerTab = modeSwitch.getByRole("tab", { name: "developer" });
+  const chaosTab = modeSwitch.getByRole("tab", { name: "chaos" });
 
   await expect(explore).toHaveAttribute("data-mask", "urban");
   await expect(explore).toHaveAttribute("data-variant", "primary");
@@ -426,9 +428,19 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   await explore.dispatchEvent("pointerup", { pointerType: "touch" });
   await expect(explore).not.toHaveAttribute("data-pressed");
 
-  await page.getByRole("button", { name: "chaos", exact: true }).click();
+  await expect(modeSwitch).toHaveAttribute("data-rainbow", "true");
+  await recruiterTab.focus();
+  await recruiterTab.press("ArrowRight");
+  await expect(developerTab).toBeFocused();
+  await expect(recruiterTab).toHaveAttribute("aria-selected", "true");
+  await developerTab.press("Enter");
+  await expect(developerTab).toHaveAttribute("aria-selected", "true");
+
+  await chaosTab.click();
   await expect(modeSwitch).toHaveAttribute("data-mode", "chaos");
-  await expect(modeIndicator).not.toHaveCSS("transform", "none");
+  await expect(chaosTab).toHaveAttribute("data-selected", "true");
+  await expect(chaosTab.locator(".magic-tab__front")).not.toHaveCSS("transform", "none");
+  await expect(chaosTab.locator(".magic-tab__edge")).toHaveCSS("animation-name", "magic-rainbow");
 
   await page.goto("/#contact");
   const conversation = page.locator('.contact-actions .mask-action[href^="mailto:"]');
@@ -439,5 +451,8 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(conversation.locator(".mask-action__fill")).toHaveCSS("animation-name", "none");
   await page.goto("/");
-  await expect(page.locator(".hero-bottom .mode-switch__indicator")).toHaveCSS("animation-name", "none");
+  await expect(page.locator(".hero-bottom .animate-magic-rainbow").first()).toHaveCSS(
+    "animation-name",
+    "none",
+  );
 });

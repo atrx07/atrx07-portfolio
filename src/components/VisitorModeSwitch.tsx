@@ -1,4 +1,5 @@
 import type { VisitorMode } from "../types";
+import { MagicTab, type MagicTabItem } from "./godui/magic-tab";
 
 type Props = {
   mode: VisitorMode;
@@ -6,28 +7,21 @@ type Props = {
   compact?: boolean;
 };
 
-const modes: VisitorMode[] = ["recruiter", "developer", "chaos"];
+const modes = ["recruiter", "developer", "chaos"] satisfies VisitorMode[];
+const modeItems: MagicTabItem[] = modes.map((item) => ({ value: item, label: item }));
 
 export function VisitorModeSwitch({ mode, onChange, compact = false }: Props) {
   return (
-    <div
+    <MagicTab
+      items={modeItems}
+      value={mode}
+      onValueChange={(value) => onChange(value as VisitorMode)}
+      variant="default"
+      size="md"
+      rainbow
       className={`mode-switch ${compact ? "mode-switch--compact" : ""}`}
       data-mode={mode}
-      role="group"
       aria-label="Visitor mode"
-    >
-      <span className="mode-switch__indicator" aria-hidden="true" />
-      {modes.map((item) => (
-        <button
-          key={item}
-          type="button"
-          aria-pressed={mode === item}
-          onClick={() => onChange(item)}
-          className={mode === item ? "is-active" : ""}
-        >
-          {item}
-        </button>
-      ))}
-    </div>
+    />
   );
 }
