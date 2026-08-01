@@ -543,6 +543,30 @@ test("Aveline agent flow stays fixed, responsive, and contained", async ({ page 
   await expect(cardFlow.locator("[data-node-id]")).toHaveCount(5);
   await expect(cardFlow.locator('[data-node-id="memory"]')).toContainText("Upstash Redis");
   await expect(cardFlow.locator('[data-node-id="inference"]')).toContainText("Groq fallback");
+  await expect(cardFlow).toHaveAttribute(
+    "data-layout",
+    viewport && viewport.width > 900 ? "linear" : "stacked",
+  );
+  await expect(cardFlow.locator('[data-node-id="reply"]')).toHaveCSS("border-radius", "12px");
+
+  const cardRoute = await cardFlow.evaluate((flow) => {
+    const inference = flow.querySelector('[data-node-id="inference"]')?.getBoundingClientRect();
+    const reply = flow.querySelector('[data-node-id="reply"]')?.getBoundingClientRect();
+    if (!inference || !reply) return null;
+    return {
+      inferenceX: inference.left + inference.width / 2,
+      inferenceY: inference.top + inference.height / 2,
+      replyX: reply.left + reply.width / 2,
+      replyY: reply.top + reply.height / 2,
+    };
+  });
+  expect(cardRoute).not.toBeNull();
+  if (viewport && viewport.width > 900) {
+    expect(Math.abs(cardRoute!.replyY - cardRoute!.inferenceY)).toBeLessThanOrEqual(1);
+    expect(cardRoute!.replyX).toBeGreaterThan(cardRoute!.inferenceX);
+  } else {
+    expect(cardRoute!.replyY).toBeGreaterThan(cardRoute!.inferenceY);
+  }
 
   const cardContained = await card.locator(".project-slice-visual").evaluate((container) => {
     const flow = container.querySelector('[data-slot="agent-flow"]');
@@ -569,6 +593,20 @@ test("Aveline agent flow stays fixed, responsive, and contained", async ({ page 
   await expect(dialogFlow.locator("[data-node-id]")).toHaveCount(5);
   await expect(dialogFlow).toHaveAttribute("data-draggable", "false");
   await expect(dialogFlow).toHaveAttribute("data-pannable", "false");
+  await expect(dialogFlow).toHaveAttribute("data-layout", "stacked");
+  await expect(dialogFlow.locator('[data-node-id="reply"]')).toHaveCSS("border-radius", "12px");
+
+  const dialogRoute = await dialogFlow.evaluate((flow) => {
+    const inference = flow.querySelector('[data-node-id="inference"]')?.getBoundingClientRect();
+    const reply = flow.querySelector('[data-node-id="reply"]')?.getBoundingClientRect();
+    if (!inference || !reply) return null;
+    return {
+      inferenceY: inference.top + inference.height / 2,
+      replyY: reply.top + reply.height / 2,
+    };
+  });
+  expect(dialogRoute).not.toBeNull();
+  expect(dialogRoute!.replyY).toBeGreaterThan(dialogRoute!.inferenceY);
 
   const dialogContained = await dialog.locator(".project-dialog-visual").evaluate((container) => {
     const flow = container.querySelector('[data-slot="agent-flow"]');

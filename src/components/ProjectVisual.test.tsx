@@ -23,14 +23,21 @@ describe("ProjectVisual", () => {
     const project = projects.find((item) => item.slug === "aveline");
     expect(project).toBeDefined();
 
-    const { container } = render(<ProjectVisual project={project!} />);
+    const { container, rerender } = render(<ProjectVisual project={project!} />);
     const flow = container.querySelector('[data-slot="agent-flow"]');
 
     expect(flow).toHaveAttribute("data-draggable", "false");
     expect(flow).toHaveAttribute("data-pannable", "false");
+    expect(flow).toHaveAttribute("data-layout", "stacked");
     expect(container.querySelectorAll("[data-node-id]")).toHaveLength(5);
     expect(container.querySelector('[data-node-id="memory"]')).toHaveTextContent("Upstash Redis");
     expect(container.querySelector('[data-node-id="inference"]')).toHaveTextContent("Groq fallback");
+    expect(container.querySelector('[data-node-id="reply"]')).toHaveStyle({ left: "520px", top: "328px" });
     expect(screen.getByText("MOOD + MEMORY / RESILIENT INFERENCE")).toBeInTheDocument();
+
+    rerender(<ProjectVisual project={project!} avelineLayout="linear" />);
+
+    expect(container.querySelector('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "linear");
+    expect(container.querySelector('[data-node-id="reply"]')).toHaveStyle({ left: "730px", top: "160px" });
   });
 });

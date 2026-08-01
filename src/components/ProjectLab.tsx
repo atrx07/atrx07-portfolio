@@ -144,7 +144,11 @@ export function ProjectLab({
 
               <div id={bodyId} className="project-slice-body">
                 <div className="project-slice-visual">
-                  <ProjectVisual project={project} compact={!expanded} />
+                  <ProjectVisual
+                    project={project}
+                    compact={!expanded}
+                    avelineLayout={!mobileLayout && expanded ? "linear" : "stacked"}
+                  />
                 </div>
                 <div className="project-slice-copy">
                   <h3>{project.tagline}</h3>

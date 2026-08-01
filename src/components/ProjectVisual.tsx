@@ -60,6 +60,10 @@ const avelineFlowNodes: AgentFlowNode[] = [
   },
 ];
 
+const avelineLinearFlowNodes: AgentFlowNode[] = avelineFlowNodes.map((node) =>
+  node.id === "reply" ? { ...node, x: 730, y: 160 } : node,
+);
+
 const avelineFlowEdges: AgentFlowEdge[] = [
   { id: "message-mood", from: "message", to: "mood", curvature: 24, persist: true },
   { id: "message-memory", from: "message", to: "memory", curvature: -24, persist: true },
@@ -68,7 +72,21 @@ const avelineFlowEdges: AgentFlowEdge[] = [
   { id: "inference-reply", from: "inference", to: "reply", curvature: -104, persist: true },
 ];
 
-export function ProjectVisual({ project, compact = false }: { project: Project; compact?: boolean }) {
+const avelineLinearFlowEdges: AgentFlowEdge[] = avelineFlowEdges.map((edge) =>
+  edge.id === "inference-reply" ? { ...edge, curvature: 0 } : edge,
+);
+
+type ProjectVisualProps = {
+  project: Project;
+  compact?: boolean;
+  avelineLayout?: "stacked" | "linear";
+};
+
+export function ProjectVisual({
+  project,
+  compact = false,
+  avelineLayout = "stacked",
+}: ProjectVisualProps) {
   if (project.visual === "runtime") {
     return (
       <div className={`project-visual runtime-visual ${compact ? "is-compact" : ""}`} aria-hidden="true">
@@ -154,6 +172,9 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
   }
 
   if (project.visual === "memory") {
+    const flowNodes = avelineLayout === "linear" ? avelineLinearFlowNodes : avelineFlowNodes;
+    const flowEdges = avelineLayout === "linear" ? avelineLinearFlowEdges : avelineFlowEdges;
+
     return (
       <div className="project-visual memory-visual" aria-hidden="true">
         <div className="aveline-flow-shell">
@@ -165,10 +186,11 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
           </div>
 
           <AgentFlow
-            key={compact ? "aveline-flow-compact" : "aveline-flow-full"}
+            key={`${compact ? "compact" : "full"}-${avelineLayout}`}
             className="aveline-agent-flow"
-            nodes={avelineFlowNodes}
-            edges={avelineFlowEdges}
+            data-layout={avelineLayout}
+            nodes={flowNodes}
+            edges={flowEdges}
             draggable={false}
             pannable={false}
             fitView
