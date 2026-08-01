@@ -69,6 +69,8 @@ export type AgentFlowProps = Omit<
   flowDuration?: number
   /** Center the graph in view on mount (default `true`). */
   fitView?: boolean
+  /** Maximum scale used by fit-to-view (default `1`, so graphs do not enlarge). */
+  fitViewMaxScale?: number
   /**
    * Auto-play the graph as a continuous light: each node traces its border on
    * from the left-edge centre out to both sides, its icon lights, then the beam
@@ -203,6 +205,7 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
       pannable = true,
       flowDuration = 3,
       fitView = true,
+      fitViewMaxScale = 1,
       autoPlay = false,
       continuous = false,
       flowSpeed = FLOW_SPEED,
@@ -227,6 +230,7 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
     const [pan, setPan] = React.useState<Point>({ x: 0, y: 0 })
     const [scale, setScale] = React.useState(1)
     const [fitted, setFitted] = React.useState(false)
+    const [viewportSize, setViewportSize] = React.useState<Size>({ w: 0, h: 0 })
 
     // Keep positions in sync when the node set changes (add/remove/reset).
     React.useEffect(() => {
@@ -283,10 +287,35 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
       return () => ro.disconnect()
     }, [nodes.length])
 
-    // fitView: scale + center the graph's bounding box so the whole graph is
-    // visible on mount (never scales up past 1:1).
+    // Re-measure the viewport while responsive parents animate or resize. This
+    // lets fitView settle against the final accordion width instead of keeping
+    // an early scale sampled partway through a flex transition.
     React.useEffect(() => {
-      if (!fitView || fitted) return
+      if (!fitView) return
+      const el = containerRef.current
+      if (!el) return
+
+      const measureViewport = () => {
+        const rect = el.getBoundingClientRect()
+        setViewportSize((current) =>
+          current.w === rect.width && current.h === rect.height
+            ? current
+            : { w: rect.width, h: rect.height }
+        )
+      }
+
+      measureViewport()
+
+      if (typeof ResizeObserver === "undefined") return
+      const observer = new ResizeObserver(measureViewport)
+      observer.observe(el)
+      return () => observer.disconnect()
+    }, [fitView])
+
+    // fitView: scale + center the graph's bounding box whenever its viewport
+    // changes. Consumers may opt into a bounded enlargement.
+    React.useEffect(() => {
+      if (!fitView) return
       const el = containerRef.current
       if (!el || nodes.length === 0) return
       if (Object.keys(sizes).length < nodes.length) return
@@ -307,8 +336,9 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
       const pad = 32
       const bboxW = Math.max(1, maxX - minX)
       const bboxH = Math.max(1, maxY - minY)
+      const maxScale = Math.max(0.1, fitViewMaxScale)
       const s = Math.min(
-        1,
+        maxScale,
         (rect.width - pad) / bboxW,
         (rect.height - pad) / bboxH
       )
@@ -318,7 +348,7 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
         y: rect.height / 2 - (s * (minY + maxY)) / 2,
       })
       setFitted(true)
-    }, [fitView, fitted, nodes, sizes, posOf, sizeOf])
+    }, [fitView, fitViewMaxScale, nodes, sizes, viewportSize, posOf, sizeOf])
 
     // Manual pointer drag â€” nodes take priority (stopPropagation), backdrop pans.
     const drag = React.useRef<{
@@ -466,6 +496,7 @@ const AgentFlow = React.forwardRef<HTMLDivElement, AgentFlowProps>(
         data-slot="agent-flow"
         data-draggable={draggable}
         data-pannable={pannable}
+        data-fit-view-max-scale={fitViewMaxScale}
         role="group"
         aria-label={ariaLabel ?? "Agent workflow"}
         className={`relative overflow-hidden rounded-2xl border border-border bg-background [background-image:radial-gradient(var(--border)_1px,transparent_1px)] [background-size:20px_20px] ${

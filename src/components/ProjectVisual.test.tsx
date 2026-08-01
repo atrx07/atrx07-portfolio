@@ -29,6 +29,7 @@ describe("ProjectVisual", () => {
     expect(flow).toHaveAttribute("data-draggable", "false");
     expect(flow).toHaveAttribute("data-pannable", "false");
     expect(flow).toHaveAttribute("data-layout", "stacked");
+    expect(flow).toHaveAttribute("data-fit-view-max-scale", "1");
     expect(container.querySelectorAll("[data-node-id]")).toHaveLength(5);
     expect(container.querySelector('[data-node-id="memory"]')).toHaveTextContent("Upstash Redis");
     expect(container.querySelector('[data-node-id="inference"]')).toHaveTextContent("Groq fallback");
@@ -38,6 +39,10 @@ describe("ProjectVisual", () => {
     rerender(<ProjectVisual project={project!} avelineLayout="linear" />);
 
     expect(container.querySelector('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "linear");
+    expect(container.querySelector('[data-slot="agent-flow"]')).toHaveAttribute(
+      "data-fit-view-max-scale",
+      "1.28",
+    );
     expect(container.querySelector('[data-node-id="reply"]')).toHaveStyle({ left: "730px", top: "160px" });
   });
 });

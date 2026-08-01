@@ -536,7 +536,7 @@ test("Aveline agent flow stays fixed, responsive, and contained", async ({ page 
   }
 
   await expect(card).toHaveClass(/is-expanded/);
-  await page.waitForTimeout(700);
+  await page.waitForTimeout(850);
   const cardFlow = card.locator('[data-slot="agent-flow"]');
   await expect(cardFlow).toHaveAttribute("data-draggable", "false");
   await expect(cardFlow).toHaveAttribute("data-pannable", "false");
@@ -547,23 +547,38 @@ test("Aveline agent flow stays fixed, responsive, and contained", async ({ page 
     "data-layout",
     viewport && viewport.width > 900 ? "linear" : "stacked",
   );
+  await expect(cardFlow).toHaveAttribute(
+    "data-fit-view-max-scale",
+    viewport && viewport.width > 900 ? "1.28" : "1",
+  );
   await expect(cardFlow.locator('[data-node-id="reply"]')).toHaveCSS("border-radius", "12px");
 
   const cardRoute = await cardFlow.evaluate((flow) => {
     const inference = flow.querySelector('[data-node-id="inference"]')?.getBoundingClientRect();
     const reply = flow.querySelector('[data-node-id="reply"]')?.getBoundingClientRect();
     if (!inference || !reply) return null;
+    const frame = flow.getBoundingClientRect();
+    const nodes = [...flow.querySelectorAll('[data-node-id]')].map((node) =>
+      node.getBoundingClientRect(),
+    );
+    const minLeft = Math.min(...nodes.map((node) => node.left));
+    const maxRight = Math.max(...nodes.map((node) => node.right));
     return {
       inferenceX: inference.left + inference.width / 2,
       inferenceY: inference.top + inference.height / 2,
       replyX: reply.left + reply.width / 2,
       replyY: reply.top + reply.height / 2,
+      widthFill: (maxRight - minLeft) / frame.width,
+      leftGap: minLeft - frame.left,
+      rightGap: frame.right - maxRight,
     };
   });
   expect(cardRoute).not.toBeNull();
   if (viewport && viewport.width > 900) {
     expect(Math.abs(cardRoute!.replyY - cardRoute!.inferenceY)).toBeLessThanOrEqual(1);
     expect(cardRoute!.replyX).toBeGreaterThan(cardRoute!.inferenceX);
+    expect(cardRoute!.widthFill).toBeGreaterThan(0.9);
+    expect(Math.abs(cardRoute!.leftGap - cardRoute!.rightGap)).toBeLessThan(2);
   } else {
     expect(cardRoute!.replyY).toBeGreaterThan(cardRoute!.inferenceY);
   }
@@ -594,6 +609,7 @@ test("Aveline agent flow stays fixed, responsive, and contained", async ({ page 
   await expect(dialogFlow).toHaveAttribute("data-draggable", "false");
   await expect(dialogFlow).toHaveAttribute("data-pannable", "false");
   await expect(dialogFlow).toHaveAttribute("data-layout", "stacked");
+  await expect(dialogFlow).toHaveAttribute("data-fit-view-max-scale", "1");
   await expect(dialogFlow.locator('[data-node-id="reply"]')).toHaveCSS("border-radius", "12px");
 
   const dialogRoute = await dialogFlow.evaluate((flow) => {

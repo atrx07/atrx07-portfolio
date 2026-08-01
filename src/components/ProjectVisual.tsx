@@ -194,6 +194,7 @@ export function ProjectVisual({
             draggable={false}
             pannable={false}
             fitView
+            fitViewMaxScale={avelineLayout === "linear" ? 1.28 : 1}
             autoPlay={!compact}
             continuous
             flowSpeed={250}
