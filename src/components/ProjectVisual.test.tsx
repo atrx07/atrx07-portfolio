@@ -18,4 +18,19 @@ describe("ProjectVisual", () => {
     expect(screen.getByText("Live")).toBeInTheDocument();
     expect(screen.getByText("ONE ROOM / LIVE")).toBeInTheDocument();
   });
+
+  it("renders Aveline as a fixed agent flow with grounded architecture nodes", () => {
+    const project = projects.find((item) => item.slug === "aveline");
+    expect(project).toBeDefined();
+
+    const { container } = render(<ProjectVisual project={project!} />);
+    const flow = container.querySelector('[data-slot="agent-flow"]');
+
+    expect(flow).toHaveAttribute("data-draggable", "false");
+    expect(flow).toHaveAttribute("data-pannable", "false");
+    expect(container.querySelectorAll("[data-node-id]")).toHaveLength(5);
+    expect(container.querySelector('[data-node-id="memory"]')).toHaveTextContent("Upstash Redis");
+    expect(container.querySelector('[data-node-id="inference"]')).toHaveTextContent("Groq fallback");
+    expect(screen.getByText("MOOD + MEMORY / RESILIENT INFERENCE")).toBeInTheDocument();
+  });
 });

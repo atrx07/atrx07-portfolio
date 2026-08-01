@@ -1,4 +1,5 @@
 import type { Project } from "../types";
+import { AgentFlow, type AgentFlowEdge, type AgentFlowNode } from "./godui/agent-flow";
 import { OrbitingCircles } from "./godui/orbiting-circles";
 
 type VoidNodeProps = {
@@ -15,6 +16,57 @@ function VoidNode({ code, label, tone }: VoidNodeProps) {
     </span>
   );
 }
+
+const avelineFlowNodes: AgentFlowNode[] = [
+  {
+    id: "message",
+    label: "Message",
+    sublabel: "Baileys ingress",
+    icon: <span>IN</span>,
+    x: 110,
+    y: 160,
+  },
+  {
+    id: "mood",
+    label: "Mood",
+    sublabel: "tone + group context",
+    icon: <span>MD</span>,
+    x: 310,
+    y: 76,
+  },
+  {
+    id: "memory",
+    label: "Memory",
+    sublabel: "Upstash Redis",
+    icon: <span>DB</span>,
+    x: 310,
+    y: 244,
+  },
+  {
+    id: "inference",
+    label: "Inference",
+    sublabel: "Groq fallback",
+    icon: <span>AI</span>,
+    x: 520,
+    y: 160,
+  },
+  {
+    id: "reply",
+    label: "Reply",
+    sublabel: "state-aware output",
+    icon: <span>OUT</span>,
+    x: 520,
+    y: 328,
+  },
+];
+
+const avelineFlowEdges: AgentFlowEdge[] = [
+  { id: "message-mood", from: "message", to: "mood", curvature: 24, persist: true },
+  { id: "message-memory", from: "message", to: "memory", curvature: -24, persist: true },
+  { id: "mood-inference", from: "mood", to: "inference", curvature: -24, persist: true },
+  { id: "memory-inference", from: "memory", to: "inference", curvature: 24, persist: true },
+  { id: "inference-reply", from: "inference", to: "reply", curvature: -104, persist: true },
+];
 
 export function ProjectVisual({ project, compact = false }: { project: Project; compact?: boolean }) {
   if (project.visual === "runtime") {
@@ -104,14 +156,33 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
   if (project.visual === "memory") {
     return (
       <div className="project-visual memory-visual" aria-hidden="true">
-        <div className="memory-column">
-          <span>MESSAGE</span>
-          <i />
-          <span>MOOD</span>
-          <i />
-          <span>MEMORY</span>
-          <i />
-          <span>REPLY</span>
+        <div className="aveline-flow-shell">
+          <div className="aveline-flow-header">
+            <span>AVELINE / MEMORY ROUTE</span>
+            <i>
+              <b /> STATE PERSISTENT
+            </i>
+          </div>
+
+          <AgentFlow
+            key={compact ? "aveline-flow-compact" : "aveline-flow-full"}
+            className="aveline-agent-flow"
+            nodes={avelineFlowNodes}
+            edges={avelineFlowEdges}
+            draggable={false}
+            pannable={false}
+            fitView
+            autoPlay={!compact}
+            continuous
+            flowSpeed={250}
+            aria-label="Aveline message, mood, memory, inference, and reply flow"
+          />
+
+          <div className="aveline-flow-footer">
+            <span>PER-USER STATE</span>
+            <strong>MOOD + MEMORY / RESILIENT INFERENCE</strong>
+            <span>FALLBACK READY</span>
+          </div>
         </div>
       </div>
     );
