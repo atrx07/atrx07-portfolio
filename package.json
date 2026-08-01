@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "framer-motion": "^12.43.0",
     "gsap": "^3.12.7",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",

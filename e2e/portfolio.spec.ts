@@ -456,3 +456,56 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
     "none",
   );
 });
+
+test("void.chat orbit identity stays contained in the project card and detail dialog", async ({ page }) => {
+  await page.goto("/#projects");
+
+  const viewport = page.viewportSize();
+  const card = page.locator('[data-project-slug="voidchat"]');
+  const toggle = card.locator(".project-slice-hit");
+
+  if (viewport && viewport.width <= 900) {
+    await toggle.click();
+  } else {
+    await card.hover();
+  }
+
+  await expect(card).toHaveClass(/is-expanded/);
+  const cardVisual = card.locator(".chat-visual");
+  await expect(cardVisual.locator('[data-slot="orbiting-circles"]')).toHaveCount(2);
+  await expect(cardVisual.locator(".void-node")).toHaveCount(5);
+  await expect(cardVisual.locator(".void-core")).toContainText("void.chat");
+  await page.waitForTimeout(450);
+
+  const cardContained = await card.locator(".project-slice-visual").evaluate((container) => {
+    const frame = container.querySelector(".void-orbit-frame");
+    if (!frame) return false;
+    const parent = container.getBoundingClientRect();
+    const child = frame.getBoundingClientRect();
+    return (
+      child.left >= parent.left - 1 &&
+      child.right <= parent.right + 1 &&
+      child.top >= parent.top - 1 &&
+      child.bottom <= parent.bottom + 1
+    );
+  });
+  expect(cardContained).toBe(true);
+
+  await card.getByRole("button", { name: "Inspect system" }).click();
+  const dialog = page.getByRole("dialog", { name: /void.chat/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('[data-slot="orbiting-circles"]')).toHaveCount(2);
+  await expect(dialog.locator(".void-node")).toHaveCount(5);
+
+  const dialogContained = await dialog.locator(".project-dialog-visual").evaluate((container) => {
+    const frame = container.querySelector(".void-orbit-frame");
+    if (!frame) return false;
+    const parent = container.getBoundingClientRect();
+    const child = frame.getBoundingClientRect();
+    return child.left >= parent.left - 1 && child.right <= parent.right + 1;
+  });
+  expect(dialogContained).toBe(true);
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});

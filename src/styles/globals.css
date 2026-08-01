@@ -1310,82 +1310,279 @@ section[id] {
 
 .chat-visual {
   display: grid;
-  place-items: center;
-  background: #050505;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  padding: clamp(16px, 3.2cqw, 28px);
+  background:
+    radial-gradient(circle at 50% 48%, rgb(28 105 212 / 11%), transparent 34%),
+    #050505;
 }
 
-.void-orbit {
+.chat-visual::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, #000, transparent 72%);
+  opacity: 0.42;
+  content: "";
+  pointer-events: none;
+}
+
+.chat-visual::after {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgb(255 255 255 / 7%);
+  content: "";
+  pointer-events: none;
+}
+
+.void-visual__header,
+.void-visual__telemetry {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Consolas, monospace;
+  font-size: clamp(0.5rem, 1.25cqw, 0.64rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.void-visual__header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 11%);
+  color: var(--body);
+}
+
+.void-visual__header i {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--success);
+  font-style: normal;
+}
+
+.void-visual__header i b {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px rgb(49 180 84 / 10%);
+}
+
+.void-orbit-frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 306px;
+  height: 306px;
+  place-self: center;
+  place-items: center;
+}
+
+.void-orbit-stage {
+  display: grid;
+  width: 306px;
+  height: 306px;
+  place-items: center;
+  transition: transform 260ms ease;
+}
+
+.void-orbit-ring,
+.void-core {
+  grid-area: 1 / 1;
+}
+
+.void-orbit-ring {
+  filter: drop-shadow(0 0 18px rgb(0 0 0 / 50%));
+}
+
+.void-orbit-ring--outer {
+  opacity: 0.98;
+}
+
+.void-orbit-ring--inner {
+  opacity: 0.94;
+}
+
+.void-node {
   position: relative;
   display: grid;
-  width: 190px;
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   place-items: center;
+  align-content: center;
+  gap: 1px;
   border: 1px solid var(--line);
   border-radius: 50%;
+  background: #070707;
+  box-shadow:
+    0 0 0 5px rgb(5 5 5 / 82%),
+    0 10px 24px rgb(0 0 0 / 38%);
+  font-family: Consolas, monospace;
+  text-align: center;
+  text-transform: uppercase;
 }
 
-.void-orbit::before,
-.void-orbit::after {
+.void-node::after {
   position: absolute;
-  border: 1px solid var(--line-soft);
+  top: 5px;
+  right: 5px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
+  background: var(--node-tone, var(--ink));
+  box-shadow: 0 0 10px var(--node-tone, var(--ink));
   content: "";
 }
 
-.void-orbit::before {
-  inset: 24px;
+.void-node b {
+  color: var(--node-tone, var(--ink));
+  font-size: 0.67rem;
+  line-height: 1;
 }
 
-.void-orbit::after {
-  inset: -30px;
+.void-node small {
+  color: var(--muted);
+  font-size: 0.42rem;
+  line-height: 1;
+  letter-spacing: 0.03em;
 }
 
-.void-orbit i {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--signal-light);
+.void-node[data-tone="light"] {
+  --node-tone: var(--signal-light);
 }
 
-.void-orbit i:nth-child(1) {
-  top: 14px;
+.void-node[data-tone="blue"] {
+  --node-tone: var(--signal-blue);
 }
 
-.void-orbit i:nth-child(2) {
-  right: 7px;
-  bottom: 44px;
-  background: var(--signal-red);
+.void-node[data-tone="red"] {
+  --node-tone: var(--signal-red);
 }
 
-.void-orbit i:nth-child(3) {
-  bottom: 32px;
-  left: -13px;
-  background: var(--success);
+.void-node[data-tone="green"] {
+  --node-tone: var(--success);
 }
 
-.void-orbit strong {
-  font-family: Consolas, monospace;
-  font-size: 0.8rem;
+.void-node[data-tone="neutral"] {
+  --node-tone: var(--ink);
 }
 
-.message-lines {
-  position: absolute;
-  right: 18px;
-  bottom: 18px;
+.void-core {
+  position: relative;
+  z-index: 3;
   display: grid;
-  width: 86px;
+  width: 116px;
+  height: 116px;
+  place-items: center;
+  align-content: center;
+  gap: 7px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 50%;
+  background: #050505;
+  box-shadow:
+    0 0 0 9px rgb(5 5 5 / 92%),
+    0 0 0 10px rgb(255 255 255 / 8%),
+    0 0 46px rgb(28 105 212 / 16%);
+  text-align: center;
+}
+
+.void-core > i {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--signal-light), var(--signal-blue), var(--signal-red));
+}
+
+.void-core strong {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.void-core strong span {
+  color: var(--signal-light);
+  font-weight: 500;
+}
+
+.void-core small {
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.08em;
+}
+
+.void-visual__telemetry {
+  padding-top: 12px;
+  border-top: 1px solid rgb(255 255 255 / 11%);
+  color: var(--muted);
+}
+
+.void-visual__telemetry span {
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
 }
 
-.message-lines span {
-  height: 2px;
-  background: var(--line);
+.void-visual__telemetry span > i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--node-tone, var(--ink));
 }
 
-.message-lines span:nth-child(2) {
-  width: 64%;
-  background: var(--signal-blue);
+.void-visual__telemetry span > i[data-tone="light"] {
+  --node-tone: var(--signal-light);
+}
+
+.void-visual__telemetry span > i[data-tone="green"] {
+  --node-tone: var(--success);
+}
+
+.void-visual__telemetry strong {
+  color: var(--body);
+  font-size: inherit;
+  font-weight: 400;
+}
+
+@container (max-width: 500px) {
+  .void-orbit-frame {
+    width: 258px;
+    height: 258px;
+  }
+
+  .void-orbit-stage {
+    transform: scale(0.84);
+  }
+}
+
+@container (max-width: 420px) {
+  .chat-visual {
+    padding: 14px;
+  }
+
+  .void-visual__header,
+  .void-visual__telemetry {
+    font-size: 0.48rem;
+  }
+
+  .void-visual__telemetry strong {
+    display: none;
+  }
+
+  .void-orbit-frame {
+    width: 224px;
+    height: 224px;
+  }
+
+  .void-orbit-stage {
+    transform: scale(0.72);
+  }
 }
 
 .memory-visual {

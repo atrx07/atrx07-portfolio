@@ -1,4 +1,20 @@
 import type { Project } from "../types";
+import { OrbitingCircles } from "./godui/orbiting-circles";
+
+type VoidNodeProps = {
+  code: string;
+  label: string;
+  tone: "light" | "blue" | "red" | "green" | "neutral";
+};
+
+function VoidNode({ code, label, tone }: VoidNodeProps) {
+  return (
+    <span className="void-node" data-tone={tone}>
+      <b>{code}</b>
+      <small>{label}</small>
+    </span>
+  );
+}
 
 export function ProjectVisual({ project, compact = false }: { project: Project; compact?: boolean }) {
   if (project.visual === "runtime") {
@@ -29,16 +45,57 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
   if (project.visual === "chat") {
     return (
       <div className="project-visual chat-visual" aria-hidden="true">
-        <div className="void-orbit">
-          <i />
-          <i />
-          <i />
-          <strong>void.chat</strong>
+        <div className="void-visual__header">
+          <span>VOID.CHAT / GLOBAL ROOM</span>
+          <i>
+            <b /> EDGE ONLINE
+          </i>
         </div>
-        <div className="message-lines">
-          <span />
-          <span />
-          <span />
+
+        <div className="void-orbit-frame">
+          <div className="void-orbit-stage">
+            <OrbitingCircles
+              className="void-orbit-ring void-orbit-ring--outer"
+              data-orbit="outer"
+              radius={126}
+              duration={34}
+              reverse
+              iconSize={54}
+            >
+              <VoidNode code="ID" label="Firebase" tone="light" />
+              <VoidNode code="CF" label="Worker" tone="neutral" />
+              <VoidNode code="D1" label="Persist" tone="red" />
+            </OrbitingCircles>
+
+            <OrbitingCircles
+              className="void-orbit-ring void-orbit-ring--inner"
+              data-orbit="inner"
+              radius={76}
+              duration={21}
+              iconSize={46}
+            >
+              <VoidNode code="DO" label="Room" tone="blue" />
+              <VoidNode code="WS" label="Live" tone="green" />
+            </OrbitingCircles>
+
+            <div className="void-core">
+              <i />
+              <strong>
+                void<span>.chat</span>
+              </strong>
+              <small>ONE ROOM / LIVE</small>
+            </div>
+          </div>
+        </div>
+
+        <div className="void-visual__telemetry">
+          <span>
+            <i data-tone="light" /> VERIFIED ID
+          </span>
+          <strong>EDGE STATE / DURABLE LOG</strong>
+          <span>
+            <i data-tone="green" /> SOCKET LIVE
+          </span>
         </div>
       </div>
     );

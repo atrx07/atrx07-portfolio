@@ -7,6 +7,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 - Vite, React, and strict TypeScript
 - Tailwind CSS plus a custom token-driven visual system
 - GSAP and ScrollTrigger for restrained scroll motion
+- Framer Motion for reduced-motion-aware orbital system visuals
 - Lucide React icons
 - Vitest, React Testing Library, and Playwright
 
