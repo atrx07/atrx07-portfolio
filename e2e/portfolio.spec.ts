@@ -491,6 +491,18 @@ test("void.chat orbit identity stays contained in the project card and detail di
   });
   expect(cardContained).toBe(true);
 
+  const cardOrbitCentered = await cardVisual.evaluate((visual) => {
+    const frame = visual.querySelector(".void-orbit-frame");
+    const core = visual.querySelector(".void-core");
+    if (!frame || !core) return false;
+    const frameRect = frame.getBoundingClientRect();
+    const coreRect = core.getBoundingClientRect();
+    const frameCenter = frameRect.left + frameRect.width / 2;
+    const coreCenter = coreRect.left + coreRect.width / 2;
+    return Math.abs(frameCenter - coreCenter) <= 1;
+  });
+  expect(cardOrbitCentered).toBe(true);
+
   await card.getByRole("button", { name: "Inspect system" }).click();
   const dialog = page.getByRole("dialog", { name: /void.chat/ });
   await expect(dialog).toBeVisible();

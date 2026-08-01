@@ -1385,10 +1385,17 @@ section[id] {
 }
 
 .void-orbit-stage {
+  --void-orbit-scale: 1;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: grid;
   width: 306px;
   height: 306px;
   place-items: center;
+  transform: translate(-50%, -50%) scale(var(--void-orbit-scale));
+  transform-origin: center;
   transition: transform 260ms ease;
 }
 
@@ -1557,7 +1564,7 @@ section[id] {
   }
 
   .void-orbit-stage {
-    transform: scale(0.84);
+    --void-orbit-scale: 0.84;
   }
 }
 
@@ -1581,7 +1588,7 @@ section[id] {
   }
 
   .void-orbit-stage {
-    transform: scale(0.72);
+    --void-orbit-scale: 0.72;
   }
 }
 
