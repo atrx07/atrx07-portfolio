@@ -491,6 +491,18 @@ test("void.chat orbit identity stays contained in the project card and detail di
   });
   expect(cardContained).toBe(true);
 
+  const cardOrbitCentered = await cardVisual.evaluate((visual) => {
+    const frame = visual.querySelector(".void-orbit-frame");
+    const core = visual.querySelector(".void-core");
+    if (!frame || !core) return false;
+    const frameRect = frame.getBoundingClientRect();
+    const coreRect = core.getBoundingClientRect();
+    const frameCenter = frameRect.left + frameRect.width / 2;
+    const coreCenter = coreRect.left + coreRect.width / 2;
+    return Math.abs(frameCenter - coreCenter) <= 1;
+  });
+  expect(cardOrbitCentered).toBe(true);
+
   await card.getByRole("button", { name: "Inspect system" }).click();
   const dialog = page.getByRole("dialog", { name: /void.chat/ });
   await expect(dialog).toBeVisible();
@@ -502,6 +514,67 @@ test("void.chat orbit identity stays contained in the project card and detail di
     if (!frame) return false;
     const parent = container.getBoundingClientRect();
     const child = frame.getBoundingClientRect();
+    return child.left >= parent.left - 1 && child.right <= parent.right + 1;
+  });
+  expect(dialogContained).toBe(true);
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("Aveline agent flow stays fixed, responsive, and contained", async ({ page }) => {
+  await page.goto("/#projects");
+
+  const viewport = page.viewportSize();
+  const card = page.locator('[data-project-slug="aveline"]');
+  const toggle = card.locator(".project-slice-hit");
+
+  if (viewport && viewport.width <= 900) {
+    await toggle.click();
+  } else {
+    await card.hover();
+  }
+
+  await expect(card).toHaveClass(/is-expanded/);
+  await page.waitForTimeout(700);
+  const cardFlow = card.locator('[data-slot="agent-flow"]');
+  await expect(cardFlow).toHaveAttribute("data-draggable", "false");
+  await expect(cardFlow).toHaveAttribute("data-pannable", "false");
+  await expect(cardFlow.locator("[data-node-id]")).toHaveCount(5);
+  await expect(cardFlow.locator('[data-node-id="memory"]')).toContainText("Upstash Redis");
+  await expect(cardFlow.locator('[data-node-id="inference"]')).toContainText("Groq fallback");
+
+  const cardContained = await card.locator(".project-slice-visual").evaluate((container) => {
+    const flow = container.querySelector('[data-slot="agent-flow"]');
+    if (!flow) return false;
+    const parent = container.getBoundingClientRect();
+    const child = flow.getBoundingClientRect();
+    return child.left >= parent.left - 1 && child.right <= parent.right + 1;
+  });
+  expect(cardContained).toBe(true);
+
+  if (viewport && viewport.width > 900) {
+    const memoryNode = cardFlow.locator('[data-node-id="memory"]');
+    const beforeHover = await memoryNode.evaluate((node) => node.getBoundingClientRect().top);
+    await memoryNode.hover();
+    await page.waitForTimeout(220);
+    const afterHover = await memoryNode.evaluate((node) => node.getBoundingClientRect().top);
+    expect(afterHover).toBeLessThan(beforeHover - 2);
+  }
+
+  await card.getByRole("button", { name: "Inspect system" }).click();
+  const dialog = page.getByRole("dialog", { name: /Aveline Bot/ });
+  await expect(dialog).toBeVisible();
+  const dialogFlow = dialog.locator('[data-slot="agent-flow"]');
+  await expect(dialogFlow.locator("[data-node-id]")).toHaveCount(5);
+  await expect(dialogFlow).toHaveAttribute("data-draggable", "false");
+  await expect(dialogFlow).toHaveAttribute("data-pannable", "false");
+
+  const dialogContained = await dialog.locator(".project-dialog-visual").evaluate((container) => {
+    const flow = container.querySelector('[data-slot="agent-flow"]');
+    if (!flow) return false;
+    const parent = container.getBoundingClientRect();
+    const child = flow.getBoundingClientRect();
     return child.left >= parent.left - 1 && child.right <= parent.right + 1;
   });
   expect(dialogContained).toBe(true);

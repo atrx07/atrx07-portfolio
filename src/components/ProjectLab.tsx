@@ -144,7 +144,7 @@ export function ProjectLab({
 
               <div id={bodyId} className="project-slice-body">
                 <div className="project-slice-visual">
-                  <ProjectVisual project={project} />
+                  <ProjectVisual project={project} compact={!expanded} />
                 </div>
                 <div className="project-slice-copy">
                   <h3>{project.tagline}</h3>
