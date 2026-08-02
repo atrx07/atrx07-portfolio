@@ -6,10 +6,23 @@ This draft verifies that local MDX compiles into a lazy article module without e
 
 Run `pnpm build` to verify the production boundary.
 
+> Draft content must never leak into the public archive.
+
+```text
+metadata -> eager registry
+article body -> lazy module
+```
+
 | Boundary | Expected result |
 | --- | --- |
 | Public index | Hidden |
 | Direct route | Not found |
 | Development registry | Available for tests |
 
-[Return to projects](/#projects)
+- Metadata and body filenames stay paired.
+- Production lookup excludes drafts.
+- The body is isolated from the entry chunk.
+
+---
+
+[Return to projects](/#projects) or inspect the [public ATRX repositories](https://github.com/atrx07).

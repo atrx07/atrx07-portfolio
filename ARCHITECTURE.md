@@ -10,7 +10,7 @@ The portfolio is a static, route-based React application built by Vite and deplo
 BrowserRouter owns `/`, `/blog`, `/blog/:slug`, and the application not-found route. The existing
 interactive portfolio remains the `/` route. Field Notes now has a build-time MDX compiler, validated
 typed registry, paired eager metadata and lazy article modules, draft/publication boundaries, and a
-minimal semantic article shell. There is no application server, database, authentication layer,
+complete editorial index and long-form article shell. There is no application server, database, authentication layer,
 analytics service, runtime MDX evaluator, or arbitrary remote execution path.
 
 ```mermaid
@@ -63,8 +63,9 @@ flowchart TD
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
 4. `src/pages/PortfolioPage.tsx` owns the existing homepage composition and cross-section state.
 5. `BlogIndexPage`, `BlogPostPage`, and `NotFoundPage` use one shared route shell with the same
-   route-aware header and footer. The index reads only public registry records; the current test fixture
-   remains a draft and therefore leaves the visible count at zero.
+   route-aware header and footer. The index reads only public registry records and derives featured,
+   tag, count, and archive presentation from them. The current test fixture remains a draft and therefore
+   leaves the deployed visible count at zero.
 6. `src/blog/registry.ts` validates eager metadata companions, pairs them with lazy MDX modules, and
    exposes the single public lookup/sorting/filtering boundary.
 7. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
@@ -79,11 +80,12 @@ flowchart TD
 | `App.tsx` / `router.tsx` | BrowserRouter provider and public route declaration |
 | `PortfolioPage.tsx` | Existing homepage composition and portfolio-only state ownership |
 | `RoutePageShell.tsx` | Shared header, one main landmark, and footer for non-portfolio routes |
-| `BlogIndexPage.tsx` | Public Field Notes registry count and honest empty state before a real note is published |
-| `BlogPostPage.tsx` / `NotFoundPage.tsx` | Public slug lookup, lazy article rendering, draft rejection, and deliberate route recovery |
+| `BlogIndexPage.tsx` / `BlogIndex.tsx` | Registry-derived index composition, local tag filtering, featured selection, chronological rows, and honest empty states |
+| `BlogPostPage.tsx` / `NotFoundPage.tsx` | Public slug lookup, explicit development-only preview lookup, lazy article rendering, draft rejection, and deliberate route recovery |
 | `blog/registry.ts` / `validation.ts` | Metadata/body pairing, invariant enforcement, sorting, public filtering, lookup, and bounded lazy-load errors |
-| `ArticleLayout.tsx` / `ArticleLoadBoundary.tsx` | Minimal semantic article frame, archive state, reserved loading UI, and safe module-failure recovery |
-| `blog/mdx-components.tsx` | Approved semantic Markdown mapping with safe external links and contained code/table overflow |
+| `BlogIndexHeader.tsx` / `FeaturedNote.tsx` / `TagFilter.tsx` / `NoteArchiveRow.tsx` | Bounded editorial index primitives; Magic Tab supplies manual activation and roving focus for the contained tag rail |
+| `ArticleHeader.tsx` / `ArticleLayout.tsx` / `ArticleFooter.tsx` | Shared 74ch article hierarchy, state notices, dates, associations, prose rail, and final navigation |
+| `ArticleLoadBoundary.tsx` / `CodeBlock.tsx` / `blog/mdx-components.tsx` | Reserved loading and safe failure recovery, semantic Markdown mapping, safe external links, copy feedback, and contained code/table overflow |
 | `RouteEffects.tsx` / `routeNavigation.ts` | Tested route fragment resolution, scroll behavior, and focus transfer |
 | `Header.tsx` | Persistent route-aware system rail, desktop/mobile navigation, availability, optional portfolio controls, and GitHub |
 | `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
@@ -109,7 +111,8 @@ The bundled mask sprite sheets live in `src/components/assets/` and are emitted 
 assets. They are presentation-only: navigation remains a native anchor, copy actions remain native
 buttons, and no mask interaction changes routing or data ownership. Magic Tab has no runtime dependency
 beyond React; `VisitorModeSwitch` supplies the controlled value while `useVisitorMode` remains the sole
-owner of persisted mode state. The void.chat identity composes two `OrbitingCircles` tracks around a
+owner of persisted mode state. Field Notes reuses the same primitive with its rainbow layer disabled,
+an explicit controlled panel relationship, and archive-specific square styling. The void.chat identity composes two `OrbitingCircles` tracks around a
 static room core; the nodes communicate Firebase identity, Cloudflare edge execution, Durable Object
 room ownership, WebSocket delivery, and D1 persistence without adding runtime state or network work.
 The Aveline identity composes the bundled `AgentFlow` as a fixed, non-pannable workflow. Message ingress
@@ -144,6 +147,9 @@ should not be duplicated into component files without a strong reason.
 - Public helpers include `published` and explicitly marked `archived` notes; they exclude `draft` notes.
 - Article lookup returns the validated record and a bounded lazy loader. It verifies the MDX module's
   re-exported metadata against the canonical eager value before rendering.
+- `preview.ts` admits draft lookup only when both development mode and the explicit `preview=draft`
+  query are present. The production registry independently refuses draft lookup even if those flags are
+  forced, preserving two boundaries.
 - The paired-file design avoids a static named import from the MDX module, which would collapse the
   dynamic article import into the entry chunk under Rollup.
 
@@ -177,6 +183,9 @@ flowchart LR
 | Terminal history/output | `PortfolioTerminal` | component memory | Fixed parser; no arbitrary evaluation |
 | Project expansion/filter | `ProjectLab` | component memory | Mobile opens only by title tap; desktop uses accordion interaction |
 | Architecture selection | `ArchitecturePlayground` and flagship | component memory | Keyboard and pointer accessible |
+| Blog tag filter | `BlogIndex` | component memory | Controlled Magic Tab selection; registry records remain immutable |
+| Draft preview | `BlogPostPage` URL query | transient route state | Development-only and explicit; production registry still rejects drafts |
+| Article code-copy feedback | `CodeBlock` | transient component timer | Clipboard API with selection-based fallback and a polite live status |
 
 ## Key Interaction Flows
 
@@ -272,6 +281,13 @@ source
 - `src/components/PortfolioTerminal.test.tsx`
 - `src/components/ProjectLab.test.tsx`
 - `src/components/ProjectVisual.test.tsx`
+- `src/blog/validation.test.ts`
+- `src/blog/registry.test.ts`
+- `src/blog/preview.test.ts`
+- `src/blog/components/BlogIndex.test.tsx`
+- `src/blog/components/ArticleLayout.test.tsx`
+- `src/blog/mdx-components.test.tsx`
+- `src/router.test.tsx`
 
 Vitest is deliberately scoped to `src/**/*.test.{ts,tsx}` and explicitly excludes the ignored
 `.pnpm-store/**` workspace cache. This keeps `pnpm.cmd test` limited to the canonical application
@@ -285,6 +301,15 @@ project filtering, architecture keyboard behavior, operating principles, copy-em
 containment, flagship geometry, project visual geometry, dialog title fit, terminal containment, mobile
 tap-only project behavior, void.chat orbit/card/dialog containment, canonical metadata, structured data,
 sitemap, robots, and Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
+`e2e/routes.spec.ts` covers cross-route Field Notes navigation, browser history, direct development
+preview, semantic article primitives, code/table containment, unpublished recovery, and reduced-motion
+route behavior across desktop and mobile projects.
+
+The Stage C build kept the route pages statically declared after measuring the trade-off. The editorial
+surface changed the entry from 524.36 kB to 532.93 kB minified while the fixture body remained isolated
+in a 1.85 kB lazy chunk. Adding route-level suspense boundaries would save only the blog presentation
+code while introducing transient headings that weaken the existing focus-transfer contract; the larger
+homepage remains the source of the bundle advisory.
 
 ### Required pre-push loop
 
@@ -799,12 +824,12 @@ Deployment rules:
 
 ### Verification architecture extension
 
-Stage B currently implements focused coverage in `src/blog/validation.test.ts`,
+Stages B and C implement focused coverage in `src/blog/validation.test.ts`,
 `src/blog/registry.test.ts`, `src/blog/mdx-components.test.tsx`,
 `src/blog/components/ArticleLayout.test.tsx`, `src/router.test.tsx`, and the shared Playwright portfolio
 matrix. These tests cover the content contract, pairing/duplicates, status filtering, ordering, tag
 behavior, lazy failures, archive presentation, semantic fixture rendering, and public draft rejection.
-Metadata lifecycle and final index/article presentation tests remain aligned with Stages C-D below.
+Metadata lifecycle remains aligned with Stage D below; the index and article presentation are delivered.
 
 Recommended new test files:
 

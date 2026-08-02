@@ -1,4 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { CodeBlock } from "./components/CodeBlock";
 import type { MdxComponentMap } from "./types";
 
 function MdxLink({ href = "", ...props }: ComponentPropsWithoutRef<"a">) {
@@ -10,10 +11,6 @@ function MdxLink({ href = "", ...props }: ComponentPropsWithoutRef<"a">) {
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     />
   );
-}
-
-function MdxPre(props: ComponentPropsWithoutRef<"pre">) {
-  return <pre {...props} className={["article-code", props.className].filter(Boolean).join(" ")} tabIndex={0} />;
 }
 
 function MdxTable(props: ComponentPropsWithoutRef<"table">) {
@@ -35,7 +32,7 @@ export const mdxComponents: MdxComponentMap = {
   li: (props: ComponentPropsWithoutRef<"li">) => <li {...props} />,
   ol: (props: ComponentPropsWithoutRef<"ol">) => <ol {...props} />,
   p: (props: ComponentPropsWithoutRef<"p">) => <p {...props} />,
-  pre: MdxPre,
+  pre: CodeBlock,
   table: MdxTable,
   ul: (props: ComponentPropsWithoutRef<"ul">) => <ul {...props} />,
 };

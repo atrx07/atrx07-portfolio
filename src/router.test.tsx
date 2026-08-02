@@ -13,7 +13,19 @@ describe("application route tree", () => {
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeInTheDocument();
     expect(screen.getByText(/No filler posts/)).toBeInTheDocument();
-    expect(screen.getByText(/^0 published notes$/)).toBeInTheDocument();
+    expect(screen.getByText("00 / PUBLIC NOTES")).toBeInTheDocument();
+  });
+
+  it("loads the local draft only through the explicit development preview route", async () => {
+    render(
+      <MemoryRouter initialEntries={["/blog/registry-fixture?preview=draft"]}>
+        <AppRoutes />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole("heading", { level: 1, name: "Registry fixture" })).toBeInTheDocument();
+    expect(screen.getByRole("note")).toHaveTextContent("Local draft preview");
+    expect(await screen.findByRole("heading", { level: 2, name: "Pipeline proof" })).toBeInTheDocument();
   });
 
   it("keeps the local draft fixture out of direct public route resolution", () => {

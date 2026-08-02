@@ -28,9 +28,23 @@ describe("Article foundation", () => {
       "data-route-heading",
     );
     expect(screen.getByRole("note")).toHaveTextContent("Archived note");
-    expect(screen.getByText("Updated 2026-07-01")).toBeInTheDocument();
+    expect(screen.getByText("Published 01 Jun 2026 · Updated 01 Jul 2026")).toBeInTheDocument();
     expect(screen.getByRole("list", { name: "Article tags" })).toHaveTextContent("architecture");
     expect(screen.getByRole("link", { name: "Field Notes / Archive" })).toHaveAttribute("href", "/blog");
+  });
+
+  it("labels an explicitly previewed draft and renders the article footer", () => {
+    render(
+      <MemoryRouter>
+        <ArticleLayout meta={{ ...archivedMeta, status: "draft" }} previewingDraft>
+          <p>Draft body</p>
+        </ArticleLayout>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("note")).toHaveTextContent("Local draft preview");
+    expect(screen.getByText("END OF TRANSMISSION")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /All Field Notes/ })).toHaveAttribute("href", "/blog");
   });
 
   it("shows a bounded public fallback when an article body throws", () => {

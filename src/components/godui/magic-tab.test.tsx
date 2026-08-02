@@ -50,6 +50,15 @@ describe("MagicTab", () => {
     expect(onValueChange).toHaveBeenCalledWith("developer");
   });
 
+  it("connects tabs to a controlled panel when a panel id is supplied", () => {
+    render(<MagicTab items={items} panelId="mode-panel" defaultValue="recruiter" />);
+
+    expect(screen.getByRole("tab", { name: "recruiter" })).toHaveAttribute(
+      "aria-controls",
+      "mode-panel",
+    );
+  });
+
   it("skips disabled tabs during roving focus", () => {
     render(
       <MagicTab

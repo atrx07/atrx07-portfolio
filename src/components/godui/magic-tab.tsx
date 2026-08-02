@@ -19,6 +19,7 @@ export type MagicTabProps = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange
   variant?: MagicTabVariant;
   size?: MagicTabSize;
   rainbow?: boolean;
+  panelId?: string;
 };
 
 const CONTAINER_CLASS =
@@ -80,6 +81,7 @@ const MagicTab = React.forwardRef<HTMLDivElement, MagicTabProps>(
       variant = "default",
       size = "md",
       rainbow = true,
+      panelId,
       onKeyDown,
       ...props
     },
@@ -218,6 +220,7 @@ const MagicTab = React.forwardRef<HTMLDivElement, MagicTabProps>(
               type="button"
               role="tab"
               aria-selected={selected}
+              aria-controls={panelId}
               disabled={item.disabled}
               data-selected={selected ? "true" : undefined}
               tabIndex={item.value === rovingValue ? 0 : -1}

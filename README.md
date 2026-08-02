@@ -55,16 +55,27 @@ companions. Drafts do not enter public lists or direct public route resolution. 
 `registry-fixture` pair is intentionally non-public and exists only to verify the compiler, registry,
 semantic component mapping, and lazy-chunk boundary.
 
+To inspect a draft article locally, start the development server and use the explicit preview query:
+
+```text
+http://127.0.0.1:4173/blog/<stable-slug>?preview=draft
+```
+
+That query is admitted only in development. Production builds and production-mode registry tests reject
+the same draft slug even if the query is present.
+
 ## Routes and Field Notes
 
 - `/` renders the complete interactive portfolio and preserves its section fragments.
-- `/blog` reads the validated public registry and currently reports zero published notes truthfully.
+- `/blog` renders the editorial archive from the validated public registry and currently reports zero
+  published notes truthfully. Featured notes, tag controls, and chronological rows appear only when
+  real published or archived metadata exists.
 - `/blog/:slug` resolves published or archived notes through a lazy MDX module and rejects drafts or
   unknown slugs through the intentional recovery page.
 - Unknown routes render the shared ATRX not-found experience.
 
-The typed MDX content boundary is implemented; the full Field Notes index and long-form visual system
-remain the next presentation stage. Do not add invented posts to populate the archive. Cross-route
+The typed MDX content boundary, editorial index, accessible tag filtering, article header/footer, code
+copy feedback, and contained long-form primitives are implemented. Do not add invented posts to populate the archive. Cross-route
 homepage links use route-plus-fragment destinations such as `/#projects`, and route focus/scroll
 behavior respects reduced motion and browser Back/Forward history.
 

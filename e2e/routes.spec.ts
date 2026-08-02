@@ -12,7 +12,7 @@ async function openNavigationLink(page: Page, name: string) {
   await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name }).click();
 }
 
-test("Field Notes route foundation preserves cross-route navigation and browser history", async ({ page }) => {
+test("Field Notes archive preserves cross-route navigation and browser history", async ({ page }) => {
   await page.goto("/");
   await openNavigationLink(page, "Field Notes");
 
@@ -33,6 +33,20 @@ test("Field Notes route foundation preserves cross-route navigation and browser 
   await page.goBack();
   await expect(page).toHaveURL(/\/blog$/);
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeVisible();
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("development draft preview renders the long-form surface without page overflow", async ({ page }) => {
+  await page.goto("/blog/registry-fixture?preview=draft");
+
+  await expect(page.getByRole("heading", { level: 1, name: "Registry fixture" })).toBeVisible();
+  await expect(page.getByRole("note")).toContainText("Local draft preview");
+  await expect(page.getByRole("heading", { level: 2, name: "Pipeline proof" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copy code sample" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Scrollable technical table" })).toBeVisible();
+  await expect(page.getByText("END OF TRANSMISSION")).toBeVisible();
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);
