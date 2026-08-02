@@ -1,53 +1,69 @@
-# Next Step - Field Notes MDX content system
+# Next Step - Field Notes visual integration
 
 ## Handoff
 
-- Source baseline: `6d2775d` - implemented and validated the BrowserRouter route foundation.
-- Product direction: turn the truthful `/blog` foundation into a typed local-content system without
-  publishing invented notes or changing the homepage presentation.
-- Immediate goal: configure MDX, establish the canonical article contract and registry, and prove draft,
-  publication, lookup, sorting, and module-loading behavior before building the final editorial index.
+- Source baseline: `02bd643` - implemented and validated the Field Notes MDX content system.
+- Product direction: turn the typed, truthful content boundary into the quieter ATRX reading bay defined
+  in `DESIGN.md`, without publishing invented notes or weakening the existing portfolio route.
+- Immediate goal: ship the final Field Notes index hierarchy and long-form article presentation on top
+  of the canonical registry, including accessible filtering, deliberate empty/archive states, and a
+  development-only draft preview for responsive article QA.
 
 ## Implementation sequence
 
-1. Add `@mdx-js/rollup` with the existing pnpm lockfile and configure it before the React plugin in Vite.
-2. Add `src/blog/types.ts`, `validation.ts`, and `registry.ts` using the metadata contract in
-   `AGENTS.md` and `ARCHITECTURE.md`.
-3. Discover metadata eagerly and article bodies lazily with `import.meta.glob`; keep the portfolio route
-   independent from article-body chunks.
-4. Enforce lowercase kebab-case slugs, unique routes, valid ISO dates, normalized nonempty tags, valid
-   status values, module/slug agreement, and deterministic publication-date ordering.
-5. Add one clearly marked local fixture note for tests only, or keep the public registry empty. Do not
-   publish fabricated project history merely to make `/blog` appear populated.
-6. Replace `BlogPostPage`'s unconditional recovery state with registry lookup, draft rejection, a bounded
-   lazy-loading state, and an error boundary that never exposes raw module errors.
-7. Add the minimal approved MDX semantic map needed for fixture rendering. Defer the complete visual
-   component library and final index composition to the following design stage.
-8. Preserve the current route-aware header/footer, cross-route hash behavior, homepage interactions,
-   base homepage metadata, sitemap, and Cloudflare fallback behavior.
+1. Extract the index presentation into bounded primitives such as `BlogIndexHeader`, `FeaturedNote`,
+   `TagFilter`, and `NoteArchiveRow`; keep `blogRegistry` as their only post source.
+2. Replace the route-foundation composition with the editorial index grid from `DESIGN.md`: compact
+   identity hero, optional registry-derived featured lead, normalized tag rail, chronological log rows,
+   and distinct zero-published versus zero-filter-results states.
+3. Make filtering keyboard/touch accessible, preserve focus when results change, expose selected state in
+   text and `aria-pressed`, and keep narrow rails internally scrollable without page overflow.
+4. Split article chrome into `ArticleHeader` and `ArticleFooter`, refine `ArticleLayout` around a readable
+   68-74ch prose rail, and complete typography for headings, lists, inline code, code blocks, tables,
+   blockquotes, horizontal rules, dates, tags, repository/project associations, and archive notices.
+5. Add only the article primitives exercised by real or fixture content. Do not build decorative metrics,
+   diagrams, covers, callouts, or a table of contents until verified content needs them.
+6. Add an explicit development-only draft preview path or query state so the fixture article can be
+   visually tested locally. The production build must still resolve the same draft slug to the deliberate
+   not-found page and must not expose draft metadata in public lists or discovery surfaces.
+7. Apply ATRX blog token aliases only where they clarify semantic roles; reuse the shipped font stack,
+   square geometry, hairlines, and restrained signal colors. Keep reading surfaces quiet and free of
+   continuous text-adjacent motion.
+8. Evaluate lazy-loading `BlogIndexPage` and `BlogPostPage` at the route boundary. Keep the change only if
+   it reduces the homepage entry without harming route focus, error recovery, tests, or navigation.
+9. Preserve the existing header/footer, homepage interactions, command palette, terminal, visitor modes,
+   route-plus-fragment behavior, base metadata, sitemap, and Cloudflare SPA fallback.
 
 ## Constraints
 
-- Local committed MDX is trusted build input; never fetch or evaluate remote or user-authored MDX.
-- Draft notes must be absent from production lists and direct public route resolution.
-- Archived notes remain readable and explicitly marked when the presentation stage lands.
-- The registry is the single source for index discovery, article lookup, and later metadata/sitemap work.
-- Do not add route-specific SEO, sitemap entries, tag filtering UI, or polished article visuals in this
-  stage unless required to validate the content boundary.
-- Keep article bodies out of the initial homepage bundle and measure the existing 514.29 kB build
-  advisory after adding MDX.
-- Preserve privacy, factual grounding, static deployment, reduced motion, and browser-history behavior.
+- Do not publish the registry fixture or invent article history, dates, project outcomes, covers, metrics,
+  or telemetry to make the index look populated.
+- Reading is the primary interaction. No scroll hijacking, forced sound, cursor effects, fake live feed,
+  animated syntax, endless glow, or BMW/reference-brand leakage.
+- One visible H1 per route, logical headings, visible focus, text selection, 44 px practical touch targets,
+  and full meaning without color, hover, motion, or the command palette.
+- Body prose stays narrow; code and tables scroll inside their own labeled regions; 360 px and 200 percent
+  zoom must not create page-level horizontal overflow.
+- Draft preview code must be removed by production conditions and covered by a production-mode test.
+- Route-specific metadata, JSON-LD, sitemap publication entries, feeds, syntax highlighting, and real
+  article publication remain Stage D or later unless a narrow dependency is required for correctness.
+- Preserve privacy, factual grounding, static deployment, reduced motion, and the lazy article-body
+  boundary established by `02bd643`.
 
 ## Required validation and exit criteria
 
 - Existing lint, unit/component, build, and Playwright desktop/mobile suites continue to pass.
-- New tests cover metadata validation, duplicate rejection, slug/module agreement, draft exclusion,
-  archived inclusion, published ordering, tag normalization, article lookup, lazy module failure, and
-  unknown-slug recovery.
-- A test fixture can render through the approved MDX mapping without entering the public production
-  index unless explicitly approved.
-- The production build emits separate lazy article chunks or otherwise demonstrates that article bodies
-  are not bundled into the homepage entry.
+- Component tests exercise published/archived/featured index states, tag selection/reset, empty filtered
+  results, focus preservation, article hierarchy, external-link safety, table/code containment contracts,
+  and development-only preview gating.
+- Playwright covers homepage-to-index navigation, keyboard tag filtering with synthetic test data where
+  necessary, development draft preview, production-style draft rejection, browser Back behavior, mobile
+  navigation, reduced motion, and homepage regressions.
+- Desktop, tablet, 412 px, and 360 px browser QA verifies index rhythm, title wrapping, readable measure,
+  archive state, mobile menu, code/table containment, 200 percent zoom, focus visibility, and zero console
+  warnings/errors.
+- The production build still emits article bodies separately; record the main entry delta and retain or
+  reject route-level splitting based on measured output.
 - `ARCHITECTURE.md`, `STATUS.md`, README where applicable, and this file report delivered facts.
-- After this stage is committed and pushed, replace this brief with the ATRX Field Notes index and
-  long-form article visual-integration plan.
+- After this stage is committed and pushed, replace this brief with the route metadata, structured-data,
+  sitemap synchronization, and Cloudflare deep-link verification plan.
