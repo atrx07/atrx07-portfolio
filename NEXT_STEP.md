@@ -2,7 +2,7 @@
 
 ## Handoff
 
-- Established by: `535386b` plus the versioned governance update that introduces this file.
+- Governance baseline: `208ca04` — versioned Field Notes direction and next-step protocol.
 - Product direction: extend the ATRX portfolio with a first-class Field Notes surface while preserving
   the existing homepage’s visual and interaction contract.
 - Immediate goal: establish the route foundation for `/`, `/blog`, `/blog/:slug`, and `*` before adding
