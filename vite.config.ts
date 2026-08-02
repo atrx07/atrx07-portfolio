@@ -12,6 +12,7 @@ export default defineConfig({
     globals: true,
     setupFiles: "./src/tests/setup.ts",
     css: true,
-    exclude: ["e2e/**", "node_modules/**", "dist/**"],
+    include: ["src/**/*.test.{ts,tsx}"],
+    exclude: ["e2e/**", "node_modules/**", "dist/**", ".pnpm-store/**"],
   },
 });
