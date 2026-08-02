@@ -39,6 +39,18 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   expect(robots).toContain("Sitemap: https://atrx07.pages.dev/sitemap.xml");
 });
 
+test("Field Notes keeps the local draft fixture outside public routes", async ({ page }) => {
+  await page.goto("/blog");
+
+  await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeVisible();
+  await expect(page.locator("[data-published-count]"))
+    .toHaveAttribute("data-published-count", "0");
+
+  await page.goto("/blog/registry-fixture");
+  await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
+  await expect(page.getByText("Pipeline proof")).toHaveCount(0);
+});
+
 test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   await page.goto("/");
 

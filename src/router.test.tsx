@@ -13,6 +13,17 @@ describe("application route tree", () => {
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeInTheDocument();
     expect(screen.getByText(/No filler posts/)).toBeInTheDocument();
+    expect(screen.getByText(/^0 published notes$/)).toBeInTheDocument();
+  });
+
+  it("keeps the local draft fixture out of direct public route resolution", () => {
+    render(
+      <MemoryRouter initialEntries={["/blog/registry-fixture"]}>
+        <AppRoutes />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeInTheDocument();
   });
 
   it("treats unknown article slugs as unpublished", () => {

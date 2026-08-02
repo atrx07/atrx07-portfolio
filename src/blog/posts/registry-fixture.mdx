@@ -1,0 +1,15 @@
+export { meta } from "./registry-fixture.meta"
+
+## Pipeline proof
+
+This draft verifies that local MDX compiles into a lazy article module without entering the public archive.
+
+Run `pnpm build` to verify the production boundary.
+
+| Boundary | Expected result |
+| --- | --- |
+| Public index | Hidden |
+| Direct route | Not found |
+| Development registry | Available for tests |
+
+[Return to projects](/#projects)

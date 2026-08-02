@@ -6,6 +6,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 
 - Vite, React, and strict TypeScript
 - React Router with browser-history routes
+- Build-time MDX with GFM tables and lazy article chunks
 - Tailwind CSS plus a custom token-driven visual system
 - GSAP and ScrollTrigger for restrained scroll motion
 - Framer Motion for reduced-motion-aware orbital system visuals
@@ -43,16 +44,29 @@ Public profile content is centralized in:
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
 
+Field Notes content lives in paired files under `src/blog/posts/`:
+
+- `<stable-slug>.meta.ts` exports metadata satisfying `BlogPostMeta`.
+- `<stable-slug>.mdx` re-exports that metadata and owns the article body.
+
+Keep new notes in `draft` while editing. The filename, metadata slug, and companion MDX filename must
+agree; metadata validation rejects invalid dates, statuses, tags, URLs, duplicate slugs, or missing
+companions. Drafts do not enter public lists or direct public route resolution. The local
+`registry-fixture` pair is intentionally non-public and exists only to verify the compiler, registry,
+semantic component mapping, and lazy-chunk boundary.
+
 ## Routes and Field Notes
 
 - `/` renders the complete interactive portfolio and preserves its section fragments.
-- `/blog` currently renders the truthful Field Notes route-foundation state.
-- `/blog/:slug` rejects unpublished slugs through the intentional recovery page.
+- `/blog` reads the validated public registry and currently reports zero published notes truthfully.
+- `/blog/:slug` resolves published or archived notes through a lazy MDX module and rejects drafts or
+  unknown slugs through the intentional recovery page.
 - Unknown routes render the shared ATRX not-found experience.
 
-The MDX article registry and publishing workflow are the next implementation stage. Do not add invented
-posts to populate the archive. Cross-route homepage links use route-plus-fragment destinations such as
-`/#projects`, and route focus/scroll behavior respects reduced motion and browser Back/Forward history.
+The typed MDX content boundary is implemented; the full Field Notes index and long-form visual system
+remain the next presentation stage. Do not add invented posts to populate the archive. Cross-route
+homepage links use route-plus-fragment destinations such as `/#projects`, and route focus/scroll
+behavior respects reduced motion and browser Back/Forward history.
 
 ## Interaction model
 

@@ -1,8 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { blogRegistry } from "../blog/registry";
 import { RoutePageShell } from "./RoutePageShell";
 
 export function BlogIndexPage() {
+  const publishedCount = blogRegistry.getPublishedPosts().length;
+
   return (
     <RoutePageShell>
       <section className="route-foundation" aria-labelledby="field-notes-route-title">
@@ -18,6 +21,9 @@ export function BlogIndexPage() {
 
         <div className="route-foundation__status" aria-labelledby="field-notes-status-title">
           <p>ROUTE FOUNDATION</p>
+          <p className="route-published-count" data-published-count={publishedCount}>
+            {publishedCount} published {publishedCount === 1 ? "note" : "notes"}
+          </p>
           <h2 id="field-notes-status-title">The archive is being assembled.</h2>
           <p>
             Published notes will appear here only after their technical claims, metadata, and direct routes

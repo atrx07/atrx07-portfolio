@@ -8,9 +8,10 @@ materially change.
 
 The portfolio is a static, route-based React application built by Vite and deployed to Cloudflare Pages.
 BrowserRouter owns `/`, `/blog`, `/blog/:slug`, and the application not-found route. The existing
-interactive portfolio remains the `/` route; Field Notes currently exposes an honest route foundation
-while the MDX registry and publication system are the next implementation stage. There is no application
-server, database, authentication layer, analytics service, or arbitrary remote execution path.
+interactive portfolio remains the `/` route. Field Notes now has a build-time MDX compiler, validated
+typed registry, paired eager metadata and lazy article modules, draft/publication boundaries, and a
+minimal semantic article shell. There is no application server, database, authentication layer,
+analytics service, runtime MDX evaluator, or arbitrary remote execution path.
 
 ```mermaid
 flowchart TD
@@ -18,10 +19,14 @@ flowchart TD
   entry --> app["src/App.tsx: BrowserRouter provider"]
   app --> router["src/router.tsx: route tree"]
   router --> portfolio["/: PortfolioPage"]
-  router --> blog["/blog: BlogIndexPage"]
-  router --> post["/blog/:slug: unpublished-slug recovery until registry lands"]
+  router --> blog["/blog: validated public registry"]
+  router --> post["/blog/:slug: lazy public MDX or recovery"]
   router --> missing["*: NotFoundPage"]
   data["src/data: profile, projects, commands"] --> portfolio
+  blogMeta["src/blog/posts/*.meta.ts"] --> registry["validated Field Notes registry"]
+  blogBody["src/blog/posts/*.mdx"] --> registry
+  registry --> blog
+  registry --> post
   portfolio --> sections["Portfolio sections and interactive components"]
   portfolio --> hooks["Local/session/transient state hooks"]
   router --> effects["RouteEffects: hash, scroll, and focus"]
@@ -40,6 +45,8 @@ flowchart TD
 | Build | Vite 6 | Development server and static production bundle |
 | UI runtime | React 18 | Component rendering and interaction state |
 | Routing | React Router DOM 7 | Browser-history routes, links, parameters, Back/Forward behavior, and not-found states |
+| Article build | `@mdx-js/rollup` + `remark-gfm` | Compile trusted local MDX and semantic GFM tables before React transformation |
+| Article discovery | Vite `import.meta.glob` | Load small typed metadata eagerly and article bodies as separate lazy chunks |
 | Language | TypeScript 5.7 strict mode | Typed data, components, hooks, and terminal engine |
 | Styling | Tailwind build pipeline plus custom global CSS | Tokens, layout, responsive behavior, motion styling, and visual system |
 | Motion | GSAP, `@gsap/react`, ScrollTrigger, Framer Motion | Purposeful reveal, flagship pinning, scroll-linked behavior, and reduced-motion-aware component animation |
@@ -56,10 +63,14 @@ flowchart TD
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
 4. `src/pages/PortfolioPage.tsx` owns the existing homepage composition and cross-section state.
 5. `BlogIndexPage`, `BlogPostPage`, and `NotFoundPage` use one shared route shell with the same
-   route-aware header and footer. The blog index is deliberately empty until verified MDX content exists.
-6. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
+   route-aware header and footer. The index reads only public registry records; the current test fixture
+   remains a draft and therefore leaves the visible count at zero.
+6. `src/blog/registry.ts` validates eager metadata companions, pairs them with lazy MDX modules, and
+   exposes the single public lookup/sorting/filtering boundary.
+7. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
    deliberate navigation targets, and leaves POP restoration to browser history.
-7. Vite emits the static `dist/` artifact consumed by Cloudflare Pages.
+8. Vite emits the static `dist/` artifact consumed by Cloudflare Pages, including one chunk per article
+   body rather than embedding article prose in the homepage entry.
 
 ## Runtime Component Map
 
@@ -68,8 +79,11 @@ flowchart TD
 | `App.tsx` / `router.tsx` | BrowserRouter provider and public route declaration |
 | `PortfolioPage.tsx` | Existing homepage composition and portfolio-only state ownership |
 | `RoutePageShell.tsx` | Shared header, one main landmark, and footer for non-portfolio routes |
-| `BlogIndexPage.tsx` | Honest Field Notes route-foundation state before the content registry exists |
-| `BlogPostPage.tsx` / `NotFoundPage.tsx` | Unpublished article rejection and deliberate route recovery |
+| `BlogIndexPage.tsx` | Public Field Notes registry count and honest empty state before a real note is published |
+| `BlogPostPage.tsx` / `NotFoundPage.tsx` | Public slug lookup, lazy article rendering, draft rejection, and deliberate route recovery |
+| `blog/registry.ts` / `validation.ts` | Metadata/body pairing, invariant enforcement, sorting, public filtering, lookup, and bounded lazy-load errors |
+| `ArticleLayout.tsx` / `ArticleLoadBoundary.tsx` | Minimal semantic article frame, archive state, reserved loading UI, and safe module-failure recovery |
+| `blog/mdx-components.tsx` | Approved semantic Markdown mapping with safe external links and contained code/table overflow |
 | `RouteEffects.tsx` / `routeNavigation.ts` | Tested route fragment resolution, scroll behavior, and focus transfer |
 | `Header.tsx` | Persistent route-aware system rail, desktop/mobile navigation, availability, optional portfolio controls, and GitHub |
 | `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
@@ -120,6 +134,18 @@ not run the autoplay sequence.
 
 Components may choose presentation and interaction behavior, but durable profile or project claims
 should not be duplicated into component files without a strong reason.
+
+### Field Notes data flow
+
+- `src/blog/posts/<slug>.meta.ts` is the canonical eager metadata source and satisfies `BlogPostMeta`.
+- `src/blog/posts/<slug>.mdx` re-exports the same metadata and contains the trusted local article body.
+- `registry.ts` requires exact basename companions, validates filename/slug agreement and all metadata
+  invariants once, rejects duplicates, and exposes public records in deterministic date order.
+- Public helpers include `published` and explicitly marked `archived` notes; they exclude `draft` notes.
+- Article lookup returns the validated record and a bounded lazy loader. It verifies the MDX module's
+  re-exported metadata against the canonical eager value before rendering.
+- The paired-file design avoids a static named import from the MDX module, which would collapse the
+  dynamic article import into the entry chunk under Rollup.
 
 ### Project data flow
 
@@ -303,11 +329,11 @@ Update this document in the same work session when any of these change:
 
 ### Delivery status and superseding rule
 
-Stage A is implemented: the application is route based, the portfolio is preserved at `/`, shared
-navigation is route aware, route focus/hash behavior is tested, and invalid routes are deliberate.
-
-The MDX compiler, typed registry, published index, article renderer, route metadata, and sitemap
-integration described below remain target architecture for Stages B-D.
+Stages A and B are implemented: the application is route based, the portfolio is preserved at `/`,
+shared navigation is route aware, route focus/hash behavior is tested, invalid routes are deliberate,
+and the Field Notes content system compiles trusted local MDX through a validated typed registry with
+true lazy article chunks. The final index/article presentation, route metadata, and sitemap integration
+described below remain target architecture for Stages C-D.
 Do not leave contradictory “planned” and “current” architecture after launch.
 
 The implementation must not rewrite project presentation into a generic data-only system. Existing
@@ -408,6 +434,7 @@ src/
       RelatedNotes.tsx
 
     posts/
+      <stable-slug>.meta.ts         # canonical eager metadata
       <stable-slug>.mdx
 
   components/
@@ -524,11 +551,11 @@ If metadata is represented differently, preserve equivalent guarantees and docum
 The registry is the single runtime source for index cards, article lookup, related notes, route metadata,
 and publication state.
 
-Recommended split:
+Implemented split:
 
 ```ts
 // Metadata can be discovered eagerly because the index needs it.
-const metaModules = import.meta.glob("./posts/*.mdx", {
+const metaModules = import.meta.glob("./posts/*.meta.ts", {
   eager: true,
   import: "meta",
 });
@@ -537,7 +564,10 @@ const metaModules = import.meta.glob("./posts/*.mdx", {
 const postModules = import.meta.glob<BlogPostModule>("./posts/*.mdx");
 ```
 
-Adapt the exact typing to the MDX/Vite integration. The registry must expose narrow helpers such as:
+Every MDX module re-exports `meta` from its exact basename companion. Keeping the canonical eager value
+in `.meta.ts` prevents Rollup's static metadata import from pulling the same MDX body into the entry
+chunk. The registry validates the eager value and verifies the lazy re-export again at load time. It
+exposes narrow helpers such as:
 
 ```ts
 getPublishedPosts()
@@ -768,6 +798,13 @@ Deployment rules:
 - preserve `robots.txt`, sitemap, canonical origin, and security/privacy boundaries.
 
 ### Verification architecture extension
+
+Stage B currently implements focused coverage in `src/blog/validation.test.ts`,
+`src/blog/registry.test.ts`, `src/blog/mdx-components.test.tsx`,
+`src/blog/components/ArticleLayout.test.tsx`, `src/router.test.tsx`, and the shared Playwright portfolio
+matrix. These tests cover the content contract, pairing/duplicates, status filtering, ordering, tag
+behavior, lazy failures, archive presentation, semantic fixture rendering, and public draft rejection.
+Metadata lifecycle and final index/article presentation tests remain aligned with Stages C-D below.
 
 Recommended new test files:
 
