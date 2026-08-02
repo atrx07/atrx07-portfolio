@@ -5,6 +5,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 ## Stack
 
 - Vite, React, and strict TypeScript
+- React Router with browser-history routes
 - Tailwind CSS plus a custom token-driven visual system
 - GSAP and ScrollTrigger for restrained scroll motion
 - Framer Motion for reduced-motion-aware orbital system visuals
@@ -41,6 +42,17 @@ Public profile content is centralized in:
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
+
+## Routes and Field Notes
+
+- `/` renders the complete interactive portfolio and preserves its section fragments.
+- `/blog` currently renders the truthful Field Notes route-foundation state.
+- `/blog/:slug` rejects unpublished slugs through the intentional recovery page.
+- Unknown routes render the shared ATRX not-found experience.
+
+The MDX article registry and publishing workflow are the next implementation stage. Do not add invented
+posts to populate the archive. Cross-route homepage links use route-plus-fragment destinations such as
+`/#projects`, and route focus/scroll behavior respects reduced motion and browser Back/Forward history.
 
 ## Interaction model
 

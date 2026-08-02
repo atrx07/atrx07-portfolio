@@ -1,5 +1,6 @@
 import {
   ArrowDownToLine,
+  BookOpen,
   BriefcaseBusiness,
   Clipboard,
   Github,
@@ -22,6 +23,7 @@ type Props = {
   onModeChange: (mode: VisitorMode) => void;
   onOpenProject: (project: Project) => void;
   onOpenTerminal: () => void;
+  onOpenFieldNotes: () => void;
   onCopyEmail: () => void;
 };
 
@@ -38,6 +40,7 @@ export function CommandPalette({
   onModeChange,
   onOpenProject,
   onOpenTerminal,
+  onOpenFieldNotes,
   onCopyEmail,
 }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -88,6 +91,12 @@ export function CommandPalette({
         run: () => scrollToId("about"),
       },
       {
+        label: "Open Field Notes",
+        group: "Navigate",
+        icon: BookOpen,
+        run: onOpenFieldNotes,
+      },
+      {
         label: "Open portfolio terminal",
         group: "Tools",
         icon: TerminalSquare,
@@ -130,7 +139,7 @@ export function CommandPalette({
         run: () => window.open(profile.github, "_blank", "noopener,noreferrer"),
       },
     ],
-    [onCopyEmail, onModeChange, onOpenProject, onOpenTerminal],
+    [onCopyEmail, onModeChange, onOpenFieldNotes, onOpenProject, onOpenTerminal],
   );
 
   const filteredActions = actions.filter((action) =>

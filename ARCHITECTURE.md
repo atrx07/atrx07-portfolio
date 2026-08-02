@@ -1,26 +1,34 @@
 # ATRX Portfolio Architecture
 
-This is the private technical map for the ATRX portfolio. It records the durable structure, state,
-data ownership, interactions, verification boundaries, and deployment model. Update it whenever those
-areas materially change. Do not add this file to Git.
+This is the durable technical map for the ATRX portfolio. It records the structure, state, data
+ownership, interactions, verification boundaries, and deployment model. Update it whenever those areas
+materially change.
 
 ## System Summary
 
-The portfolio is a static React single-page application built by Vite and deployed to Cloudflare Pages.
-There is no application server, database, authentication layer, analytics service, or arbitrary remote
-execution path. Public profile and project content are compiled from typed local data.
+The portfolio is a static, route-based React application built by Vite and deployed to Cloudflare Pages.
+BrowserRouter owns `/`, `/blog`, `/blog/:slug`, and the application not-found route. The existing
+interactive portfolio remains the `/` route; Field Notes currently exposes an honest route foundation
+while the MDX registry and publication system are the next implementation stage. There is no application
+server, database, authentication layer, analytics service, or arbitrary remote execution path.
 
 ```mermaid
 flowchart TD
   html["index.html: metadata and root shell"] --> entry["src/main.tsx"]
-  entry --> app["src/App.tsx: composition and shared interaction state"]
-  data["src/data: profile, projects, commands"] --> app
-  app --> sections["Page sections and interactive components"]
-  app --> hooks["Local/session/transient state hooks"]
+  entry --> app["src/App.tsx: BrowserRouter provider"]
+  app --> router["src/router.tsx: route tree"]
+  router --> portfolio["/: PortfolioPage"]
+  router --> blog["/blog: BlogIndexPage"]
+  router --> post["/blog/:slug: unpublished-slug recovery until registry lands"]
+  router --> missing["*: NotFoundPage"]
+  data["src/data: profile, projects, commands"] --> portfolio
+  portfolio --> sections["Portfolio sections and interactive components"]
+  portfolio --> hooks["Local/session/transient state hooks"]
+  router --> effects["RouteEffects: hash, scroll, and focus"]
   sections --> engine["Safe terminal parser and scroll helpers"]
   styles["src/styles/globals.css"] --> sections
   assets["public assets, sitemap, robots"] --> browser["Browser runtime"]
-  app --> browser
+  router --> browser
   browser --> build["Vite dist output"]
   build --> pages["Cloudflare Pages"]
 ```
@@ -31,6 +39,7 @@ flowchart TD
 | --- | --- | --- |
 | Build | Vite 6 | Development server and static production bundle |
 | UI runtime | React 18 | Component rendering and interaction state |
+| Routing | React Router DOM 7 | Browser-history routes, links, parameters, Back/Forward behavior, and not-found states |
 | Language | TypeScript 5.7 strict mode | Typed data, components, hooks, and terminal engine |
 | Styling | Tailwind build pipeline plus custom global CSS | Tokens, layout, responsive behavior, motion styling, and visual system |
 | Motion | GSAP, `@gsap/react`, ScrollTrigger, Framer Motion | Purposeful reveal, flagship pinning, scroll-linked behavior, and reduced-motion-aware component animation |
@@ -44,15 +53,25 @@ flowchart TD
 1. `index.html` provides the root element, canonical metadata, social metadata, crawler controls,
    responsive image preloads, and JSON-LD.
 2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the global stylesheet.
-3. `src/App.tsx` owns page composition and cross-section interaction state.
-4. Section components render in one scrollable document; hash navigation points to stable section IDs.
-5. Vite emits the static `dist/` artifact consumed by Cloudflare Pages.
+3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
+4. `src/pages/PortfolioPage.tsx` owns the existing homepage composition and cross-section state.
+5. `BlogIndexPage`, `BlogPostPage`, and `NotFoundPage` use one shared route shell with the same
+   route-aware header and footer. The blog index is deliberately empty until verified MDX content exists.
+6. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
+   deliberate navigation targets, and leaves POP restoration to browser history.
+7. Vite emits the static `dist/` artifact consumed by Cloudflare Pages.
 
 ## Runtime Component Map
 
 | Component | Responsibility |
 | --- | --- |
-| `Header.tsx` | Persistent system rail, desktop/mobile navigation, availability, discovery count, sound, command palette, GitHub |
+| `App.tsx` / `router.tsx` | BrowserRouter provider and public route declaration |
+| `PortfolioPage.tsx` | Existing homepage composition and portfolio-only state ownership |
+| `RoutePageShell.tsx` | Shared header, one main landmark, and footer for non-portfolio routes |
+| `BlogIndexPage.tsx` | Honest Field Notes route-foundation state before the content registry exists |
+| `BlogPostPage.tsx` / `NotFoundPage.tsx` | Unpublished article rejection and deliberate route recovery |
+| `RouteEffects.tsx` / `routeNavigation.ts` | Tested route fragment resolution, scroll behavior, and focus transfer |
+| `Header.tsx` | Persistent route-aware system rail, desktop/mobile navigation, availability, optional portfolio controls, and GitHub |
 | `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
 | `VisitorModeSwitch.tsx` | Controlled Recruiter/Developer/Chaos adapter shared by hero and mobile navigation |
 | `godui/mask-button.tsx` | Semantic button/link primitives with sprite-mask hover, focus, keyboard, and touch feedback |
@@ -65,7 +84,7 @@ flowchart TD
 | `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
 | `ArchitecturePlayground.tsx` | Project tabs, keyboard node navigation, pinned responsibility explanation |
 | `PortfolioTerminal.tsx` | Fixed-height terminal UI, input history, completion, safe action dispatch, internal output scrolling |
-| `CommandPalette.tsx` | Section navigation, project opening, visitor-mode changes, terminal access, GitHub, and email copy |
+| `CommandPalette.tsx` | Section navigation, Field Notes navigation, project opening, visitor-mode changes, terminal access, GitHub, and email copy |
 | `ExperimentRack.tsx` | Smaller public and unlinked experiment record |
 | `CapabilityMap.tsx` | Capabilities grouped by engineering purpose |
 | `FieldNotes.tsx` | About identity, operating-principle carousel, responsive portrait ordering |
@@ -280,17 +299,15 @@ Update this document in the same work session when any of these change:
 
 ---
 
-## Planned Blog / Field Notes Architecture Extension
+## Field Notes Architecture Extension
 
-### Status and superseding rule
+### Delivery status and superseding rule
 
-The preceding sections document the launched single-page baseline. The Field Notes implementation changes
-that baseline from one hash-navigated page into a route-based static React application while preserving
-the existing portfolio as the `/` route.
+Stage A is implemented: the application is route based, the portfolio is preserved at `/`, shared
+navigation is route aware, route focus/hash behavior is tested, and invalid routes are deliberate.
 
-Until the blog source commit exists and is validated, this section is the **target architecture**. After
-implementation, update the earlier system summary, entry/composition tables, component map, data flow,
-SEO ownership, test list, and deployment notes so the document describes one coherent current system.
+The MDX compiler, typed registry, published index, article renderer, route metadata, and sitemap
+integration described below remain target architecture for Stages B-D.
 Do not leave contradictory “planned” and “current” architecture after launch.
 
 The implementation must not rewrite project presentation into a generic data-only system. Existing

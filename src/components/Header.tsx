@@ -7,26 +7,28 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { profile } from "../data/profile";
 import type { VisitorMode } from "../types";
 import { VisitorModeSwitch } from "./VisitorModeSwitch";
 
 type Props = {
-  mode: VisitorMode;
-  onModeChange: (mode: VisitorMode) => void;
-  onOpenPalette: () => void;
-  muted: boolean;
-  onToggleMuted: () => void;
-  discoveredCount: number;
+  mode?: VisitorMode;
+  onModeChange?: (mode: VisitorMode) => void;
+  onOpenPalette?: () => void;
+  muted?: boolean;
+  onToggleMuted?: () => void;
+  discoveredCount?: number;
+  showPortfolioControls?: boolean;
 };
 
 const links = [
-  { href: "#now", label: "Now building" },
-  { href: "#projects", label: "Projects" },
-  { href: "#architecture", label: "Architecture" },
-  { href: "#about", label: "About" },
-  { href: "#terminal", label: "Terminal" },
-  { href: "#contact", label: "Contact" },
+  { id: "now", label: "Now building" },
+  { id: "projects", label: "Projects" },
+  { id: "architecture", label: "Architecture" },
+  { id: "about", label: "About" },
+  { id: "terminal", label: "Terminal" },
+  { id: "contact", label: "Contact" },
 ];
 
 export function Header({
@@ -35,10 +37,31 @@ export function Header({
   onOpenPalette,
   muted,
   onToggleMuted,
-  discoveredCount,
+  discoveredCount = 0,
+  showPortfolioControls = false,
 }: Props) {
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [compact, setCompact] = useState(false);
+  const isPortfolio = location.pathname === "/";
+  const visibleLinks = isPortfolio
+    ? links
+    : links.filter((link) => ["projects", "architecture", "about", "contact"].includes(link.id));
+
+  const sectionHref = (id: string) => (isPortfolio ? `#${id}` : `/#${id}`);
+
+  const renderSectionLink = (id: string, label: string, onClick?: () => void) => {
+    const href = sectionHref(id);
+    return isPortfolio ? (
+      <a key={id} href={href} onClick={onClick}>
+        {label}
+      </a>
+    ) : (
+      <Link key={id} to={href} onClick={onClick}>
+        {label}
+      </Link>
+    );
+  };
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 48);
@@ -53,23 +76,21 @@ export function Header({
         Skip to content
       </a>
       <div className="header-inner">
-        <a className="wordmark header-wordmark" href="#top" aria-label="ATRX07 home">
-          <span className="header-wordmark-label">ATRX07</span>
-          <span className="header-signal" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
-        </a>
+        {isPortfolio ? (
+          <a className="wordmark header-wordmark" href="#top" aria-label="ATRX07 home">
+            <HeaderWordmark />
+          </a>
+        ) : (
+          <Link className="wordmark header-wordmark" to="/" aria-label="ATRX07 home">
+            <HeaderWordmark />
+          </Link>
+        )}
 
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {links.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
-            </a>
-          ))}
+          {visibleLinks.map((link) => renderSectionLink(link.id, link.label))}
+          <Link to="/blog" aria-current={location.pathname.startsWith("/blog") ? "page" : undefined}>
+            Field Notes
+          </Link>
         </nav>
 
         <div className="header-actions">
@@ -77,28 +98,32 @@ export function Header({
             <i aria-hidden="true" />
             Available
           </span>
-          <span className="discovery-count" aria-live="polite">
-            {discoveredCount}/6 found
-          </span>
-          <button
-            className="icon-button"
-            type="button"
-            onClick={onToggleMuted}
-            aria-label={muted ? "Enable signal sound" : "Mute signal sound"}
-            title={muted ? "Enable signal sound" : "Mute signal sound"}
-          >
-            {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-          </button>
-          <button
-            className="palette-button"
-            type="button"
-            onClick={onOpenPalette}
-            aria-label="Open command palette"
-          >
-            <Search size={17} />
-            <span>Command</span>
-            <kbd>Ctrl K</kbd>
-          </button>
+          {showPortfolioControls && (
+            <>
+              <span className="discovery-count" aria-live="polite">
+                {discoveredCount}/6 found
+              </span>
+              <button
+                className="icon-button"
+                type="button"
+                onClick={onToggleMuted}
+                aria-label={muted ? "Enable signal sound" : "Mute signal sound"}
+                title={muted ? "Enable signal sound" : "Mute signal sound"}
+              >
+                {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              </button>
+              <button
+                className="palette-button"
+                type="button"
+                onClick={onOpenPalette}
+                aria-label="Open command palette"
+              >
+                <Search size={17} />
+                <span>Command</span>
+                <kbd>Ctrl K</kbd>
+              </button>
+            </>
+          )}
           <a
             className="icon-button desktop-only"
             href={profile.github}
@@ -125,18 +150,43 @@ export function Header({
       {menuOpen && (
         <div id="mobile-navigation" className="mobile-nav">
           <nav aria-label="Mobile navigation">
-            {links.map((link) => (
-              <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
-                {link.label}
-              </a>
-            ))}
+            {!isPortfolio && (
+              <Link to="/" onClick={() => setMenuOpen(false)}>
+                Home
+              </Link>
+            )}
+            {links.map((link) => renderSectionLink(link.id, link.label, () => setMenuOpen(false)))}
+            <Link
+              to="/blog"
+              aria-current={location.pathname.startsWith("/blog") ? "page" : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
+              Field Notes
+            </Link>
           </nav>
-          <VisitorModeSwitch mode={mode} onChange={onModeChange} />
+          {showPortfolioControls && mode && onModeChange && (
+            <VisitorModeSwitch mode={mode} onChange={onModeChange} />
+          )}
           <a href={profile.github} target="_blank" rel="noreferrer">
             GitHub <Github size={18} />
           </a>
         </div>
       )}
     </header>
+  );
+}
+
+function HeaderWordmark() {
+  return (
+    <>
+      <span className="header-wordmark-label">ATRX07</span>
+      <span className="header-signal" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+    </>
   );
 }

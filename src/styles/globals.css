@@ -530,7 +530,7 @@ section[id] {
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: clamp(15px, 1.65vw, 26px);
 }
 
 .desktop-nav a {
@@ -3016,6 +3016,114 @@ dialog::backdrop {
 
 /* Command palette */
 
+.desktop-nav a[aria-current="page"],
+.mobile-nav a[aria-current="page"] {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--signal-light);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+}
+
+/* Route foundation */
+
+.route-main {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.route-foundation {
+  display: grid;
+  width: min(100% - 48px, 1440px);
+  min-height: calc(100dvh - 190px);
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.7fr);
+  align-items: center;
+  gap: clamp(56px, 8vw, 148px);
+  margin-inline: auto;
+  padding-block: calc(var(--header-height) + 88px) 96px;
+}
+
+.route-foundation__copy {
+  align-self: center;
+}
+
+.route-kicker,
+.route-foundation__status > p:first-child {
+  margin: 0 0 22px;
+  color: var(--body);
+  font-family: Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.route-foundation h1 {
+  max-width: 10ch;
+  margin: 0;
+  font-size: clamp(3.65rem, 8vw, 8.5rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.route-deck {
+  max-width: 54ch;
+  margin: 34px 0 0;
+  color: var(--body);
+  font-size: clamp(1.08rem, 1.6vw, 1.42rem);
+  line-height: 1.48;
+}
+
+.route-foundation__status {
+  align-self: center;
+  border-left: 1px solid var(--line);
+  padding: 18px 0 18px clamp(28px, 4vw, 64px);
+}
+
+.route-foundation__status::before {
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin-bottom: 28px;
+  background: linear-gradient(
+    90deg,
+    var(--signal-light) 0 34%,
+    var(--signal-blue) 34% 68%,
+    var(--signal-red) 68% 100%
+  );
+  content: "";
+}
+
+.route-foundation__status h2 {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2rem, 3.3vw, 3.5rem);
+  line-height: 0.98;
+}
+
+.route-foundation__status > p:not(:first-child) {
+  max-width: 47ch;
+  margin: 24px 0 0;
+  color: var(--body);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.route-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.route-actions .button {
+  white-space: nowrap;
+}
+
+.route-foundation--lost .route-foundation__status::before {
+  background: var(--signal-red);
+}
+
 .command-dialog {
   width: min(680px, calc(100% - 32px));
 }
@@ -3543,6 +3651,41 @@ dialog::backdrop {
   .footer-inner > div {
     grid-column: 1 / -1;
     justify-content: start;
+  }
+}
+
+@media (max-width: 900px) {
+  .route-foundation {
+    width: min(100% - 32px, 720px);
+    min-height: calc(100dvh - 120px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 64px;
+    padding-block: calc(var(--header-height) + 64px) 80px;
+  }
+
+  .route-foundation h1 {
+    font-size: clamp(3.3rem, 17vw, 6.5rem);
+  }
+
+  .route-foundation__status {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+    padding: 42px 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .route-foundation {
+    gap: 48px;
+  }
+
+  .route-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .route-actions .button {
+    width: 100%;
   }
 }
 
