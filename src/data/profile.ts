@@ -37,6 +37,16 @@ export const siteMetadata = {
   description:
     "Arppith Andrews (atrx07) is an engineering student, AI and automation builder, software developer, and web developer creating local AI and real-time systems.",
   canonicalUrl: "https://atrx07.pages.dev/",
+  socialImagePath: "/atrx-wide.jpg",
+  socialImageAlt: "ATRX artwork for Arppith Andrews, engineering student and AI automation builder",
+  lastModified: "2026-07-22",
+} as const;
+
+export const fieldNotesMetadata = {
+  title: "Field Notes | Arppith Andrews (atrx07)",
+  description:
+    "Engineering notes from Arppith Andrews (atrx07) on local AI, real-time systems, automation, debugging, and unusual browser tools.",
+  launchedAt: "2026-08-02",
 } as const;
 
 export const capabilityGroups = [

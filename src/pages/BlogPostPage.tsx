@@ -6,6 +6,8 @@ import { mdxComponents } from "../blog/mdx-components";
 import { blogRegistry } from "../blog/registry";
 import { resolveBlogPost } from "../blog/preview";
 import type { BlogPostRecord } from "../blog/types";
+import { PageMetadata } from "../components/PageMetadata";
+import { articlePageMetadata } from "../lib/pageMetadata";
 import { NotFoundPage } from "./NotFoundPage";
 import { RoutePageShell } from "./RoutePageShell";
 
@@ -32,9 +34,14 @@ function ArticleRoute({ previewingDraft, record }: { previewingDraft: boolean; r
     () => lazy(async () => ({ default: (await record.load()).default })),
     [record],
   );
+  const metadata = useMemo(
+    () => articlePageMetadata(record.meta, { previewingDraft }),
+    [previewingDraft, record.meta],
+  );
 
   return (
     <ArticleLayout meta={record.meta} previewingDraft={previewingDraft}>
+      <PageMetadata metadata={metadata} />
       <ArticleLoadBoundary resetKey={record.meta.slug}>
         <Suspense
           fallback={

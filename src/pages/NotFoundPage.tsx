@@ -1,5 +1,7 @@
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PageMetadata } from "../components/PageMetadata";
+import { noindexPageMetadata } from "../lib/pageMetadata";
 import { RoutePageShell } from "./RoutePageShell";
 
 type Props = {
@@ -11,9 +13,14 @@ export function NotFoundPage({ articleSlug }: Props) {
   const description = articleSlug
     ? `No published Field Note currently maps to /blog/${articleSlug}.`
     : "This route does not map to a published ATRX system or Field Note.";
+  const metadata = noindexPageMetadata({
+    title: articleSlug ? "Field Note Not Found | ATRX" : "Signal Lost / 404 | ATRX",
+    description,
+  });
 
   return (
     <RoutePageShell>
+      <PageMetadata metadata={metadata} />
       <section className="route-foundation route-foundation--lost" aria-labelledby="not-found-title">
         <div className="route-foundation__copy">
           <p className="route-kicker">ATRX / ROUTE RECOVERY</p>

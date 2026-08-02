@@ -79,6 +79,13 @@ copy feedback, and contained long-form primitives are implemented. Do not add in
 homepage links use route-plus-fragment destinations such as `/#projects`, and route focus/scroll
 behavior respects reduced motion and browser Back/Forward history.
 
+Route metadata is applied from `src/lib/pageMetadata.ts`. The home route restores profile metadata;
+`/blog` uses collection metadata; published or archived notes use technical-article metadata; draft
+previews and recovery pages remove stale canonical/social/JSON-LD state and use `noindex, nofollow`.
+`public/sitemap.xml` must be updated when a real note becomes published or archived. The sitemap unit
+test compares its exact indexable routes and `lastmod` values with the validated registry and fails on
+drift or draft exposure.
+
 ## Interaction model
 
 - Visitor modes persist in `localStorage`.
@@ -115,3 +122,9 @@ cannot run the uncompiled TypeScript/JSX module and the page stays blank.
 
 The canonical, Open Graph, sitemap, and robots metadata use
 `https://atrx07.pages.dev/` as the production origin.
+
+This deployment is currently a client-rendered BrowserRouter SPA. Raw deep-route responses such as
+`/blog` receive the homepage metadata shell from `index.html`; route-specific title, canonical, social
+tags, and JSON-LD replace that fallback after hydration. Do not describe those deep routes as
+prerendered. If crawler-independent deep-route HTML becomes necessary, add a documented static
+generation/prerender step using the same registry and metadata builders.

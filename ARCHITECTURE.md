@@ -57,8 +57,8 @@ flowchart TD
 
 ## Entry and Composition
 
-1. `index.html` provides the root element, canonical metadata, social metadata, crawler controls,
-   responsive image preloads, and JSON-LD.
+1. `index.html` provides the root element, homepage fallback metadata, crawler controls, responsive
+   image preloads, and the fallback homepage JSON-LD graph.
 2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the global stylesheet.
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
 4. `src/pages/PortfolioPage.tsx` owns the existing homepage composition and cross-section state.
@@ -68,9 +68,11 @@ flowchart TD
    leaves the deployed visible count at zero.
 6. `src/blog/registry.ts` validates eager metadata companions, pairs them with lazy MDX modules, and
    exposes the single public lookup/sorting/filtering boundary.
-7. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
+7. `PageMetadata` applies typed route metadata from `src/lib/pageMetadata.ts`, updates existing head
+   elements in place, removes stale profile/article state, and owns the route-aware visibility title.
+8. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
    deliberate navigation targets, and leaves POP restoration to browser history.
-8. Vite emits the static `dist/` artifact consumed by Cloudflare Pages, including one chunk per article
+9. Vite emits the static `dist/` artifact consumed by Cloudflare Pages, including one chunk per article
    body rather than embedding article prose in the homepage entry.
 
 ## Runtime Component Map
@@ -82,6 +84,7 @@ flowchart TD
 | `RoutePageShell.tsx` | Shared header, one main landmark, and footer for non-portfolio routes |
 | `BlogIndexPage.tsx` / `BlogIndex.tsx` | Registry-derived index composition, local tag filtering, featured selection, chronological rows, and honest empty states |
 | `BlogPostPage.tsx` / `NotFoundPage.tsx` | Public slug lookup, explicit development-only preview lookup, lazy article rendering, draft rejection, and deliberate route recovery |
+| `PageMetadata.tsx` / `lib/pageMetadata.ts` | Typed route metadata builders, canonical normalization, deterministic title/meta/canonical/JSON-LD synchronization, noindex cleanup, and visibility-title restoration |
 | `blog/registry.ts` / `validation.ts` | Metadata/body pairing, invariant enforcement, sorting, public filtering, lookup, and bounded lazy-load errors |
 | `BlogIndexHeader.tsx` / `FeaturedNote.tsx` / `TagFilter.tsx` / `NoteArchiveRow.tsx` | Bounded editorial index primitives; Magic Tab supplies manual activation and roving focus for the contained tag rail |
 | `ArticleHeader.tsx` / `ArticleLayout.tsx` / `ArticleFooter.tsx` | Shared 74ch article hierarchy, state notices, dates, associations, prose rail, and final navigation |
@@ -129,7 +132,8 @@ not run the autoplay sequence.
 ### Canonical local data
 
 - `src/data/profile.ts` owns public identity, role, contact routes, headline, availability, principles,
-  capability groups, experiments, and reusable site metadata.
+  capability groups, experiments, canonical origin, social-image values, stable site dates, and Field
+  Notes collection metadata.
 - `src/data/projects.ts` owns all featured project claims, categories, technologies, maturity, public
   links, proof points, constraints, architecture nodes, roadmap text, and visual type.
 - `src/data/commands.ts` owns the terminal command catalog and help descriptions.
@@ -243,10 +247,20 @@ There is no autoplay.
 - `public/atrx-avatar.png` is the favicon/avatar asset.
 - `public/atrx-mark.png` is a retained ATRX mark asset.
 - `public/robots.txt` allows crawling and points to the canonical sitemap.
-- `public/sitemap.xml` contains the canonical homepage and an accurate `lastmod`.
-- `index.html` owns canonical, title, description, robots/googlebot controls, Open Graph, Twitter,
-  identity links, responsive preloads, and the JSON-LD graph.
-- `src/data/profile.ts` owns the matching runtime title used when the tab regains focus.
+- `public/sitemap.xml` contains `/`, `/blog`, and every indexable registry route. Its source test compares
+  exact URLs and stable `lastmod` values against the validated published/archived registry, so drafts
+  cannot enter and new public notes cannot be omitted silently.
+- `index.html` owns the raw SPA-shell homepage fallback: canonical, title, description,
+  robots/googlebot controls, Open Graph, Twitter, identity links, responsive preloads, and homepage
+  JSON-LD. It does not claim to prerender deep-route metadata.
+- `src/lib/pageMetadata.ts` derives hydrated metadata for home, collection, public/archived article,
+  draft preview, and recovery states from `src/data/profile.ts` plus validated article metadata.
+- `PageMetadata` updates the marked JSON-LD script and managed head fields without duplication. Draft
+  previews and recovery routes remove canonical, social, profile/article, and structured-data remnants
+  and use `noindex, nofollow`.
+- Cloudflare currently serves one BrowserRouter shell. A direct raw `/blog` response therefore contains
+  the homepage fallback until JavaScript hydrates; browser-rendered metadata is route-specific. This is
+  intentionally tested and is not equivalent to prerendering or static generation.
 
 ## Build and Deployment
 
@@ -284,6 +298,8 @@ source
 - `src/blog/validation.test.ts`
 - `src/blog/registry.test.ts`
 - `src/blog/preview.test.ts`
+- `src/blog/sitemap.test.ts`
+- `src/lib/pageMetadata.test.ts`
 - `src/blog/components/BlogIndex.test.tsx`
 - `src/blog/components/ArticleLayout.test.tsx`
 - `src/blog/mdx-components.test.tsx`
@@ -300,14 +316,15 @@ mask assignment and touch feedback, Magic Tab selection/focus/edge motion, reduc
 project filtering, architecture keyboard behavior, operating principles, copy-email feedback, mobile
 containment, flagship geometry, project visual geometry, dialog title fit, terminal containment, mobile
 tap-only project behavior, void.chat orbit/card/dialog containment, canonical metadata, structured data,
-sitemap, robots, and Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
+sitemap, robots, hydrated route metadata replacement/cleanup, the explicit raw-SPA fallback, and
+Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
 `e2e/routes.spec.ts` covers cross-route Field Notes navigation, browser history, direct development
 preview, semantic article primitives, code/table containment, unpublished recovery, and reduced-motion
 route behavior across desktop and mobile projects.
 
-The Stage C build kept the route pages statically declared after measuring the trade-off. The editorial
-surface changed the entry from 524.36 kB to 532.93 kB minified while the fixture body remained isolated
-in a 1.85 kB lazy chunk. Adding route-level suspense boundaries would save only the blog presentation
+The Stage D build keeps the route pages statically declared after measuring the trade-off. The editorial
+and route-metadata surface produces a 541.28 kB minified entry while the fixture body remains isolated
+in a 1.96 kB lazy chunk. Adding route-level suspense boundaries would save only the blog presentation
 code while introducing transient headings that weaken the existing focus-transfer contract; the larger
 homepage remains the source of the bundle advisory.
 
@@ -354,11 +371,12 @@ Update this document in the same work session when any of these change:
 
 ### Delivery status and superseding rule
 
-Stages A and B are implemented: the application is route based, the portfolio is preserved at `/`,
+Stages A through D are implemented: the application is route based, the portfolio is preserved at `/`,
 shared navigation is route aware, route focus/hash behavior is tested, invalid routes are deliberate,
 and the Field Notes content system compiles trusted local MDX through a validated typed registry with
-true lazy article chunks. The final index/article presentation, route metadata, and sitemap integration
-described below remain target architecture for Stages C-D.
+true lazy article chunks. The index/article presentation, typed hydrated metadata lifecycle, JSON-LD,
+and test-locked sitemap described below are delivered. Static prerendering remains a possible future
+extension, not a current capability.
 Do not leave contradictory “planned” and “current” architecture after launch.
 
 The implementation must not rewrite project presentation into a generic data-only system. Existing
@@ -673,8 +691,8 @@ Security boundary:
 
 ### Metadata ownership and lifecycle
 
-Base metadata remains in `index.html` as a safe fallback. Route-specific metadata is owned by a typed
-controller or hook with deterministic cleanup.
+Base metadata remains in `index.html` as a safe fallback. Route-specific metadata is owned by
+`src/lib/pageMetadata.ts` and the `PageMetadata` controller with deterministic cleanup.
 
 Required route fields:
 
@@ -685,7 +703,7 @@ Required route fields:
 | `/blog/:slug` | article title, description, canonical, OG article fields, dates, image when valid, BlogPosting/TechArticle JSON-LD |
 | not found | clear title, no false article canonical, normally `noindex` if implemented intentionally |
 
-The controller must:
+The controller:
 
 - update existing tags instead of endlessly appending duplicates;
 - remove article-only tags and JSON-LD when leaving an article;
@@ -696,7 +714,7 @@ The controller must:
 
 ### SEO and static-host limitation
 
-The initial BrowserRouter implementation can render route-specific metadata after JavaScript starts.
+The BrowserRouter implementation renders route-specific metadata after JavaScript starts.
 Cloudflare Pages can serve the SPA shell for deep links when no top-level `404.html` disables fallback.
 However, crawlers and social preview bots do not all execute client JavaScript consistently.
 
@@ -713,7 +731,7 @@ Therefore:
 
 The sitemap must share publication truth with the registry.
 
-Acceptable initial approaches:
+The current implementation uses the second approach below:
 
 1. A generated sitemap from validated metadata during build.
 2. A manually updated sitemap enforced by tests that compare expected published routes with XML entries.

@@ -15,11 +15,13 @@ import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
 import { PortfolioTerminal } from "../components/PortfolioTerminal";
 import { ProjectLab } from "../components/ProjectLab";
-import { profile, siteMetadata } from "../data/profile";
+import { PageMetadata } from "../components/PageMetadata";
+import { profile } from "../data/profile";
 import { useDiscovery } from "../hooks/useDiscovery";
 import { useSignalAudio } from "../hooks/useSignalAudio";
 import { useSignalMode } from "../hooks/useSignalMode";
 import { useVisitorMode } from "../hooks/useVisitorMode";
+import { homePageMetadata } from "../lib/pageMetadata";
 import type { Project } from "../types";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -85,15 +87,9 @@ export function PortfolioPage() {
       }
     };
 
-    const onVisibilityChange = () => {
-      document.title = document.hidden ? "signal paused // ATRX" : siteMetadata.title;
-    };
-
     window.addEventListener("keydown", onKeyDown);
-    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
@@ -154,6 +150,7 @@ export function PortfolioPage() {
 
   return (
     <div id="top" className={signalActive ? "app-shell signal-mode" : "app-shell"}>
+      <PageMetadata metadata={homePageMetadata} />
       <Header
         mode={mode}
         onModeChange={setMode}

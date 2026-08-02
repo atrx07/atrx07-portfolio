@@ -28,6 +28,9 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   const sitemap = await sitemapResponse.text();
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
   expect(sitemap).toContain("<lastmod>2026-07-22</lastmod>");
+  expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
+  expect(sitemap).toContain("<lastmod>2026-08-02</lastmod>");
+  expect(sitemap).not.toContain("registry-fixture");
   expect(sitemap).not.toContain("<changefreq>");
   expect(sitemap).not.toContain("<priority>");
 
@@ -43,12 +46,49 @@ test("Field Notes keeps the local draft fixture outside public routes", async ({
   await page.goto("/blog");
 
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeVisible();
+  await expect(page).toHaveTitle("Field Notes | Arppith Andrews (atrx07)");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://atrx07.pages.dev/blog",
+  );
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "website");
+  await expect(page.locator('meta[property="profile:username"]')).toHaveCount(0);
+  const collectionGraph = JSON.parse(
+    (await page.locator('script[data-route-structured-data]').textContent()) ?? "{}",
+  ) as { "@graph"?: Array<{ "@type"?: string }> };
+  expect(collectionGraph["@graph"]?.some((node) => node["@type"] === "CollectionPage")).toBe(true);
   await expect(page.locator("[data-published-count]"))
     .toHaveAttribute("data-published-count", "0");
 
   await page.goto("/blog/registry-fixture");
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  await expect(page.locator('script[data-route-structured-data]')).toHaveCount(0);
   await expect(page.getByText("Pipeline proof")).toHaveCount(0);
+
+  await page.goto("/blog/registry-fixture?preview=draft");
+  await expect(page.getByRole("heading", { level: 1, name: "Registry fixture" })).toBeVisible();
+  await expect(page).toHaveTitle("Draft preview: Registry fixture | ATRX Field Notes");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  await expect(page.locator('meta[property="og:type"]')).toHaveCount(0);
+
+  await page.getByRole("link", { name: "ATRX07 home" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveTitle("Arppith Andrews | AI, Automation & Software Developer");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://atrx07.pages.dev/");
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "profile");
+  await expect(page.locator('meta[property="profile:username"]')).toHaveAttribute("content", "atrx07");
+});
+
+test("raw SPA route responses remain an explicit homepage metadata fallback", async ({ request }) => {
+  const response = await request.get("/blog");
+  const html = await response.text();
+
+  expect(response.ok()).toBe(true);
+  expect(html).toContain("<title>Arppith Andrews | AI, Automation & Software Developer</title>");
+  expect(html).not.toContain("<title>Field Notes | Arppith Andrews (atrx07)</title>");
 });
 
 test("command palette to NeuraLoc terminal flow", async ({ page }) => {
