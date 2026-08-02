@@ -1,52 +1,53 @@
-# Next Step — Field Notes route foundation
+# Next Step - Field Notes MDX content system
 
 ## Handoff
 
-- Governance baseline: `208ca04` — versioned Field Notes direction and next-step protocol.
-- Product direction: extend the ATRX portfolio with a first-class Field Notes surface while preserving
-  the existing homepage’s visual and interaction contract.
-- Immediate goal: establish the route foundation for `/`, `/blog`, `/blog/:slug`, and `*` before adding
-  MDX content, article components, or publication metadata.
+- Source baseline: `6d2775d` - implemented and validated the BrowserRouter route foundation.
+- Product direction: turn the truthful `/blog` foundation into a typed local-content system without
+  publishing invented notes or changing the homepage presentation.
+- Immediate goal: configure MDX, establish the canonical article contract and registry, and prove draft,
+  publication, lookup, sorting, and module-loading behavior before building the final editorial index.
 
 ## Implementation sequence
 
-1. Inspect the existing `App.tsx`, `main.tsx`, `Header.tsx`, `Footer.tsx`, command palette actions,
-   metadata setup, and Playwright assumptions before moving code.
-2. Add `react-router-dom` using the existing pnpm lockfile and document the dependency and route
-   ownership in `ARCHITECTURE.md`.
-3. Extract the current portfolio composition into `PortfolioPage` (or an equally clear route component)
-   without changing its anchors, visitor-mode behavior, terminal, project requests, discovery, sound, or
-   command-palette interaction contracts.
-4. Add `src/router.tsx` with browser-history routes for `/`, `/blog`, `/blog/:slug`, and a deliberate
-   `NotFoundPage`. The blog index and article routes may be honest route-foundation placeholders only;
-   do not fabricate notes or article history.
-5. Refactor shared navigation only as needed for route awareness. From blog routes, homepage sections
-   must use route-plus-fragment links such as `/#projects`; the wordmark must return to `/`; Back and
-   Forward must remain predictable.
-6. Implement a small, testable route-scroll/focus helper so route changes start at the correct reading
-   position and homepage fragments resolve after the homepage mounts. Respect reduced motion and avoid
-   overriding browser restoration without coverage.
-7. Keep base homepage metadata intact. Do not add MDX, blog registry, sitemap entries, article JSON-LD,
-   or a static-host redirect rule until the route foundation has passing tests.
+1. Add `@mdx-js/rollup` with the existing pnpm lockfile and configure it before the React plugin in Vite.
+2. Add `src/blog/types.ts`, `validation.ts`, and `registry.ts` using the metadata contract in
+   `AGENTS.md` and `ARCHITECTURE.md`.
+3. Discover metadata eagerly and article bodies lazily with `import.meta.glob`; keep the portfolio route
+   independent from article-body chunks.
+4. Enforce lowercase kebab-case slugs, unique routes, valid ISO dates, normalized nonempty tags, valid
+   status values, module/slug agreement, and deterministic publication-date ordering.
+5. Add one clearly marked local fixture note for tests only, or keep the public registry empty. Do not
+   publish fabricated project history merely to make `/blog` appear populated.
+6. Replace `BlogPostPage`'s unconditional recovery state with registry lookup, draft rejection, a bounded
+   lazy-loading state, and an error boundary that never exposes raw module errors.
+7. Add the minimal approved MDX semantic map needed for fixture rendering. Defer the complete visual
+   component library and final index composition to the following design stage.
+8. Preserve the current route-aware header/footer, cross-route hash behavior, homepage interactions,
+   base homepage metadata, sitemap, and Cloudflare fallback behavior.
 
 ## Constraints
 
-- Follow the Field Notes product requirements in `PROJECT.md`, design contract in `DESIGN.md`, and
-  planned architecture in `ARCHITECTURE.md`.
-- Do not rewrite the current portfolio or duplicate separate header/footer implementations.
-- Do not add a server, CMS, database, analytics, untrusted content evaluation, fake posts, metrics, or
-  unsupported SEO claims.
-- Preserve privacy restrictions and the existing static Cloudflare Pages deployment model.
-- Do not add a top-level `404.html` or `_redirects` rule without testing Cloudflare SPA fallback impact.
+- Local committed MDX is trusted build input; never fetch or evaluate remote or user-authored MDX.
+- Draft notes must be absent from production lists and direct public route resolution.
+- Archived notes remain readable and explicitly marked when the presentation stage lands.
+- The registry is the single source for index discovery, article lookup, and later metadata/sitemap work.
+- Do not add route-specific SEO, sitemap entries, tag filtering UI, or polished article visuals in this
+  stage unless required to validate the content boundary.
+- Keep article bodies out of the initial homepage bundle and measure the existing 514.29 kB build
+  advisory after adding MDX.
+- Preserve privacy, factual grounding, static deployment, reduced motion, and browser-history behavior.
 
 ## Required validation and exit criteria
 
-- Existing lint, unit/component tests, build, and Playwright desktop/mobile suite continue to pass.
-- New tests cover the route tree, homepage preservation, cross-route section links, deliberate not-found
-  behavior, and route scroll/focus behavior.
-- Browser checks cover `/`, `/blog`, an unknown article slug, direct refresh/deep navigation where the
-  local server supports it, Back/Forward, reduced motion, and 360 px containment.
-- `ARCHITECTURE.md`, `STATUS.md`, README where applicable, and this file are updated with actual facts
-  before handoff.
-- The next `NEXT_STEP.md` replaces this route-foundation brief with the MDX registry/content-system plan
-  only after this stage is implemented, validated, committed, and pushed.
+- Existing lint, unit/component, build, and Playwright desktop/mobile suites continue to pass.
+- New tests cover metadata validation, duplicate rejection, slug/module agreement, draft exclusion,
+  archived inclusion, published ordering, tag normalization, article lookup, lazy module failure, and
+  unknown-slug recovery.
+- A test fixture can render through the approved MDX mapping without entering the public production
+  index unless explicitly approved.
+- The production build emits separate lazy article chunks or otherwise demonstrates that article bodies
+  are not bundled into the homepage entry.
+- `ARCHITECTURE.md`, `STATUS.md`, README where applicable, and this file report delivered facts.
+- After this stage is committed and pushed, replace this brief with the ATRX Field Notes index and
+  long-form article visual-integration plan.
