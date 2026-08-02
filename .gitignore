@@ -14,12 +14,8 @@ playwright.config.d.ts
 .env.*
 !.env.example
 
-# Local project control, design, and agent reference material
-AGENTS.md
-DESIGN.md
-PROJECT.md
+# Private local handoff and agent reference material
 STATUS.md
-ARCHETECTURE.md
 .agents/
 
 .DS_Store

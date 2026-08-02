@@ -1,0 +1,848 @@
+# ATRX Portfolio Architecture
+
+This is the private technical map for the ATRX portfolio. It records the durable structure, state,
+data ownership, interactions, verification boundaries, and deployment model. Update it whenever those
+areas materially change. Do not add this file to Git.
+
+## System Summary
+
+The portfolio is a static React single-page application built by Vite and deployed to Cloudflare Pages.
+There is no application server, database, authentication layer, analytics service, or arbitrary remote
+execution path. Public profile and project content are compiled from typed local data.
+
+```mermaid
+flowchart TD
+  html["index.html: metadata and root shell"] --> entry["src/main.tsx"]
+  entry --> app["src/App.tsx: composition and shared interaction state"]
+  data["src/data: profile, projects, commands"] --> app
+  app --> sections["Page sections and interactive components"]
+  app --> hooks["Local/session/transient state hooks"]
+  sections --> engine["Safe terminal parser and scroll helpers"]
+  styles["src/styles/globals.css"] --> sections
+  assets["public assets, sitemap, robots"] --> browser["Browser runtime"]
+  app --> browser
+  browser --> build["Vite dist output"]
+  build --> pages["Cloudflare Pages"]
+```
+
+## Technology Stack
+
+| Layer | Technology | Responsibility |
+| --- | --- | --- |
+| Build | Vite 6 | Development server and static production bundle |
+| UI runtime | React 18 | Component rendering and interaction state |
+| Language | TypeScript 5.7 strict mode | Typed data, components, hooks, and terminal engine |
+| Styling | Tailwind build pipeline plus custom global CSS | Tokens, layout, responsive behavior, motion styling, and visual system |
+| Motion | GSAP, `@gsap/react`, ScrollTrigger, Framer Motion | Purposeful reveal, flagship pinning, scroll-linked behavior, and reduced-motion-aware component animation |
+| Icons | Lucide React | Accessible interface icons |
+| Unit tests | Vitest, React Testing Library, jsdom | Hooks, parser, components, filters, architecture, terminal, and contact behavior |
+| End-to-end | Playwright | Desktop/mobile workflows, layout contracts, interaction behavior, and SEO endpoints |
+| Hosting | Cloudflare Pages | Static `dist/` deployment |
+
+## Entry and Composition
+
+1. `index.html` provides the root element, canonical metadata, social metadata, crawler controls,
+   responsive image preloads, and JSON-LD.
+2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the global stylesheet.
+3. `src/App.tsx` owns page composition and cross-section interaction state.
+4. Section components render in one scrollable document; hash navigation points to stable section IDs.
+5. Vite emits the static `dist/` artifact consumed by Cloudflare Pages.
+
+## Runtime Component Map
+
+| Component | Responsibility |
+| --- | --- |
+| `Header.tsx` | Persistent system rail, desktop/mobile navigation, availability, discovery count, sound, command palette, GitHub |
+| `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
+| `VisitorModeSwitch.tsx` | Controlled Recruiter/Developer/Chaos adapter shared by hero and mobile navigation |
+| `godui/mask-button.tsx` | Semantic button/link primitives with sprite-mask hover, focus, keyboard, and touch feedback |
+| `godui/magic-tab.tsx` | Controlled/uncontrolled tab primitive with roving focus, manual activation, raised selection layers, and off-screen rainbow pausing |
+| `godui/orbiting-circles.tsx` | Reusable counter-rotating orbital tracks with fixed geometry, counter-rotated children, and a static reduced-motion fallback |
+| `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
+| `Flagship.tsx` | NeuraLoc-Core narrative, pinned desktop title, runtime visual, architecture strip, proof and roadmap |
+| `ProjectLab.tsx` | Project filters, accordion state, mobile tap behavior, discovery, and detail-dialog coordination |
+| `ProjectVisual.tsx` | Deterministic project-specific visual fragments for six visual types, including void.chat's layered edge architecture orbit |
+| `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
+| `ArchitecturePlayground.tsx` | Project tabs, keyboard node navigation, pinned responsibility explanation |
+| `PortfolioTerminal.tsx` | Fixed-height terminal UI, input history, completion, safe action dispatch, internal output scrolling |
+| `CommandPalette.tsx` | Section navigation, project opening, visitor-mode changes, terminal access, GitHub, and email copy |
+| `ExperimentRack.tsx` | Smaller public and unlinked experiment record |
+| `CapabilityMap.tsx` | Capabilities grouped by engineering purpose |
+| `FieldNotes.tsx` | About identity, operating-principle carousel, responsive portrait ordering |
+| `Contact.tsx` | Email, GitHub, and copy-email feedback |
+| `Footer.tsx` | Closing identity and navigation context |
+
+The bundled mask sprite sheets live in `src/components/assets/` and are emitted as fingerprinted Vite
+assets. They are presentation-only: navigation remains a native anchor, copy actions remain native
+buttons, and no mask interaction changes routing or data ownership. Magic Tab has no runtime dependency
+beyond React; `VisitorModeSwitch` supplies the controlled value while `useVisitorMode` remains the sole
+owner of persisted mode state. The void.chat identity composes two `OrbitingCircles` tracks around a
+static room core; the nodes communicate Firebase identity, Cloudflare edge execution, Durable Object
+room ownership, WebSocket delivery, and D1 persistence without adding runtime state or network work.
+The Aveline identity composes the bundled `AgentFlow` as a fixed, non-pannable workflow. Message ingress
+branches into mood context and Upstash memory, converges on resilient Groq inference, and exits through
+a state-aware reply. `ProjectLab` selects a linear Reply position only for an expanded desktop accordion;
+mobile accordions and `ProjectDetail` retain the dropped Reply position. Layout changes remount the flow,
+and fit-to-view observes its viewport through the accordion's flex transition so it settles against the
+final available width. The linear variant may enlarge to a bounded 1.28x to fill a wide canvas, while
+stacked variants retain the component's 1:1 maximum. The collapsed card does
+not run the autoplay sequence.
+
+## Data Ownership
+
+### Canonical local data
+
+- `src/data/profile.ts` owns public identity, role, contact routes, headline, availability, principles,
+  capability groups, experiments, and reusable site metadata.
+- `src/data/projects.ts` owns all featured project claims, categories, technologies, maturity, public
+  links, proof points, constraints, architecture nodes, roadmap text, and visual type.
+- `src/data/commands.ts` owns the terminal command catalog and help descriptions.
+- `src/types.ts` defines `VisitorMode`, `ProjectStatus`, `ArchitectureNode`, and `Project`.
+
+Components may choose presentation and interaction behavior, but durable profile or project claims
+should not be duplicated into component files without a strong reason.
+
+### Project data flow
+
+```mermaid
+flowchart LR
+  projects["projects.ts"] --> lab["ProjectLab"]
+  projects --> terminal["terminalEngine"]
+  projects --> palette["CommandPalette"]
+  lab --> visual["ProjectVisual"]
+  lab --> detail["ProjectDetail"]
+  projects --> architecture["ArchitecturePlayground"]
+  discover["useDiscovery"] --> lab
+  lab --> discover
+  palette --> app["App requestedProject state"]
+  app --> lab
+```
+
+## State and Persistence
+
+| State | Owner | Persistence | Notes |
+| --- | --- | --- | --- |
+| Visitor mode | `useVisitorMode` -> `useLocalStorage` | `localStorage: atrx-visitor-mode` | Validated against recruiter/developer/chaos |
+| Sound mute | `useSignalAudio` -> `useLocalStorage` | `localStorage: atrx-muted` | Defaults muted; audio is user initiated |
+| Discovered systems | `useDiscovery` | `sessionStorage: atrx-discovered-systems` | Never gates content |
+| Signal mode | `useSignalMode` | transient memory/timer | Harmless, dismissible, and keyboard escapable |
+| Command palette | `App` | transient React state | Dialog opens from header or Ctrl/Cmd+K |
+| Requested project | `App` -> `ProjectLab` | transient React state | Lets palette select a project and scroll to the lab |
+| Copy feedback | `App` | transient React state | Clipboard API with selection-based fallback |
+| Terminal history/output | `PortfolioTerminal` | component memory | Fixed parser; no arbitrary evaluation |
+| Project expansion/filter | `ProjectLab` | component memory | Mobile opens only by title tap; desktop uses accordion interaction |
+| Architecture selection | `ArchitecturePlayground` and flagship | component memory | Keyboard and pointer accessible |
+
+## Key Interaction Flows
+
+### Command palette
+
+`Header` or keyboard shortcut -> `App.paletteOpen` -> `CommandPalette` -> section scroll, project request,
+mode change, terminal focus, GitHub open, or email copy.
+
+### Project inspection
+
+Filter or palette request -> `ProjectLab` -> expansion -> `ProjectVisual` -> explicit `Inspect system`
+action -> `ProjectDetail` dialog -> allowlisted repository link.
+
+On mobile, tapping the title only expands or collapses the card. It never opens the detail dialog.
+
+### Safe terminal
+
+User input -> `PortfolioTerminal` -> `executeTerminalCommand` in `src/lib/terminalEngine.ts` -> fixed
+`TerminalResult` -> rendered lines and optional allowlisted action.
+
+The parser uses normalized exact commands. It contains no `eval`, interpolation, process access, arbitrary
+network request, or shell bridge.
+
+### Discovery
+
+Project exploration -> `discover(slug)` -> unique session list -> header count and short system log.
+Discovery is a retention signal, not an authorization or content gate.
+
+### Sound
+
+Explicit unmute -> explicit play action -> short WebAudio oscillator sequence -> context closes.
+There is no autoplay.
+
+## Styling and Responsive Architecture
+
+- `src/styles/globals.css` owns tokens, typography, layout, component styling, motion fallbacks, dialog
+  behavior, and responsive breakpoints.
+- Major responsive thresholds are 1180 px, 900 px, and the mobile rules near 640 px.
+- Desktop uses the pinned flagship narrative and vertical project accordion.
+- Mobile disables pointer-follow assumptions, uses the wide hero artwork, stacks visitor modes
+  horizontally, presents About copy before the portrait, and uses tap-controlled project cards.
+- Visitor modes use the bundled Magic Tab interaction model with sharp ATRX geometry, manual arrow-key
+  focus, Enter/Space activation, and signal-blue/red selected-edge animation that pauses off screen.
+- Aveline's Agent Flow uses stable layout-specific canvas coordinates, disabled dragging/panning, a
+  responsive fit-to-view frame, matched 12 px node/trace radii, a fine-pointer hover lift, and immediate
+  final-state resolution under reduced motion. Only the expanded desktop accordion selects the linear
+  Reply route; the dialog and mobile layouts select the stacked route.
+- `prefers-reduced-motion` must bypass nonessential motion and preserve all content and interaction.
+- Fixed-format visuals use stable grids, dimensions, containment, and overflow rules to prevent layout shift.
+
+## Static Assets and SEO
+
+- `public/atrx-portrait.jpg` is the square primary identity artwork.
+- `public/atrx-wide.jpg` is the mobile hero and social-sharing artwork.
+- `public/atrx-avatar.png` is the favicon/avatar asset.
+- `public/atrx-mark.png` is a retained ATRX mark asset.
+- `public/robots.txt` allows crawling and points to the canonical sitemap.
+- `public/sitemap.xml` contains the canonical homepage and an accurate `lastmod`.
+- `index.html` owns canonical, title, description, robots/googlebot controls, Open Graph, Twitter,
+  identity links, responsive preloads, and the JSON-LD graph.
+- `src/data/profile.ts` owns the matching runtime title used when the tab regains focus.
+
+## Build and Deployment
+
+```text
+source
+  -> pnpm build
+  -> tsc -b
+  -> vite build
+  -> dist/
+  -> Cloudflare Pages
+  -> https://atrx07.pages.dev/
+```
+
+- `wrangler.jsonc` names the Pages project and declares `./dist`.
+- Core rendering does not depend on a server or runtime secret.
+- The Cloudflare project must publish `dist`, not the repository root.
+- A root deployment can return HTTP 200 while failing to run uncompiled `/src/main.tsx`; live checks
+  must verify the expected title or hashed bundle, not status alone.
+
+## Verification Architecture
+
+### Unit/component
+
+- `src/lib/terminalEngine.test.ts`
+- `src/hooks/useVisitorMode.test.tsx`
+- `src/components/ArchitecturePlayground.test.tsx`
+- `src/components/Contact.test.tsx`
+- `src/components/godui/mask-button.test.tsx`
+- `src/components/godui/magic-tab.test.tsx`
+- `src/components/godui/orbiting-circles.test.tsx`
+- `src/components/godui/agent-flow.test.tsx`
+- `src/components/PortfolioTerminal.test.tsx`
+- `src/components/ProjectLab.test.tsx`
+- `src/components/ProjectVisual.test.tsx`
+
+Vitest is deliberately scoped to `src/**/*.test.{ts,tsx}` and explicitly excludes the ignored
+`.pnpm-store/**` workspace cache. This keeps `pnpm.cmd test` limited to the canonical application
+suite even when local QA mirrors or package-store copies exist beneath the repository root.
+
+### End-to-end
+
+`e2e/portfolio.spec.ts` covers the command-palette-to-project-to-terminal flow, mobile navigation,
+mask assignment and touch feedback, Magic Tab selection/focus/edge motion, reduced-motion fallback,
+project filtering, architecture keyboard behavior, operating principles, copy-email feedback, mobile
+containment, flagship geometry, project visual geometry, dialog title fit, terminal containment, mobile
+tap-only project behavior, void.chat orbit/card/dialog containment, canonical metadata, structured data,
+sitemap, robots, and Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
+
+### Required pre-push loop
+
+```powershell
+pnpm.cmd lint
+pnpm.cmd test
+pnpm.cmd build
+pnpm.cmd test:e2e
+```
+
+Also inspect representative desktop and 360 px mobile renders, check console warnings/errors, verify no
+horizontal overflow, and confirm the live Cloudflare artifact after pushing.
+
+## Security and Privacy Boundaries
+
+- Public links are allowlisted in canonical data or fixed commands.
+- The terminal cannot execute arbitrary input.
+- No analytics or trackers are installed.
+- No client token or environment secret is required.
+- Private repositories receive no implementation detail or fabricated link.
+- Public claims must remain grounded in supplied facts or public repository documentation.
+- `STATUS.md` and `.agents/` are private ignored control material. `AGENTS.md`, `PROJECT.md`,
+  `DESIGN.md`, `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents and must
+  remain free of secrets, private repository contents, local paths, and personal data.
+
+## Architecture Change Triggers
+
+Update this document in the same work session when any of these change:
+
+- entry points, build tooling, framework, major dependency, or hosting target
+- component boundaries or section ownership
+- typed profile/project/command data ownership
+- local storage, session storage, terminal, sound, discovery, or cross-component state
+- routing, page structure, dialogs, architecture interaction, or mobile project behavior
+- asset strategy, metadata ownership, sitemap, robots, or deployment output
+- unit/E2E coverage boundaries or the required verification loop
+
+
+---
+
+## Planned Blog / Field Notes Architecture Extension
+
+### Status and superseding rule
+
+The preceding sections document the launched single-page baseline. The Field Notes implementation changes
+that baseline from one hash-navigated page into a route-based static React application while preserving
+the existing portfolio as the `/` route.
+
+Until the blog source commit exists and is validated, this section is the **target architecture**. After
+implementation, update the earlier system summary, entry/composition tables, component map, data flow,
+SEO ownership, test list, and deployment notes so the document describes one coherent current system.
+Do not leave contradictory “planned” and “current” architecture after launch.
+
+The implementation must not rewrite project presentation into a generic data-only system. Existing
+project-specific visuals and interactions remain owned by the portfolio route.
+
+### Target system summary
+
+```mermaid
+flowchart TD
+  html["index.html: base metadata and root shell"] --> entry["src/main.tsx"]
+  entry --> router["src/router.tsx: browser route tree"]
+
+  router --> portfolio["/: PortfolioPage"]
+  router --> blogIndex["/blog: BlogIndexPage"]
+  router --> blogPost["/blog/:slug: BlogPostPage"]
+  router --> notFound["*: NotFoundPage"]
+
+  profile["src/data/profile.ts"] --> portfolio
+  projects["src/data/projects.ts"] --> portfolio
+  commands["src/data/commands.ts"] --> portfolio
+
+  blogMeta["src/blog registry + typed metadata"] --> blogIndex
+  blogMeta --> blogPost
+  mdx["src/blog/posts/*.mdx"] --> blogPost
+  mdxComponents["src/blog/components + mdx-components"] --> blogPost
+
+  portfolio --> sharedShell["Route-aware header/footer/navigation"]
+  blogIndex --> sharedShell
+  blogPost --> sharedShell
+  notFound --> sharedShell
+
+  metadata["route metadata controller"] --> browser["Browser head + JSON-LD"]
+  portfolio --> metadata
+  blogIndex --> metadata
+  blogPost --> metadata
+
+  styles["src/styles/globals.css + blog layers"] --> portfolio
+  styles --> blogIndex
+  styles --> blogPost
+
+  assets["public assets, sitemap, robots, optional _redirects"] --> build["Vite dist output"]
+  router --> build
+  mdx --> build
+  build --> pages["Cloudflare Pages"]
+```
+
+### Target technology additions
+
+| Layer | Technology / mechanism | Responsibility |
+| --- | --- | --- |
+| Routing | `react-router-dom` | Browser-history routes, links, parameters, not-found state, Back/Forward behavior |
+| Article source | MDX | Versioned prose with approved React components |
+| MDX build | `@mdx-js/rollup` | Compile local `.mdx` modules through Vite at build time |
+| Article discovery | Vite `import.meta.glob` | Discover local article modules and/or metadata without manual component imports |
+| Metadata | Typed route metadata controller | Title, description, canonical, social tags, and JSON-LD replacement per route |
+| Publication validation | TypeScript helper + tests | Validate slugs, status, dates, tags, module presence, and duplicates |
+| Route hosting | Cloudflare Pages SPA fallback | Serve the application shell for valid deep navigation requests when no static route artifact exists |
+
+Do not add a server, database, authentication layer, runtime MDX evaluator, or secret-bearing API for the
+initial implementation.
+
+### Target repository structure
+
+Recommended ownership map:
+
+```text
+src/
+  main.tsx
+  router.tsx
+
+  pages/
+    PortfolioPage.tsx
+    BlogIndexPage.tsx
+    BlogPostPage.tsx
+    NotFoundPage.tsx
+
+  layouts/
+    SiteLayout.tsx                 # only if shared route shell is extracted
+
+  blog/
+    types.ts                       # BlogPostMeta, status, module types
+    registry.ts                    # discovery, filtering, sorting, lookup
+    validation.ts                  # invariant checks
+    metadata.ts                    # blog/article metadata builders
+    mdx-components.tsx             # approved MDX component mapping
+
+    components/
+      ArticleLayout.tsx
+      ArticleHeader.tsx
+      ArticleFooter.tsx
+      ArticleTableOfContents.tsx
+      NoteCallout.tsx
+      CodeBlock.tsx
+      Figure.tsx
+      MetricPanel.tsx
+      ArchitectureFigure.tsx
+      ComparisonTable.tsx
+      RelatedNotes.tsx
+
+    posts/
+      <stable-slug>.mdx
+
+  components/
+    Header.tsx                     # refactored to be route-aware
+    Footer.tsx                     # shared when practical
+    ...existing portfolio components
+
+  lib/
+    routeScroll.ts                 # route/hash scroll and focus behavior
+    pageMetadata.ts                # generic head mutation lifecycle, if separated
+
+public/
+  sitemap.xml                      # or generated equivalent
+  robots.txt
+  _redirects                      # only when explicitly required and documented
+```
+
+The implementation may use different filenames when the existing code makes another boundary cleaner,
+but avoid:
+
+- putting the entire blog in `App.tsx`;
+- embedding article metadata inside card markup;
+- duplicating the header/footer into unrelated blog copies;
+- placing every MDX component in one unbounded file;
+- manually maintaining several divergent arrays of the same post metadata;
+- importing all article bodies into the homepage bundle.
+
+### Entry and route composition
+
+Target flow:
+
+1. `index.html` supplies base fallback metadata and the root element.
+2. `src/main.tsx` mounts the route provider under `React.StrictMode` and imports global styles.
+3. `src/router.tsx` declares all public routes.
+4. The existing content of `src/App.tsx` moves into `PortfolioPage.tsx` or an equivalent route component.
+5. `App.tsx` may become the router/shell entry or be removed only after all imports/tests are updated.
+6. `BlogIndexPage.tsx` reads published metadata from the canonical registry.
+7. `BlogPostPage.tsx` resolves `:slug`, rejects hidden drafts, lazy-loads the article module, applies route
+   metadata, and renders the approved MDX component mapping.
+8. `NotFoundPage.tsx` provides an intentional route recovery path.
+9. The shared header uses router links for cross-route navigation and route-plus-fragment links for
+   homepage sections.
+10. The footer remains recognizably shared across routes.
+
+### Route table
+
+| Route | Owner | Data | Rendering behavior |
+| --- | --- | --- | --- |
+| `/` | `PortfolioPage` | profile, projects, commands, existing hooks | Current interactive portfolio and section anchors |
+| `/blog` | `BlogIndexPage` | published article metadata | Featured note, tags, chronological archive |
+| `/blog/:slug` | `BlogPostPage` | validated metadata + lazy MDX module | Article layout or intentional not-found |
+| `*` | `NotFoundPage` | route location only | Recovery links to home and Field Notes |
+
+Optional future routes such as `/blog/tag/:tag`, `/blog/series/:series`, or feeds are not part of the first
+implementation.
+
+### Route-aware shell and state ownership
+
+The current header expects portfolio-specific state such as discovery count, sound, visitor mode, and
+command palette actions. Refactor without duplicating the entire shell.
+
+Recommended ownership:
+
+| Concern | Owner after routing | Route behavior |
+| --- | --- | --- |
+| Visitor mode persistence | existing `useVisitorMode` owner | Preserved globally; article prose does not change facts or density by mode |
+| Sound mute | existing `useSignalAudio` owner or route shell | Remains user-controlled; blog never autoplays sound |
+| Discovery count | `PortfolioPage` | Visible only where meaningful; do not show misleading `0/6 found` on direct article arrival |
+| Project request | `PortfolioPage` | Portfolio-only |
+| Terminal focus/action | `PortfolioPage` / command palette | Blog navigation may offer a route back to terminal, not mount terminal inside articles |
+| Command palette open state | shared shell when practical | May include Home, Field Notes, and article navigation without losing existing commands |
+| Blog tag filter | `BlogIndexPage` | URL query parameter optional; otherwise local component state |
+| Article module state | `BlogPostPage` | Route-bound lazy-load state and error boundary |
+| Page metadata | route metadata controller | Replaced on every route transition and cleaned up on exit |
+| Route scroll/focus | shared route utility | Top/focus behavior for new pages; hash behavior for homepage sections |
+
+Visitor modes must not produce three different versions of an article's factual content. At most, they
+may influence small surrounding labels or optional presentation in a future explicitly designed feature.
+
+### Canonical blog data types
+
+```ts
+export type BlogPostStatus = "draft" | "published" | "archived";
+
+export type BlogPostMeta = {
+  slug: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  updatedAt?: string;
+  status: BlogPostStatus;
+  tags: string[];
+  series?: string;
+  featured?: boolean;
+  cover?: {
+    src: string;
+    alt: string;
+  };
+  repositoryUrl?: string;
+  projectSlug?: string;
+  canonicalUrl?: string;
+};
+
+export type BlogPostModule = {
+  default: React.ComponentType;
+  meta: BlogPostMeta;
+};
+```
+
+If metadata is represented differently, preserve equivalent guarantees and document the source of truth.
+
+### Registry architecture
+
+The registry is the single runtime source for index cards, article lookup, related notes, route metadata,
+and publication state.
+
+Recommended split:
+
+```ts
+// Metadata can be discovered eagerly because the index needs it.
+const metaModules = import.meta.glob("./posts/*.mdx", {
+  eager: true,
+  import: "meta",
+});
+
+// Article bodies remain lazy to avoid loading every note into the initial route.
+const postModules = import.meta.glob<BlogPostModule>("./posts/*.mdx");
+```
+
+Adapt the exact typing to the MDX/Vite integration. The registry must expose narrow helpers such as:
+
+```ts
+getPublishedPosts()
+getFeaturedPost()
+getPostBySlug(slug)
+getPostsByTag(tag)
+getRelatedPosts(meta)
+getAllPublishedTags()
+```
+
+Registry invariants:
+
+- normalize and validate metadata once;
+- sort by publication date descending;
+- reject duplicate slugs;
+- keep stable deterministic output;
+- exclude drafts from production-facing helpers;
+- retain archived notes with an archive marker;
+- never derive public routes from filenames alone when an explicit slug is supplied;
+- never accept a route slug that maps to one module while metadata claims another slug;
+- return typed errors or `undefined` for unknown entries rather than throwing raw import errors into UI.
+
+### Article-loading flow
+
+```mermaid
+sequenceDiagram
+  participant Visitor
+  participant Router
+  participant PostPage as BlogPostPage
+  participant Registry
+  participant Module as Lazy MDX module
+  participant Meta as Metadata controller
+
+  Visitor->>Router: navigate /blog/example-slug
+  Router->>PostPage: provide slug param
+  PostPage->>Registry: lookup published post
+  alt unknown or draft in production
+    Registry-->>PostPage: no public record
+    PostPage-->>Visitor: intentional not-found state
+  else valid published or archived post
+    Registry-->>PostPage: metadata + module loader
+    PostPage->>Meta: apply article title/canonical/JSON-LD
+    PostPage->>Module: import article chunk
+    Module-->>PostPage: compiled MDX component
+    PostPage-->>Visitor: ArticleLayout + approved components
+  end
+```
+
+Use a route-level loading state that reserves layout space and does not flash the homepage. Use an error
+boundary around article loading and render a clear recovery state without exposing stack traces.
+
+### MDX compilation and component boundary
+
+Configure MDX before the React plugin in Vite when required by the integration. Preserve ESM-only package
+requirements and the repository's Node/pnpm baseline.
+
+The MDX component map owns semantic presentation for:
+
+- headings and optional heading anchors;
+- paragraphs and lead copy;
+- links and allowlisted internal project links;
+- code/pre blocks;
+- tables;
+- blockquotes;
+- figures and captions;
+- horizontal rules;
+- custom callouts, metrics, diagrams, disclosures, and related-note blocks.
+
+Security boundary:
+
+- MDX is trusted local source committed by the project owner, not user input;
+- do not fetch and evaluate remote MDX;
+- do not pass URL/query content into executable MDX expressions;
+- do not expose application secrets or private local files through imports;
+- sanitize any embedded raw HTML strategy or avoid raw HTML entirely;
+- external links opened in a new context use safe `rel` values;
+- code blocks are inert text.
+
+### Metadata ownership and lifecycle
+
+Base metadata remains in `index.html` as a safe fallback. Route-specific metadata is owned by a typed
+controller or hook with deterministic cleanup.
+
+Required route fields:
+
+| Route | Required metadata |
+| --- | --- |
+| `/` | existing portfolio title, description, canonical, profile/site structured data |
+| `/blog` | Field Notes title, description, canonical, collection/blog structured data when accurate |
+| `/blog/:slug` | article title, description, canonical, OG article fields, dates, image when valid, BlogPosting/TechArticle JSON-LD |
+| not found | clear title, no false article canonical, normally `noindex` if implemented intentionally |
+
+The controller must:
+
+- update existing tags instead of endlessly appending duplicates;
+- remove article-only tags and JSON-LD when leaving an article;
+- restore homepage metadata after route navigation;
+- normalize the canonical origin from the production profile metadata;
+- escape/serialize JSON-LD safely;
+- avoid claiming route-specific HTML is statically served unless a prerender step proves it.
+
+### SEO and static-host limitation
+
+The initial BrowserRouter implementation can render route-specific metadata after JavaScript starts.
+Cloudflare Pages can serve the SPA shell for deep links when no top-level `404.html` disables fallback.
+However, crawlers and social preview bots do not all execute client JavaScript consistently.
+
+Therefore:
+
+- client-side metadata is required but must not be described as equivalent to prerendered route HTML;
+- `STATUS.md` must record whether article routes are SPA-only or prerendered;
+- production verification must inspect direct responses and rendered metadata separately;
+- static prerendering/SSG may be added later from the same route and metadata registry;
+- if prerendering is added, update this document with generation entry points, output paths, hydration,
+  canonical handling, and Cloudflare behavior.
+
+### Sitemap architecture
+
+The sitemap must share publication truth with the registry.
+
+Acceptable initial approaches:
+
+1. A generated sitemap from validated metadata during build.
+2. A manually updated sitemap enforced by tests that compare expected published routes with XML entries.
+
+Do not maintain an untested sitemap by memory.
+
+Required sitemap behavior:
+
+- include canonical `/`;
+- include `/blog`;
+- include every published and archived article route intended for indexing;
+- exclude drafts and invalid modules;
+- use meaningful `lastmod` from publication/update metadata;
+- preserve the production origin;
+- avoid updating all dates on every unrelated build.
+
+### Navigation and hash-scroll architecture
+
+Cross-route navigation uses router links. Same-route section movement may use anchors.
+
+Examples:
+
+- from `/`: `#projects` may remain a local anchor;
+- from `/blog`: Projects must resolve to `/#projects`;
+- from an article: Field Notes resolves to `/blog`;
+- wordmark from an article resolves to `/`;
+- a project association inside an article may resolve to `/#projects` plus an application-level request
+  only if implemented without breaking direct navigation.
+
+Implement one shared route-scroll utility that:
+
+1. observes route location changes;
+2. waits until the destination route mounts;
+3. resolves a decoded fragment safely;
+4. scrolls/focuses the target with reduced-motion awareness;
+5. falls back to page top when no fragment exists;
+6. does not hijack browser restoration during Back/Forward without testing.
+
+### Blog index data flow
+
+```mermaid
+flowchart LR
+  registry["Validated registry"] --> published["Published metadata"]
+  published --> sort["Date sort"]
+  published --> tags["Normalized tag set"]
+  published --> featured["Featured selection"]
+  sort --> index["BlogIndexPage"]
+  tags --> filter["Accessible tag controls"]
+  featured --> index
+  filter --> index
+  index --> links["Router links to /blog/:slug"]
+```
+
+Filtering is presentation state. It must not mutate registry data. If represented in the URL, use a
+stable query parameter and validate it against available tags.
+
+### Article layout architecture
+
+`ArticleLayout` owns common long-form structure, not post-specific facts:
+
+- route breadcrumb/back link;
+- header metadata;
+- optional cover;
+- article body container;
+- optional table of contents;
+- optional update/archive notice;
+- related notes;
+- relevant project/repository path;
+- final navigation.
+
+Post-specific prose and selected embedded figures remain in MDX. Do not duplicate title/date/tags inside
+both metadata-rendered layout and MDX body.
+
+### Responsive and overflow boundaries
+
+- The article text column has a stable readable maximum width independent of full-width figures.
+- Figures may break out into a wider bounded rail but never exceed viewport containment.
+- Code and tables scroll inside their own containers; the page itself must not scroll horizontally.
+- Long tokens, URLs, hashes, model names, and paths wrap or scroll intentionally.
+- Sticky table of contents is desktop-only when space allows and must not cover the article.
+- Mobile keeps content order linear and avoids side rails.
+- Article images reserve aspect ratio/dimensions.
+- Reduced motion resolves animated diagrams to a legible static state.
+
+Detailed visual values live in `DESIGN.md`.
+
+### Build and deployment extension
+
+```text
+source
+  -> pnpm build
+  -> tsc -b
+  -> Vite + MDX compilation
+  -> optional sitemap generation/validation
+  -> dist/
+  -> Cloudflare Pages
+  -> /, /blog, /blog/:slug through route shell or future prerendered artifacts
+```
+
+Deployment rules:
+
+- continue publishing `dist/`;
+- verify that valid deep article URLs render after refresh;
+- do not add a top-level `404.html` casually because it can change Pages SPA fallback behavior;
+- if `public/_redirects` is introduced, document every rule and test assets plus route fallback;
+- verify current hashed bundles and visible article content after deployment;
+- preserve `robots.txt`, sitemap, canonical origin, and security/privacy boundaries.
+
+### Verification architecture extension
+
+Recommended new test files:
+
+```text
+src/blog/validation.test.ts
+src/blog/registry.test.ts
+src/blog/metadata.test.ts
+src/components/Header.routes.test.tsx
+src/pages/BlogIndexPage.test.tsx
+src/pages/BlogPostPage.test.tsx
+src/blog/components/CodeBlock.test.tsx
+src/lib/routeScroll.test.ts
+
+e2e/blog.spec.ts
+```
+
+Exact file names may differ, but coverage must include the behaviors below.
+
+#### Unit/component boundaries
+
+- type/metadata validation;
+- unique slug enforcement;
+- date validation and ordering;
+- draft exclusion;
+- archive inclusion/notice;
+- tag normalization/filtering;
+- featured selection;
+- lazy module resolution;
+- invalid slug handling;
+- route metadata cleanup;
+- JSON-LD consistency;
+- route-aware header links;
+- scroll/focus helper;
+- MDX semantic mapping;
+- code copy/overflow when present;
+- accessible table/callout/figure behavior.
+
+#### End-to-end boundaries
+
+- home-to-blog navigation;
+- direct index load;
+- direct article load and refresh;
+- article-to-index and browser Back behavior;
+- unknown slug;
+- tag keyboard flow;
+- draft invisibility in production;
+- route title/description/canonical/social/JSON-LD;
+- sitemap/registry agreement;
+- desktop and 360 px article visual containment;
+- reduced motion;
+- 200-percent zoom spot check when tooling permits;
+- homepage anchor, terminal, palette, visitor-mode, project, architecture, and contact regression.
+
+### Security and privacy extension
+
+- Article modules are trusted local build inputs only.
+- Do not accept runtime article uploads or evaluate remote content.
+- Never publish `.env`, tokens, cookies, local paths, private repository code, session exports, private
+  conversations, phone numbers, exact address, college details, or unredacted logs.
+- Screenshots must be inspected for browser profiles, account names, tokens, tabs, filesystem paths, and
+  notifications.
+- Security notes remain controlled and defensive.
+- External embeds are avoided by default; use local media or privacy-respecting links.
+- No analytics or comment scripts are introduced as part of the blog.
+
+### Architecture change triggers for Field Notes
+
+Update the current architecture sections when any of these change:
+
+- router type, route tree, base path, or not-found behavior;
+- article source format or MDX compiler;
+- registry, metadata schema, validation, draft logic, or sorting;
+- article component allowlist;
+- route-level state, scroll restoration, or focus management;
+- metadata controller, JSON-LD, canonical strategy, sitemap generation, or prerendering;
+- Cloudflare fallback, `_redirects`, output structure, or static generation;
+- blog asset pipeline or syntax-highlighting strategy;
+- RSS/feed/search/series routes;
+- blog unit/E2E boundaries;
+- privacy model or external content/embed policy.
+
+### Migration sequence from current baseline
+
+1. Record the pending route-foundation change in `STATUS.md`.
+2. Add router dependency and tests.
+3. Extract current portfolio composition to `/` without changing its visual contract.
+4. Make header/footer navigation route-aware.
+5. Validate all existing portfolio behaviors.
+6. Configure MDX and add typed registry/validation.
+7. Add index, article, and not-found routes.
+8. Add ATRX article components and styles.
+9. Add metadata, JSON-LD, sitemap synchronization, and direct-link behavior.
+10. Add complete tests and README publishing documentation.
+11. Update the earlier sections of this architecture file from baseline to delivered reality.
+12. Complete the `STATUS.md` commit entry and verify the Cloudflare deployment.
