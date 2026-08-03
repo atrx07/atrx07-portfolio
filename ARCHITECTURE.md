@@ -18,7 +18,8 @@ flowchart TD
   html["index.html: metadata and root shell"] --> entry["src/main.tsx"]
   entry --> app["src/App.tsx: BrowserRouter provider"]
   app --> router["src/router.tsx: route tree"]
-  router --> portfolio["/: PortfolioPage"]
+  router --> routeBoundary["/: RouteLoadBoundary + immediate home metadata"]
+  routeBoundary --> portfolio["lazy PortfolioPage chunk"]
   router --> blog["/blog: validated public registry"]
   router --> post["/blog/:slug: lazy public MDX or recovery"]
   router --> missing["*: NotFoundPage"]
@@ -61,7 +62,9 @@ flowchart TD
    image preloads, and the fallback homepage JSON-LD graph.
 2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the global stylesheet.
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
-4. `src/pages/PortfolioPage.tsx` owns the existing homepage composition and cross-section state.
+4. `src/router.tsx` applies homepage metadata immediately, then resolves `PortfolioPage` through a
+   route-level lazy boundary. `src/pages/PortfolioPage.tsx` owns the homepage composition,
+   portfolio-only GSAP/Motion dependencies, and cross-section state.
 5. `BlogIndexPage`, `BlogPostPage`, and `NotFoundPage` use one shared route shell with the same
    route-aware header and footer. The index reads only public registry records and derives featured,
    tag, count, and archive presentation from them. The current test fixture remains a draft and therefore
@@ -70,10 +73,12 @@ flowchart TD
    exposes the single public lookup/sorting/filtering boundary.
 7. `PageMetadata` applies typed route metadata from `src/lib/pageMetadata.ts`, updates existing head
    elements in place, removes stale profile/article state, and owns the route-aware visibility title.
-8. `RouteEffects` resolves cross-route homepage fragments after mount, honors reduced motion, focuses
-   deliberate navigation targets, and leaves POP restoration to browser history.
-9. Vite emits the static `dist/` artifact consumed by Cloudflare Pages, including one chunk per article
-   body rather than embedding article prose in the homepage entry.
+8. `RouteEffects` resolves cross-route homepage fragments and headings through a bounded mount observer,
+   honors reduced motion, ignores temporary loading headings, focuses deliberate navigation targets,
+   and leaves POP restoration to browser history.
+9. Vite emits the static `dist/` artifact consumed by Cloudflare Pages. The shared entry owns the route
+   shell, Field Notes, recovery, metadata, and registry metadata; the lazy portfolio chunk owns its
+   interactive systems; each article body remains a separate lazy chunk.
 
 ## Runtime Component Map
 
@@ -81,6 +86,7 @@ flowchart TD
 | --- | --- |
 | `App.tsx` / `router.tsx` | BrowserRouter provider and public route declaration |
 | `PortfolioPage.tsx` | Existing homepage composition and portfolio-only state ownership |
+| `RouteLoadBoundary.tsx` | Stable one-main loading shell, quiet chunk-failure recovery, and no temporary route-focus claim |
 | `RoutePageShell.tsx` | Shared header, one main landmark, and footer for non-portfolio routes |
 | `BlogIndexPage.tsx` / `BlogIndex.tsx` | Registry-derived index composition, local tag filtering, featured selection, chronological rows, and honest empty states |
 | `BlogPostPage.tsx` / `NotFoundPage.tsx` | Public slug lookup, explicit development-only preview lookup, lazy article rendering, draft rejection, and deliberate route recovery |
@@ -89,7 +95,7 @@ flowchart TD
 | `BlogIndexHeader.tsx` / `FeaturedNote.tsx` / `TagFilter.tsx` / `NoteArchiveRow.tsx` | Bounded editorial index primitives; Magic Tab supplies manual activation and roving focus for the contained tag rail |
 | `ArticleHeader.tsx` / `ArticleLayout.tsx` / `ArticleFooter.tsx` | Shared 74ch article hierarchy, state notices, dates, associations, prose rail, and final navigation |
 | `ArticleLoadBoundary.tsx` / `CodeBlock.tsx` / `blog/mdx-components.tsx` | Reserved loading and safe failure recovery, semantic Markdown mapping, safe external links, copy feedback, and contained code/table overflow |
-| `RouteEffects.tsx` / `routeNavigation.ts` | Tested route fragment resolution, scroll behavior, and focus transfer |
+| `RouteEffects.tsx` / `routeNavigation.ts` | Tested mount-aware route fragment/heading resolution, reduced-motion scroll behavior, and focus transfer |
 | `Header.tsx` | Persistent route-aware system rail, desktop/mobile navigation, availability, optional portfolio controls, and GitHub |
 | `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
 | `VisitorModeSwitch.tsx` | Controlled Recruiter/Developer/Chaos adapter shared by hero and mobile navigation |
@@ -322,11 +328,13 @@ Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
 preview, semantic article primitives, code/table containment, unpublished recovery, and reduced-motion
 route behavior across desktop and mobile projects.
 
-The Stage D build keeps the route pages statically declared after measuring the trade-off. The editorial
-and route-metadata surface produces a 541.28 kB minified entry while the fixture body remains isolated
-in a 1.96 kB lazy chunk. Adding route-level suspense boundaries would save only the blog presentation
-code while introducing transient headings that weaken the existing focus-transfer contract; the larger
-homepage remains the source of the bundle advisory.
+The Stage E build isolates the complete interactive portfolio behind one measured route boundary. The
+shared entry is 233.14 kB minified (75.81 kB gzip), the portfolio route chunk is 309.86 kB (109.22 kB
+gzip), and the draft fixture body remains isolated in a 1.96 kB (0.83 kB gzip) article chunk. Direct
+`/blog` and recovery visits request only the shared entry; `/` adds the portfolio chunk. Source-map
+inspection confirms GSAP, Framer Motion, Motion DOM, and portfolio section modules are absent from the
+shared entry. The loading shell does not delay ready content or receive route focus, while a bounded
+mutation observer transfers focus once the real route target mounts.
 
 ### Required pre-push loop
 
@@ -371,12 +379,12 @@ Update this document in the same work session when any of these change:
 
 ### Delivery status and superseding rule
 
-Stages A through D are implemented: the application is route based, the portfolio is preserved at `/`,
+Stages A through E are implemented: the application is route based, the portfolio is preserved at `/`,
 shared navigation is route aware, route focus/hash behavior is tested, invalid routes are deliberate,
 and the Field Notes content system compiles trusted local MDX through a validated typed registry with
 true lazy article chunks. The index/article presentation, typed hydrated metadata lifecycle, JSON-LD,
-and test-locked sitemap described below are delivered. Static prerendering remains a possible future
-extension, not a current capability.
+test-locked sitemap, route-specific portfolio payload, and mount-aware focus behavior described below
+are delivered. Static prerendering remains a possible future extension, not a current capability.
 Do not leave contradictory “planned” and “current” architecture after launch.
 
 The implementation must not rewrite project presentation into a generic data-only system. Existing

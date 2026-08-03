@@ -29,7 +29,7 @@ export function Hero({ mode, onModeChange }: Props) {
             <Radio size={15} aria-hidden="true" />
             ATRX / Arppith Andrews
           </p>
-          <h1 id="hero-title">
+          <h1 id="hero-title" data-route-heading tabIndex={-1}>
             <span className="hero-title-desktop">
               <span>USEFUL SYSTEMS</span>
               <span>AT THE EDGE OF</span>

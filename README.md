@@ -5,7 +5,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 ## Stack
 
 - Vite, React, and strict TypeScript
-- React Router with browser-history routes
+- React Router with browser-history routes and a lazy interactive-portfolio boundary
 - Build-time MDX with GFM tables and lazy article chunks
 - Tailwind CSS plus a custom token-driven visual system
 - GSAP and ScrollTrigger for restrained scroll motion
@@ -66,7 +66,9 @@ the same draft slug even if the query is present.
 
 ## Routes and Field Notes
 
-- `/` renders the complete interactive portfolio and preserves its section fragments.
+- `/` resolves the complete interactive portfolio through a route-level lazy boundary and preserves its
+  section fragments. Homepage metadata is applied outside that boundary so it does not wait for the
+  interaction chunk.
 - `/blog` renders the editorial archive from the validated public registry and currently reports zero
   published notes truthfully. Featured notes, tag controls, and chronological rows appear only when
   real published or archived metadata exists.
@@ -78,6 +80,10 @@ The typed MDX content boundary, editorial index, accessible tag filtering, artic
 copy feedback, and contained long-form primitives are implemented. Do not add invented posts to populate the archive. Cross-route
 homepage links use route-plus-fragment destinations such as `/#projects`, and route focus/scroll
 behavior respects reduced motion and browser Back/Forward history.
+
+Direct Field Notes and recovery visits do not download portfolio-only GSAP, Framer Motion, or project
+interaction modules. A stable one-main loading shell covers the short portfolio chunk transition, and
+route focus waits for the real destination heading or fragment rather than focusing that temporary shell.
 
 Route metadata is applied from `src/lib/pageMetadata.ts`. The home route restores profile metadata;
 `/blog` uses collection metadata; published or archived notes use technical-article metadata; draft

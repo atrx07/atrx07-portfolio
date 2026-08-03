@@ -20,34 +20,51 @@ export function RouteEffects() {
   useEffect(() => {
     const isInitialRoute = firstRender.current;
     firstRender.current = false;
-    let firstFrame = 0;
-    let secondFrame = 0;
+    const targetId = getHashTargetId(location.hash);
+    const shouldFocusHeading = !targetId && !isInitialRoute && navigationType !== "POP";
+    let frame = 0;
+    let observer: MutationObserver | null = null;
+    let timeout = 0;
 
-    firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        const targetId = getHashTargetId(location.hash);
-        const target = targetId ? document.getElementById(targetId) : null;
+    if (shouldFocusHeading) window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
-        if (target) {
-          target.scrollIntoView({
-            behavior: prefersReducedMotion() ? "auto" : "smooth",
-            block: "start",
-          });
-          focusElement(target);
-          return;
-        }
+    const resolveTarget = () =>
+      targetId
+        ? document.getElementById(targetId)
+        : shouldFocusHeading
+          ? document.querySelector<HTMLElement>("[data-route-heading]")
+          : null;
 
-        if (isInitialRoute || navigationType === "POP") return;
+    const applyTarget = () => {
+      const target = resolveTarget();
+      if (!target) return false;
 
-        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        const heading = document.querySelector<HTMLElement>("[data-route-heading]");
-        if (heading) focusElement(heading);
+      if (targetId) {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion() ? "auto" : "smooth",
+          block: "start",
+        });
+      }
+      focusElement(target);
+      return true;
+    };
+
+    frame = window.requestAnimationFrame(() => {
+      if (applyTarget() || (!targetId && !shouldFocusHeading)) return;
+
+      observer = new MutationObserver(() => {
+        if (!applyTarget()) return;
+        observer?.disconnect();
+        window.clearTimeout(timeout);
       });
+      observer.observe(document.getElementById("root") ?? document.body, { childList: true, subtree: true });
+      timeout = window.setTimeout(() => observer?.disconnect(), 3000);
     });
 
     return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.clearTimeout(timeout);
     };
   }, [location.hash, location.key, location.pathname, navigationType]);
 

@@ -3,6 +3,21 @@ import { MemoryRouter } from "react-router-dom";
 import { AppRoutes } from "./router";
 
 describe("application route tree", () => {
+  it("loads the interactive portfolio through the route boundary", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <AppRoutes />
+      </MemoryRouter>,
+    );
+
+    const heading = await screen.findByRole("heading", {
+      level: 1,
+      name: /USEFUL SYSTEMS AT THE EDGE OF PRACTICAL AND UNUSUAL/i,
+    });
+    expect(heading).toHaveAttribute("data-route-heading");
+    expect(screen.getAllByRole("main")).toHaveLength(1);
+  });
+
   it("renders the honest Field Notes foundation at /blog", () => {
     render(
       <MemoryRouter initialEntries={["/blog"]}>
