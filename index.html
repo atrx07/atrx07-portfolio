@@ -54,8 +54,19 @@
     <link rel="canonical" href="https://atrx07.pages.dev/" />
     <link rel="me" href="https://github.com/atrx07" />
     <link rel="me" href="https://instagram.com/atrx07" />
-    <link rel="preload" as="image" href="/atrx-wide.jpg" media="(max-width: 640px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="/atrx-portrait.jpg" media="(min-width: 641px)" fetchpriority="high" />
+    <script>
+      if (window.location.pathname === "/") {
+        const heroArtwork = document.createElement("link");
+        heroArtwork.rel = "preload";
+        heroArtwork.as = "image";
+        heroArtwork.href = window.matchMedia("(max-width: 640px)").matches
+          ? "/atrx-wide.jpg"
+          : "/atrx-portrait.jpg";
+        heroArtwork.fetchPriority = "high";
+        heroArtwork.dataset.homeArtworkPreload = "";
+        document.head.append(heroArtwork);
+      }
+    </script>
     <link rel="icon" href="/atrx-avatar.png" type="image/png" />
     <title>Arppith Andrews | AI, Automation & Software Developer</title>
     <script type="application/ld+json" data-route-structured-data>

@@ -69,6 +69,7 @@ export function Hero({ mode, onModeChange }: Props) {
               height="1080"
               decoding="async"
               loading="eager"
+              {...{ fetchpriority: "high" }}
             />
           </picture>
         </div>

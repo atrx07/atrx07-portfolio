@@ -32,7 +32,8 @@ flowchart TD
   portfolio --> hooks["Local/session/transient state hooks"]
   router --> effects["RouteEffects: hash, scroll, and focus"]
   sections --> engine["Safe terminal parser and scroll helpers"]
-  styles["src/styles/globals.css"] --> sections
+  sharedStyles["src/styles/globals.css: eager shared routes"] --> router
+  portfolioStyles["src/styles/portfolio.css: lazy homepage"] --> sections
   assets["public assets, sitemap, robots"] --> browser["Browser runtime"]
   router --> browser
   browser --> build["Vite dist output"]
@@ -49,7 +50,7 @@ flowchart TD
 | Article build | `@mdx-js/rollup` + `remark-gfm` | Compile trusted local MDX and semantic GFM tables before React transformation |
 | Article discovery | Vite `import.meta.glob` | Load small typed metadata eagerly and article bodies as separate lazy chunks |
 | Language | TypeScript 5.7 strict mode | Typed data, components, hooks, and terminal engine |
-| Styling | Tailwind build pipeline plus custom global CSS | Tokens, layout, responsive behavior, motion styling, and visual system |
+| Styling | Tailwind build pipeline plus route-owned custom CSS | Eager shared route shell/editorial styling plus lazy portfolio layout, motion, and visual-system rules |
 | Motion | GSAP, `@gsap/react`, ScrollTrigger, Framer Motion | Purposeful reveal, flagship pinning, scroll-linked behavior, and reduced-motion-aware component animation |
 | Icons | Lucide React | Accessible interface icons |
 | Unit tests | Vitest, React Testing Library, jsdom | Hooks, parser, components, filters, architecture, terminal, and contact behavior |
@@ -58,13 +59,15 @@ flowchart TD
 
 ## Entry and Composition
 
-1. `index.html` provides the root element, homepage fallback metadata, crawler controls, responsive
-   image preloads, and the fallback homepage JSON-LD graph.
-2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the global stylesheet.
+1. `index.html` provides the root element, homepage fallback metadata, crawler controls, and the
+   fallback homepage JSON-LD graph. A fixed inline path check appends exactly one responsive hero-image
+   preload only for a direct `/` document request; deep routes receive no homepage artwork hint.
+2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the eager shared
+   stylesheet.
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
 4. `src/router.tsx` applies homepage metadata immediately, then resolves `PortfolioPage` through a
    route-level lazy boundary. `src/pages/PortfolioPage.tsx` owns the homepage composition,
-   portfolio-only GSAP/Motion dependencies, and cross-section state.
+   portfolio-only GSAP/Motion dependencies, route-owned `portfolio.css`, and cross-section state.
 5. `BlogIndexPage`, `BlogPostPage`, and `NotFoundPage` use one shared route shell with the same
    route-aware header and footer. The index reads only public registry records and derives featured,
    tag, count, and archive presentation from them. The current test fixture remains a draft and therefore
@@ -231,8 +234,11 @@ There is no autoplay.
 
 ## Styling and Responsive Architecture
 
-- `src/styles/globals.css` owns tokens, typography, layout, component styling, motion fallbacks, dialog
-  behavior, and responsive breakpoints.
+- `src/styles/globals.css` is eager and owns tokens, typography, shared controls, header/footer, route
+  loading/recovery, Field Notes, global accessibility behavior, and their responsive rules.
+- `src/styles/portfolio.css` is imported by lazy `PortfolioPage` and owns homepage sections, project
+  visuals, portfolio dialogs, mask-button animation, command palette, progressive discovery, and their
+  responsive rules. Vite emits it as the route-owned portfolio stylesheet.
 - Major responsive thresholds are 1180 px, 900 px, and the mobile rules near 640 px.
 - Desktop uses the pinned flagship narrative and vertical project accordion.
 - Mobile disables pointer-follow assumptions, uses the wide hero artwork, stacks visitor modes
@@ -257,8 +263,10 @@ There is no autoplay.
   exact URLs and stable `lastmod` values against the validated published/archived registry, so drafts
   cannot enter and new public notes cannot be omitted silently.
 - `index.html` owns the raw SPA-shell homepage fallback: canonical, title, description,
-  robots/googlebot controls, Open Graph, Twitter, identity links, responsive preloads, and homepage
-  JSON-LD. It does not claim to prerender deep-route metadata.
+  robots/googlebot controls, Open Graph, Twitter, identity links, a fixed homepage-only responsive
+  artwork preload, and homepage JSON-LD. It does not claim to prerender deep-route metadata.
+- The shared footer may request `atrx-mark.png` on every route. Hero JPGs and mask sprites are homepage
+  assets: direct Field Notes, loading, and recovery visits must not request them.
 - `src/lib/pageMetadata.ts` derives hydrated metadata for home, collection, public/archived article,
   draft preview, and recovery states from `src/data/profile.ts` plus validated article metadata.
 - `PageMetadata` updates the marked JSON-LD script and managed head fields without duplication. Draft

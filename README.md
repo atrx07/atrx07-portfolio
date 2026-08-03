@@ -7,7 +7,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 - Vite, React, and strict TypeScript
 - React Router with browser-history routes and a lazy interactive-portfolio boundary
 - Build-time MDX with GFM tables and lazy article chunks
-- Tailwind CSS plus a custom token-driven visual system
+- Tailwind CSS plus eager shared-route and lazy portfolio-owned visual layers
 - GSAP and ScrollTrigger for restrained scroll motion
 - Framer Motion for reduced-motion-aware orbital system visuals
 - Lucide React icons
@@ -84,6 +84,9 @@ behavior respects reduced motion and browser Back/Forward history.
 Direct Field Notes and recovery visits do not download portfolio-only GSAP, Framer Motion, or project
 interaction modules. A stable one-main loading shell covers the short portfolio chunk transition, and
 route focus waits for the real destination heading or fragment rather than focusing that temporary shell.
+They also avoid the portfolio stylesheet, responsive hero JPGs, and mask sprites. The raw document adds
+one high-priority responsive hero preload only for `/`; `PortfolioPage` loads the matching portfolio CSS
+alongside its existing lazy interaction chunk.
 
 Route metadata is applied from `src/lib/pageMetadata.ts`. The home route restores profile metadata;
 `/blog` uses collection metadata; published or archived notes use technical-article metadata; draft

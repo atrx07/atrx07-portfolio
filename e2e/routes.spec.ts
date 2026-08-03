@@ -65,6 +65,27 @@ test("unknown routes and unpublished article slugs have deliberate recovery stat
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
+test("hero artwork preloading belongs only to the homepage route", async ({ page }) => {
+  const artworkRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/\/atrx-(?:wide|portrait)\.jpg$/.test(request.url())) artworkRequests.push(request.url());
+  });
+
+  await page.goto("/blog");
+  expect(artworkRequests).toEqual([]);
+  await expect(page.locator('link[data-home-artwork-preload]')).toHaveCount(0);
+
+  await page.goto("/missing-system");
+  expect(artworkRequests).toEqual([]);
+  await expect(page.locator('link[data-home-artwork-preload]')).toHaveCount(0);
+
+  await page.goto("/");
+  const expectedArtwork = (page.viewportSize()?.width ?? 1280) <= 640 ? "atrx-wide.jpg" : "atrx-portrait.jpg";
+  await expect(page.locator('link[data-home-artwork-preload]')).toHaveAttribute("href", `/${expectedArtwork}`);
+  expect(artworkRequests).toHaveLength(1);
+  expect(artworkRequests[0]?.endsWith(`/${expectedArtwork}`)).toBe(true);
+});
+
 test("reduced motion makes cross-route fragment movement immediate", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/blog");

@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/portfolio.css";
 import { ArchitecturePlayground } from "../components/ArchitecturePlayground";
 import { CapabilityMap } from "../components/CapabilityMap";
 import { CommandPalette } from "../components/CommandPalette";

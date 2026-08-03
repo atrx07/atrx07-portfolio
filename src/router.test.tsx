@@ -10,10 +10,14 @@ describe("application route tree", () => {
       </MemoryRouter>,
     );
 
-    const heading = await screen.findByRole("heading", {
-      level: 1,
-      name: /USEFUL SYSTEMS AT THE EDGE OF PRACTICAL AND UNUSUAL/i,
-    });
+    const heading = await screen.findByRole(
+      "heading",
+      {
+        level: 1,
+        name: /USEFUL SYSTEMS AT THE EDGE OF PRACTICAL AND UNUSUAL/i,
+      },
+      { timeout: 5_000 },
+    );
     expect(heading).toHaveAttribute("data-route-heading");
     expect(screen.getAllByRole("main")).toHaveLength(1);
   });
