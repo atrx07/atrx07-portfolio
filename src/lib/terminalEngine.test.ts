@@ -8,6 +8,15 @@ describe("terminalEngine", () => {
     expect(result.lines.join(" ")).toContain("Verified pinned llama.cpp");
   });
 
+  it("reports Traelyx as the current project without overstating recorder progress", () => {
+    const project = executeTerminalCommand("project traelyx");
+    const now = executeTerminalCommand("now");
+
+    expect(project.lines.join(" ")).toContain("M0 foundation launches");
+    expect(now.lines[0]).toContain("Traelyx");
+    expect(now.lines.join(" ")).toContain("recorder registered but intentionally disabled");
+  });
+
   it("returns a useful response for an unknown command", () => {
     const result = executeTerminalCommand("rm -rf /");
 

@@ -80,6 +80,13 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
               </div>
             </div>
 
+            {project.next && (
+              <div className="next-block">
+                <h3>Next checkpoint</h3>
+                <p>{project.next}</p>
+              </div>
+            )}
+
             {mode !== "recruiter" && project.constraints && (
               <div className="constraint-block">
                 <h3>Known constraints</h3>

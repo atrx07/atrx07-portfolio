@@ -28,7 +28,7 @@ export function ProjectLab({
   const [category, setCategory] = useState<(typeof projectCategories)[number]>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [mobileLayout, setMobileLayout] = useState(isMobileProjectLayout);
-  const [expandedSlug, setExpandedSlug] = useState(() => (isMobileProjectLayout() ? "" : "neuraloc"));
+  const [expandedSlug, setExpandedSlug] = useState(() => (isMobileProjectLayout() ? "" : "traelyx"));
 
   const visibleProjects = useMemo(
     () =>
@@ -52,7 +52,7 @@ export function ProjectLab({
     const media = window.matchMedia(mobileProjectLayoutQuery);
     const syncLayout = (matches: boolean) => {
       setMobileLayout(matches);
-      setExpandedSlug((current) => (matches ? "" : current || "neuraloc"));
+      setExpandedSlug((current) => (matches ? "" : current || "traelyx"));
     };
 
     syncLayout(media.matches);
@@ -79,8 +79,8 @@ export function ProjectLab({
           BUILT TO MOVE <span className="inline-system-image" aria-hidden="true">LIVE</span> BEYOND THE DEMO.
         </h2>
         <p>
-          Six projects, each with a different failure surface. Select one to inspect what is real, what is
-          experimental, and what still needs work.
+          {projects.length} projects, each with a different failure surface. Select one to inspect what is
+          real, what is experimental, and what still needs work.
         </p>
       </div>
 
@@ -148,6 +148,7 @@ export function ProjectLab({
                     project={project}
                     compact={!expanded}
                     avelineLayout={!mobileLayout && expanded ? "linear" : "stacked"}
+                    traelyxLayout={!mobileLayout && expanded ? "linear" : "stacked"}
                   />
                 </div>
                 <div className="project-slice-copy">

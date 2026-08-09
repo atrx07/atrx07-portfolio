@@ -12,6 +12,7 @@ export type TerminalResult = {
 };
 
 const projectByCommand: Record<string, string> = {
+  traelyx: "traelyx",
   neuraloc: "neuraloc",
   voidchat: "voidchat",
   aveline: "aveline",
@@ -61,13 +62,18 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
 
   if (input.startsWith("project ")) {
     const slug = projectByCommand[input.slice("project ".length)];
-    return { lines: slug ? projectLines(slug) : ["Unknown project. Try: neuraloc, voidchat, aveline, styleforge."] };
+    return {
+      lines: slug
+        ? projectLines(slug)
+        : ["Unknown project. Try: traelyx, neuraloc, voidchat, aveline, styleforge."],
+    };
   }
 
   if (input === "stack") {
     return {
       lines: [
-        "native: Rust / Tauri 2 / SQLite / llama.cpp / GGUF",
+        "mobile: Flutter / Dart / Kotlin / Riverpod / Drift",
+        "native AI: Rust / Tauri 2 / SQLite / llama.cpp / GGUF",
         "interface: React / TypeScript / JavaScript / HTML / CSS",
         "systems: Node.js / Python / Cloudflare / WebSockets / Redis",
         "unusual: WebAudio / MIDI / Yamaha SFF1 / Android ADB",
@@ -76,12 +82,15 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
   }
 
   if (input === "now") {
+    const current = projects.find((project) => project.slug === "traelyx");
     return {
-      lines: [
-        "NeuraLoc-Core // active development",
-        "Current checkpoint: owned local runtime, token-aware context, durable history, branches, retry, export.",
-        "Next: discovery/download catalog and hardware-aware multi-backend recommendations.",
-      ],
+      lines: current
+        ? [
+            `${current.name} // active development`,
+            "Current checkpoint: M0 Android foundation validated; recorder registered but intentionally disabled.",
+            `Next: ${current.next}`,
+          ]
+        : ["Current project signal unavailable."],
     };
   }
 

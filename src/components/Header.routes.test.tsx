@@ -16,7 +16,7 @@ describe("Header route awareness", () => {
       "aria-current",
       "page",
     );
-    expect(screen.queryByText("0/6 found")).not.toBeInTheDocument();
+    expect(screen.queryByText("0/7 found")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Open command palette" })).not.toBeInTheDocument();
   });
 
@@ -37,7 +37,7 @@ describe("Header route awareness", () => {
 
     expect(screen.getByRole("link", { name: "ATRX07 home" })).toHaveAttribute("href", "#top");
     expect(screen.getAllByRole("link", { name: "Projects" })[0]).toHaveAttribute("href", "#projects");
-    expect(screen.getByText("3/6 found")).toBeInTheDocument();
+    expect(screen.getByText("3/7 found")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Open command palette" })).toBeInTheDocument();
   });
 });

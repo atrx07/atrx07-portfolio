@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { profile } from "../data/profile";
+import { projects } from "../data/projects";
 import type { VisitorMode } from "../types";
 import { VisitorModeSwitch } from "./VisitorModeSwitch";
 
@@ -101,7 +102,7 @@ export function Header({
           {showPortfolioControls && (
             <>
               <span className="discovery-count" aria-live="polite">
-                {discoveredCount}/6 found
+                {discoveredCount}/{projects.length} found
               </span>
               <button
                 className="icon-button"

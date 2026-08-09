@@ -7,6 +7,7 @@ export const terminalCommands: TerminalCommand[] = [
   { command: "help", description: "List the safe command set" },
   { command: "about", description: "Read the short profile" },
   { command: "projects", description: "List featured projects" },
+  { command: "project traelyx", description: "Inspect Traelyx" },
   { command: "project neuraloc", description: "Inspect NeuraLoc-Core" },
   { command: "project voidchat", description: "Inspect void.chat" },
   { command: "project aveline", description: "Inspect Aveline Bot" },

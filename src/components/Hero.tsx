@@ -13,7 +13,7 @@ const supportByMode: Record<VisitorMode, string> = {
   recruiter:
     "Engineering student, AI and automation builder, and software developer turning ambitious web and native ideas into dependable systems.",
   developer:
-    "Working across Rust orchestration, local inference, durable state, edge real-time infrastructure, and interfaces that expose the truth.",
+    "Working across native Android foundations, local inference, durable state, edge real-time infrastructure, and interfaces that expose the truth.",
   chaos:
     "Built from scratch. Shipped from chaos. Repeatedly tested until the unusual part becomes useful.",
 };
@@ -83,8 +83,8 @@ export function Hero({ mode, onModeChange }: Props) {
           </div>
           <a className="current-build" href="#now">
             <span>Currently building</span>
-            <strong>NeuraLoc-Core</strong>
-            <i>Active development</i>
+            <strong>Traelyx</strong>
+            <i>M0 foundation complete</i>
           </a>
         </div>
       </div>

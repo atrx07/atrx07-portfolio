@@ -1,22 +1,39 @@
 import { useGSAP } from "@gsap/react";
-import { ArrowUpRight, Check, Cpu, Database, HardDrive, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Check, Database, ShieldCheck } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { projects } from "../data/projects";
 import type { VisitorMode } from "../types";
 import { ProjectVisual } from "./ProjectVisual";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const neuraloc = projects[0];
+const traelyx = projects.find((project) => project.slug === "traelyx")!;
 
-const capabilityIcons = [HardDrive, Cpu, Database, ShieldCheck];
+const capabilityIcons = [ShieldCheck, Database];
+const compactFlagshipQuery = "(max-width: 900px)";
+
+const isCompactFlagship = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia(compactFlagshipQuery).matches;
 
 export function Flagship({ mode }: { mode: VisitorMode }) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const [selectedNode, setSelectedNode] = useState(neuraloc.architecture?.[0]);
+  const [selectedNode, setSelectedNode] = useState(traelyx.architecture?.[0]);
+  const [compactVisual, setCompactVisual] = useState(isCompactFlagship);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+
+    const media = window.matchMedia(compactFlagshipQuery);
+    const syncLayout = () => setCompactVisual(media.matches);
+    syncLayout();
+    media.addEventListener("change", syncLayout);
+    return () => media.removeEventListener("change", syncLayout);
+  }, []);
 
   useGSAP(
     () => {
@@ -81,30 +98,30 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
     <section id="now" className="flagship section-shell" ref={sectionRef} aria-labelledby="flagship-title">
       <div className="flagship-grid">
         <div className="flagship-title" ref={titleRef}>
-          <p className="eyebrow">Active development / local-first Windows</p>
-          <h2 id="flagship-title">THE LOCAL AI CONTROL CENTER I WANTED TO TRUST.</h2>
+          <p className="eyebrow">Active development / local-first Android</p>
+          <h2 id="flagship-title">YOUR DRIVES. YOUR EVIDENCE. NO CLOUD REQUIRED.</h2>
           <p>
-            NeuraLoc-Core is where interface craft meets process ownership, hardware limits, durable state,
-            and verified native inference.
+            Traelyx is building a trustworthy sensor-to-insight path around local data ownership,
+            confidence, and explainable scoring—without pretending the roadmap is already the product.
           </p>
-          <a className="text-link" href={neuraloc.repoUrl} target="_blank" rel="noreferrer">
+          <a className="text-link" href={traelyx.repoUrl} target="_blank" rel="noreferrer">
             Inspect repository <ArrowUpRight size={17} />
           </a>
         </div>
 
         <div className="flagship-content">
           <div className="flagship-visual flagship-motion">
-            <ProjectVisual project={neuraloc} />
+            <ProjectVisual project={traelyx} traelyxLayout={compactVisual ? "stacked" : "linear"} />
             <div className="flagship-overlay">
-              <span>runtime / b9986</span>
-              <span>context / token exact</span>
-              <span>state / durable</span>
+              <span>phase / M0 complete</span>
+              <span>recorder / disabled by design</span>
+              <span>cloud / optional</span>
             </div>
           </div>
 
-          <div className="architecture-strip flagship-motion" aria-label="NeuraLoc-Core architecture">
+          <div className="architecture-strip flagship-motion" aria-label="Traelyx architecture">
             <div className="architecture-nodes">
-              {neuraloc.architecture?.map((node, index) => (
+              {traelyx.architecture?.map((node, index) => (
                 <button
                   key={node.id}
                   type="button"
@@ -127,9 +144,9 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="proof-bento flagship-motion">
             <article className="proof-main">
               <p className="eyebrow">Available now</p>
-              <h3>THE UNGLAMOROUS PARTS ARE THE PRODUCT.</h3>
+              <h3>THE RECORDER STAYS OFF UNTIL THE FOUNDATION EARNS IT.</h3>
               <ul>
-                {neuraloc.proofPoints.map((point) => (
+                {traelyx.proofPoints.map((point) => (
                   <li key={point}>
                     <Check size={17} aria-hidden="true" />
                     {point}
@@ -140,18 +157,18 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
 
             <article className="proof-side">
               {capabilityIcons.slice(0, 2).map((Icon, index) => (
-                <div key={neuraloc.technologies[index]}>
+                <div key={traelyx.technologies[index]}>
                   <Icon size={20} aria-hidden="true" />
-                  <span>{index === 0 ? "Local by default" : "Owned lifecycle"}</span>
-                  <strong>{index === 0 ? "Network off" : "Launch / cancel / stop"}</strong>
+                  <span>{index === 0 ? "Honest capability state" : "Local authority"}</span>
+                  <strong>{index === 0 ? "Recorder disabled" : "Drift schema v1"}</strong>
                 </div>
               ))}
             </article>
 
             <article className="proof-side proof-side--next">
               <p className="eyebrow">Next checkpoint</p>
-              <p>{neuraloc.next}</p>
-              {mode !== "recruiter" && <small>{neuraloc.constraints?.join(" ")}</small>}
+              <p>{traelyx.next}</p>
+              {mode !== "recruiter" && <small>{traelyx.constraints?.join(" ")}</small>}
             </article>
           </div>
         </div>

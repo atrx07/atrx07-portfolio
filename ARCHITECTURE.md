@@ -106,9 +106,9 @@ flowchart TD
 | `godui/magic-tab.tsx` | Controlled/uncontrolled tab primitive with roving focus, manual activation, raised selection layers, and off-screen rainbow pausing |
 | `godui/orbiting-circles.tsx` | Reusable counter-rotating orbital tracks with fixed geometry, counter-rotated children, and a static reduced-motion fallback |
 | `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
-| `Flagship.tsx` | NeuraLoc-Core narrative, pinned desktop title, runtime visual, architecture strip, proof and roadmap |
+| `Flagship.tsx` | Traelyx current-build narrative, pinned desktop title, trust-path visual, architecture strip, verified M0 proof and next checkpoint |
 | `ProjectLab.tsx` | Project filters, accordion state, mobile tap behavior, discovery, and detail-dialog coordination |
-| `ProjectVisual.tsx` | Deterministic project-specific visual fragments for six visual types, including void.chat's layered edge architecture orbit |
+| `ProjectVisual.tsx` | Deterministic project-specific visual fragments for seven visual types, including Traelyx's trust-path flow and void.chat's layered edge architecture orbit |
 | `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
 | `ArchitecturePlayground.tsx` | Project tabs, keyboard node navigation, pinned responsibility explanation |
 | `PortfolioTerminal.tsx` | Fixed-height terminal UI, input history, completion, safe action dispatch, internal output scrolling |
@@ -135,6 +135,13 @@ and fit-to-view observes its viewport through the accordion's flex transition so
 final available width. The linear variant may enlarge to a bounded 1.28x to fill a wide canvas, while
 stacked variants retain the component's 1:1 maximum. The collapsed card does
 not run the autoplay sequence.
+
+Traelyx also composes `AgentFlow`, but as a manual-status evidence path rather than a continuous
+workflow. The validated Flutter shell, versioned native bridge, and Drift v1 nodes render completed;
+the disabled recorder and planned Drive DNA stages remain idle, and future edges do not animate. The
+flagship and expanded desktop accordion use a linear layout, while compact/mobile cards and the detail
+dialog retain the stacked layout. The canonical `/public/traelyx-mark.png` launcher mark is a local
+owned asset copied from the public Traelyx repository. No runtime telemetry or network work is added.
 
 ## Data Ownership
 
@@ -561,7 +568,7 @@ Recommended ownership:
 | --- | --- | --- |
 | Visitor mode persistence | existing `useVisitorMode` owner | Preserved globally; article prose does not change facts or density by mode |
 | Sound mute | existing `useSignalAudio` owner or route shell | Remains user-controlled; blog never autoplays sound |
-| Discovery count | `PortfolioPage` | Visible only where meaningful; do not show misleading `0/6 found` on direct article arrival |
+| Discovery count | `PortfolioPage` | Visible only where meaningful; use the canonical project count and do not show a misleading empty count on direct article arrival |
 | Project request | `PortfolioPage` | Portfolio-only |
 | Terminal focus/action | `PortfolioPage` / command palette | Blog navigation may offer a route back to terminal, not mount terminal inside articles |
 | Command palette open state | shared shell when practical | May include Home, Field Notes, and article navigation without losing existing commands |

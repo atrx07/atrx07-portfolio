@@ -17,6 +17,7 @@ import { Hero } from "../components/Hero";
 import { PortfolioTerminal } from "../components/PortfolioTerminal";
 import { ProjectLab } from "../components/ProjectLab";
 import { profile } from "../data/profile";
+import { projects } from "../data/projects";
 import { useDiscovery } from "../hooks/useDiscovery";
 import { useSignalAudio } from "../hooks/useSignalAudio";
 import { useSignalMode } from "../hooks/useSignalMode";
@@ -198,7 +199,7 @@ export function PortfolioPage() {
         <div className="system-log" aria-live="polite">
           <span>system discovered</span>
           <strong>{lastDiscovered}</strong>
-          <i>{count}/6</i>
+          <i>{count}/{projects.length}</i>
         </div>
       )}
 

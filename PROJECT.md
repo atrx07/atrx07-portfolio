@@ -20,7 +20,7 @@ Make a recruiter, developer, or curious visitor understand within one visit:
 
 - who Arppith Andrews is and how `atrx07` maps to the ATRX identity
 - what he builds and which technical areas define his direction
-- why NeuraLoc-Core is the flagship engineering case study
+- why Traelyx is the current-build case study and NeuraLoc-Core remains the deepest local-AI case study
 - which claims are implemented, experimental, or still planned
 - where to inspect public repositories and how to contact him
 
@@ -50,7 +50,7 @@ useful for scanning, and rewarding to explore.
 
 ## Success Criteria
 
-- A recruiter can identify Arppith, his focus, NeuraLoc-Core, core technologies, and contact path in under two minutes.
+- A recruiter can identify Arppith, his focus, Traelyx, NeuraLoc-Core, core technologies, and contact path in under two minutes.
 - A developer can inspect architecture, stack, proof points, constraints, maturity, and repository links.
 - A curious visitor can discover meaningful interactions without losing access to essential content.
 - All public claims remain traceable to supplied facts or public repositories.
@@ -75,7 +75,7 @@ The portfolio should communicate three things immediately:
 - Arppith is an engineering student working across computer science, AI, and automation.
 - His strongest direction is dependable local-first AI software, real-time systems, bots with memory,
   unusual browser tools, and experiments tested against real users or hardware.
-- NeuraLoc-Core is the flagship engineering case study.
+- Traelyx is the current-build case study; NeuraLoc-Core remains the deepest local-AI engineering case study.
 
 ### Audience Goals
 
@@ -92,11 +92,11 @@ The portfolio should communicate three things immediately:
   discovery count, sound control, GitHub, and a usable mobile menu.
 - A strong hero with clear role/value copy, project and GitHub calls to action, a currently-building
   signal, boot copy, and Recruiter / Developer / Chaos modes.
-- A deep NeuraLoc-Core flagship section with a pinned narrative, architecture responsibilities, verified
-  capabilities, constraints, next milestone, and repository path.
-- A featured project lab for NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope, and
-  AtrxInstaDown.
-- Interactive architecture diagrams for NeuraLoc-Core, void.chat, and Aveline Bot.
+- A deep Traelyx current-build section with a pinned narrative, architecture responsibilities, verified
+  foundation, explicit disabled-recorder boundary, next milestone, and repository path.
+- A seven-project lab for Traelyx, NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
+  and AtrxInstaDown.
+- Interactive architecture diagrams for Traelyx, NeuraLoc-Core, void.chat, and Aveline Bot.
 - A fixed-command simulated terminal with history, tab completion, safe links, mode switching, and no
   arbitrary shell execution.
 - An experiment rack, capability map, operating principles, and direct email/GitHub contact section.
@@ -118,6 +118,15 @@ The portfolio should communicate three things immediately:
   `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents.
 
 ## Iteration Record
+
+### 18. Traelyx Current-Build Integration - `pending`
+
+- Added Traelyx as the current active build from its public Markdown and validated M0 state.
+- Kept implemented foundation, disabled recorder, and future Drive DNA/scoring work visually distinct.
+- Expanded the lab, detail dialog, architecture playground, terminal, metadata, and project count to
+  seven projects while preserving NeuraLoc-Core as the deepest local-AI case study.
+- Reused the installed Agent Flow primitive as a fixed trust-path diagram and added the canonical
+  Traelyx launcher mark as a local static asset.
 
 ### 1. Initial Product Build - `91f1e37`
 

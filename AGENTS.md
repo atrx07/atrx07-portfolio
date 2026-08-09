@@ -67,22 +67,25 @@ Treat the following GitHub repositories and their READMEs as source material. In
 
 ### Primary featured work
 
-1. **NeuraLoc-Core**  
+1. **Traelyx**
+   https://github.com/atrx07/Traelyx
+
+2. **NeuraLoc-Core**
    https://github.com/atrx07/NeuraLoc-Core
 
-2. **void.chat**  
+3. **void.chat**
    https://github.com/atrx07/void-chat
 
-3. **Aveline Bot**  
+4. **Aveline Bot**
    https://github.com/atrx07/aveline-bot
 
-4. **StyleForge Lite**  
+5. **StyleForge Lite**
    https://github.com/atrx07/styforge
 
-5. **SecureScope**  
+6. **SecureScope**
    https://github.com/atrx07/securescope
 
-6. **AtrxInstaDown**  
+7. **AtrxInstaDown**
    https://github.com/atrx07/atrxinstadown
 
 ### Additional experiments / repository shelf
@@ -113,7 +116,38 @@ If a claim cannot be verified from a repository, supplied content, or a clear lo
 
 Use the following facts. Improve the writing, but do not inflate the claims.
 
-### NeuraLoc-Core — flagship / “Currently building”
+### Traelyx — current build
+
+An open-source, local-first Android driving telemetry and driver-intelligence platform designed around
+data ownership, explainable evidence, confidence, and integrity.
+
+**Stack / foundation**
+
+- Flutter and Dart
+- Riverpod and `go_router`
+- Drift / SQLite
+- Kotlin Android native boundary
+- provider-neutral map contract
+
+**Available now / verified M0 boundary**
+
+- Flutter Android shell launched on physical Android 14 hardware
+- accountless application, routing, theme, and state-management foundations
+- Drift schema v1 and local settings persistence
+- versioned Flutter/Kotlin bridge contract
+- native recorder service registered but intentionally disabled
+- CI checks for generated source, formatting, analysis, Flutter/Kotlin tests, contracts, builds, and size
+
+**Honesty boundary**
+
+Do not present actual background recording, telemetry processing, Drive DNA, scoring, synchronized
+replay, cloud/social/Guardian features, ML, or commentary as implemented. The recorder is disabled and
+no location, sensor, or background-service collection is active in M0. Present those capabilities as
+planned milestones only. The next immediate phase is M1 application foundation; the first meaningful
+recording reliability gate is a later 30–60 minute physical locked-screen drive with synchronized GNSS
+and IMU data recovered and exported intact.
+
+### NeuraLoc-Core — local AI engineering case study
 
 A privacy-first Windows desktop application for discovering, managing, and running local AI models through verified native inference engines.
 
@@ -324,7 +358,7 @@ The first screen should include:
 - a concise two-line value proposition
 - primary CTA: explore projects
 - secondary CTA: GitHub or contact
-- a compact “currently building NeuraLoc-Core” status module
+- a compact “currently building Traelyx” status module
 - optional tiny boot sequence such as:
 
 ```text
@@ -360,13 +394,13 @@ Rules:
 
 ### D. “Now building” flagship section
 
-Create an immersive NeuraLoc-Core case study.
+Create an immersive Traelyx current-build case study.
 
 Include:
 
 - product thesis
 - status: active development
-- architecture strip: React → Tauri IPC → Rust orchestration → SQLite / native runtime
+- architecture strip: Flutter app → versioned Kotlin bridge → Drift / local authority → planned recorder and Drive DNA stages
 - current capabilities
 - engineering problems solved
 - next milestone
@@ -381,12 +415,13 @@ Static labels such as “local-first”, “network off by default”, and “du
 
 Show at least these projects:
 
-1. NeuraLoc-Core
-2. void.chat
-3. Aveline Bot
-4. StyleForge Lite
-5. SecureScope
-6. AtrxInstaDown
+1. Traelyx
+2. NeuraLoc-Core
+3. void.chat
+4. Aveline Bot
+5. StyleForge Lite
+6. SecureScope
+7. AtrxInstaDown
 
 Each project card must provide:
 
@@ -418,6 +453,7 @@ Create a section where visitors can select a project and inspect a simplified ar
 
 Minimum diagrams:
 
+- Traelyx
 - NeuraLoc-Core
 - void.chat
 - Aveline Bot
@@ -1011,7 +1047,8 @@ The project is complete only when:
 
 - the page feels distinctly ATRX rather than template-derived
 - the first screen clearly communicates Arppith’s focus
-- NeuraLoc-Core receives the deepest case study
+- Traelyx is clearly presented as the current build with verified and planned states separated
+- NeuraLoc-Core remains the deepest local-AI case study
 - all featured projects use accurate, grounded descriptions
 - GitHub and email actions work
 - visitor modes work and persist
@@ -1605,7 +1642,7 @@ Implement in bounded stages while keeping the repository valid after each commit
 - run lint, tests, build, E2E, visual QA, deployment verification, and privacy checks.
 
 Do not combine unrelated project-visual refactors with the blog implementation unless required to make
-routing or shared layout work. Preserve the existing six-project presentation and its custom visuals.
+routing or shared layout work. Preserve the current seven-project presentation and its custom visuals.
 
 ---
 

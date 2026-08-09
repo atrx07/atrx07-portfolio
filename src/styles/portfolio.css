@@ -510,7 +510,7 @@ section[id] {
 }
 
 .flagship-title > p:not(.eyebrow) {
-  margin: 30px 0;
+  margin: 16px 0;
   color: var(--body);
   font-size: 1.08rem;
   font-weight: 300;
@@ -532,11 +532,13 @@ section[id] {
 }
 
 .flagship-visual .project-visual {
+  height: 540px;
   min-height: 540px;
 }
 
 .flagship-overlay {
   position: absolute;
+  z-index: 4;
   right: 22px;
   bottom: 18px;
   left: 22px;
@@ -548,6 +550,10 @@ section[id] {
   font-family: Consolas, monospace;
   font-size: 0.64rem;
   text-transform: uppercase;
+}
+
+.flagship-visual .traelyx-flow-shell {
+  padding-bottom: 90px;
 }
 
 .architecture-strip {
@@ -773,6 +779,238 @@ section[id] {
   overflow: hidden;
   background: var(--panel);
   container-type: inline-size;
+}
+
+.telemetry-visual {
+  display: block;
+  background: #05070a;
+}
+
+.traelyx-flow-shell {
+  --primary: #54b9e8;
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  padding: clamp(14px, 3cqw, 26px);
+  background:
+    radial-gradient(circle at 58% 46%, rgb(84 185 232 / 13%), transparent 34%),
+    linear-gradient(135deg, rgb(255 255 255 / 2%), transparent 44%),
+    #05070a;
+  isolation: isolate;
+}
+
+.traelyx-flow-shell::before {
+  position: absolute;
+  z-index: 0;
+  inset: 12px;
+  border: 1px solid rgb(255 255 255 / 7%);
+  content: "";
+  pointer-events: none;
+}
+
+.traelyx-flow-shell::after {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: 7%;
+  left: 7%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(84 185 232 / 18%), transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.traelyx-flow-header,
+.traelyx-flow-footer {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: clamp(0.48rem, 1.15cqw, 0.64rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.traelyx-flow-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 11%);
+  color: var(--body);
+}
+
+.traelyx-flow-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.traelyx-flow-brand img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.traelyx-flow-brand b,
+.traelyx-flow-footer strong {
+  font-size: inherit;
+  font-weight: 400;
+}
+
+.traelyx-flow-header > i {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--success);
+  font-style: normal;
+}
+
+.traelyx-flow-header > i b {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 4px rgb(49 180 84 / 10%);
+}
+
+.traelyx-flow-footer {
+  padding-top: 12px;
+  border-top: 1px solid rgb(255 255 255 / 11%);
+}
+
+.traelyx-flow-footer strong {
+  color: var(--body);
+}
+
+.traelyx-flow-mark {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 54%;
+  width: clamp(96px, 24cqw, 176px);
+  height: auto;
+  opacity: 0.055;
+  transform: translate(-50%, -50%) rotate(-6deg);
+  pointer-events: none;
+}
+
+.traelyx-agent-flow {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 3%) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.traelyx-agent-flow [data-node-id] {
+  --flow-node-tone: #54b9e8;
+  --primary: var(--flow-node-tone);
+
+  z-index: 2;
+  min-width: 9.15rem;
+  border-color: var(--line-soft);
+  border-radius: 12px;
+  padding: 11px 13px;
+  background: rgb(5 7 10 / 94%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 2%),
+    0 14px 28px rgb(0 0 0 / 36%);
+  backdrop-filter: blur(12px);
+  font-family: Consolas, monospace;
+}
+
+.traelyx-agent-flow [data-node-id="bridge"] {
+  --flow-node-tone: #1c69d4;
+}
+
+.traelyx-agent-flow [data-node-id="drift"] {
+  --flow-node-tone: var(--success);
+}
+
+.traelyx-agent-flow [data-node-id="recorder"] {
+  --flow-node-tone: var(--warning);
+}
+
+.traelyx-agent-flow [data-node-id="dna"] {
+  --flow-node-tone: #75b7ff;
+}
+
+.traelyx-agent-flow [data-node-id] > span:first-of-type {
+  border-color: color-mix(in srgb, var(--flow-node-tone) 45%, var(--line));
+  border-radius: 0;
+  background: color-mix(in srgb, var(--flow-node-tone) 8%, var(--panel));
+  color: var(--flow-node-tone);
+}
+
+.traelyx-agent-flow [data-node-id] > span:last-child > span:first-child {
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.traelyx-agent-flow [data-node-id] > span:last-child > span:last-child {
+  color: var(--muted);
+  font-size: 0.54rem;
+  letter-spacing: 0.025em;
+}
+
+.traelyx-agent-flow [data-status="done"] {
+  border-color: color-mix(in srgb, var(--flow-node-tone) 58%, var(--line));
+  background: color-mix(in srgb, var(--flow-node-tone) 5%, #05070a);
+  box-shadow:
+    0 0 24px -14px var(--flow-node-tone),
+    0 16px 30px rgb(0 0 0 / 42%);
+}
+
+.traelyx-agent-flow [data-status="done"] > span:first-of-type {
+  border-color: var(--flow-node-tone);
+  background: var(--flow-node-tone);
+  color: var(--canvas);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .traelyx-agent-flow [data-node-id]:hover {
+    border-color: var(--flow-node-tone);
+    background: color-mix(in srgb, var(--flow-node-tone) 7%, #05070a);
+  }
+}
+
+@container (max-width: 500px) {
+  .traelyx-flow-shell {
+    padding: 12px;
+  }
+
+  .traelyx-flow-footer strong {
+    display: none;
+  }
+
+  .traelyx-agent-flow [data-node-id] {
+    min-width: 8.45rem;
+    gap: 8px;
+    padding: 9px 10px;
+  }
+}
+
+@container (max-width: 360px) {
+  .traelyx-flow-header > i,
+  .traelyx-flow-footer span:last-child,
+  .traelyx-agent-flow [data-node-id] > span:last-child > span:last-child {
+    display: none;
+  }
 }
 
 .runtime-visual {
@@ -1833,6 +2071,7 @@ dialog::backdrop {
 }
 
 .dialog-columns h3,
+.next-block h3,
 .constraint-block h3 {
   margin: 0 0 18px;
   font-size: 0.72rem;
@@ -1864,6 +2103,20 @@ dialog::backdrop {
   color: var(--body);
   font-family: Consolas, monospace;
   font-size: 0.62rem;
+}
+
+.next-block {
+  margin: 0 0 28px;
+  border-left: 3px solid var(--signal-light);
+  padding: 18px 20px;
+  background: var(--panel);
+}
+
+.next-block p {
+  margin: 0;
+  color: var(--body);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .constraint-block {
@@ -2837,6 +3090,7 @@ dialog::backdrop {
 
   .flagship-visual,
   .flagship-visual .project-visual {
+    height: 460px;
     min-height: 460px;
   }
 
@@ -3168,6 +3422,7 @@ dialog::backdrop {
 
   .flagship-visual,
   .flagship-visual .project-visual {
+    height: 360px;
     min-height: 360px;
   }
 

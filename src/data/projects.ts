@@ -2,6 +2,7 @@ import type { Project } from "../types";
 
 export const projectCategories = [
   "All",
+  "Mobile & telemetry",
   "Local AI",
   "Real-time",
   "Bots & automation",
@@ -11,6 +12,61 @@ export const projectCategories = [
 ] as const;
 
 export const projects: Project[] = [
+  {
+    slug: "traelyx",
+    name: "Traelyx",
+    tagline: "Driving telemetry that explains itself.",
+    summary:
+      "An open-source, local-first Android platform being built to turn phone GNSS and IMU data into confidence-aware, explainable driver intelligence.",
+    categories: ["Mobile & telemetry"],
+    technologies: ["Flutter", "Dart", "Kotlin", "Riverpod", "Drift", "SQLite", "Android"],
+    status: "active",
+    featured: true,
+    repoUrl: "https://github.com/atrx07/Traelyx",
+    proofPoints: [
+      "M0 foundation launches on a physical Android 14 device with accountless Flutter, Riverpod, go_router, and centralized dark-first theme boundaries.",
+      "Drift schema v1 persists local settings while a provider-neutral map contract and versioned Flutter-to-Kotlin recorder bridge keep core dependencies replaceable.",
+      "GitHub Actions validates generated source, formatting, analysis, Flutter and Kotlin tests, repository contracts, Android builds, and artifact size reporting.",
+      "The native recorder service is registered but intentionally disabled: no sensor or location data is collected before the reliability milestone passes.",
+    ],
+    constraints: [
+      "M0 is complete, but real trip recording and background reliability are not implemented yet.",
+      "Drive DNA, telemetry confidence, scoring, replay, Guardian Connect, social features, commentary providers, and ML remain roadmap systems rather than available features.",
+      "Final map provider, model runtime, scoring thresholds, and visual tokens remain subject to prototype and real-device validation.",
+    ],
+    next: "M1 application foundation: semantic theme, Drive / Trips / DNA / Social / You navigation, local settings, the full Drift schema, migrations, and diagnostics before the M2 recorder gate.",
+    architecture: [
+      {
+        id: "flutter",
+        label: "Flutter app",
+        detail:
+          "Owns accountless product flows, Riverpod state, go_router navigation, diagnostics, replay presentation, and the user-facing explanation layer. The M0 shell is validated on Android 14.",
+        signal: "light",
+      },
+      {
+        id: "kotlin",
+        label: "Kotlin recorder boundary",
+        detail:
+          "The versioned native bridge and disabled foreground-service skeleton exist now. M2 will make this layer own GNSS, IMU, timestamps, buffering, recovery, and screen-lock reliability.",
+        signal: "blue",
+      },
+      {
+        id: "drift",
+        label: "Drift local authority",
+        detail:
+          "SQLite is the local-first source of truth. Schema v1 currently persists bootstrap settings; trips, chunks, events, scores, baselines, and sync metadata belong to the next foundation stage.",
+        signal: "neutral",
+      },
+      {
+        id: "intelligence",
+        label: "Telemetry + Drive DNA",
+        detail:
+          "Planned Dart processing will align sensor time, propagate confidence, produce deterministic evidence, and feed explicit versioned scoring. ML may support evidence later, never own the final score.",
+        signal: "red",
+      },
+    ],
+    visual: "telemetry",
+  },
   {
     slug: "neuraloc",
     name: "NeuraLoc-Core",
@@ -200,5 +256,5 @@ export const projects: Project[] = [
 ];
 
 export const architectureProjects = projects.filter((project) =>
-  ["neuraloc", "voidchat", "aveline"].includes(project.slug),
+  ["traelyx", "neuraloc", "voidchat", "aveline"].includes(project.slug),
 );

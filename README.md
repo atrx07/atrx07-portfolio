@@ -2,6 +2,13 @@
 
 Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact software control room for local AI, real-time systems, automation, and unusual browser tools.
 
+## Current build
+
+[Traelyx](https://github.com/atrx07/Traelyx) is the active project: an open-source, local-first Android
+driving-telemetry platform built around explainable evidence and data ownership. The portfolio reports
+its current boundary directly: the Flutter/Android M0 foundation is validated, while the native drive
+recorder remains disabled until the reliability milestones are implemented and tested.
+
 ## Stack
 
 - Vite, React, and strict TypeScript
@@ -43,6 +50,8 @@ Public profile content is centralized in:
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
+The Traelyx current-build copy must continue to distinguish its validated M0 foundation from planned
+recording, Drive DNA, scoring, replay, cloud, social, Guardian, ML, and commentary capabilities.
 
 Field Notes content lives in paired files under `src/blog/posts/`:
 

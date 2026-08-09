@@ -555,6 +555,15 @@ small radius inside the ATRX control-room language rather than turning it into a
 Reduced motion resolves the graph into its completed, fully legible state without replaying the
 continuous sequence.
 
+Traelyx uses the same Agent Flow primitive as a fixed trust-path diagram, not as simulated live
+telemetry. Its canonical blue launcher mark anchors a black, hairline-grid instrument surface that
+still belongs to the ATRX control-room system. Flutter app, versioned native bridge, and Drift v1 nodes
+are the only completed nodes in M0. Recorder and Drive DNA remain idle and explicitly labeled as future
+work; edges into those stages do not animate. The wide flagship and expanded desktop accordion use the
+linear composition, while compact cards, mobile accordions, and the project dialog use the stacked
+composition. Reduced motion preserves the same completed-versus-planned distinction without packets or
+replay. Do not invent speeds, route traces, sensor values, drive scores, or confidence telemetry.
+
 8. When in doubt about emphasis: bigger photography before bigger type.
 
 ## Known Gaps

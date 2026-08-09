@@ -21,13 +21,18 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
     true,
   );
   expect(graph["@graph"]?.some((item) => item["@type"] === "ProfilePage")).toBe(true);
-  expect(graph["@graph"]?.filter((item) => item["@type"] === "SoftwareSourceCode")).toHaveLength(3);
+  expect(graph["@graph"]?.filter((item) => item["@type"] === "SoftwareSourceCode")).toHaveLength(4);
+  expect(
+    graph["@graph"]?.some(
+      (item) => item["@type"] === "SoftwareSourceCode" && item.name === "Traelyx",
+    ),
+  ).toBe(true);
 
   const sitemapResponse = await request.get("/sitemap.xml");
   expect(sitemapResponse.ok()).toBe(true);
   const sitemap = await sitemapResponse.text();
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
-  expect(sitemap).toContain("<lastmod>2026-07-22</lastmod>");
+  expect(sitemap).toContain("<lastmod>2026-08-09</lastmod>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
   expect(sitemap).toContain("<lastmod>2026-08-02</lastmod>");
   expect(sitemap).not.toContain("registry-fixture");
@@ -91,7 +96,7 @@ test("raw SPA route responses remain an explicit homepage metadata fallback", as
   expect(html).not.toContain("<title>Field Notes | Arppith Andrews (atrx07)</title>");
 });
 
-test("command palette to NeuraLoc terminal flow", async ({ page }) => {
+test("command palette to Traelyx terminal flow", async ({ page }) => {
   await page.goto("/");
 
   await page.getByRole("button", { name: "Open command palette" }).click();
@@ -99,23 +104,23 @@ test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   await page.getByRole("button", { name: /Go to Projects/ }).click();
 
   const viewport = page.viewportSize();
-  const neuralocCard = page.locator('[data-project-slug="neuraloc"]');
+  const traelyxCard = page.locator('[data-project-slug="traelyx"]');
   if (viewport && viewport.width <= 900) {
-    const neuralocToggle = neuralocCard.locator(".project-slice-hit");
-    await expect(neuralocToggle).toHaveAccessibleName("Expand NeuraLoc-Core project card");
-    await neuralocToggle.click();
-    await expect(neuralocToggle).toHaveAttribute("aria-expanded", "true");
-    await expect(neuralocToggle).toHaveAccessibleName("Collapse NeuraLoc-Core project card");
-    await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toHaveCount(0);
-    await neuralocCard.getByRole("button", { name: "Inspect system" }).click();
+    const traelyxToggle = traelyxCard.locator(".project-slice-hit");
+    await expect(traelyxToggle).toHaveAccessibleName("Expand Traelyx project card");
+    await traelyxToggle.click();
+    await expect(traelyxToggle).toHaveAttribute("aria-expanded", "true");
+    await expect(traelyxToggle).toHaveAccessibleName("Collapse Traelyx project card");
+    await expect(page.getByRole("dialog", { name: /Traelyx/ })).toHaveCount(0);
+    await traelyxCard.getByRole("button", { name: "Inspect system" }).click();
   } else {
-    await page.getByRole("button", { name: "Open NeuraLoc-Core project details" }).click();
+    await page.getByRole("button", { name: "Open Traelyx project details" }).click();
   }
 
-  await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toBeVisible();
+  await expect(page.getByRole("dialog", { name: /Traelyx/ })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open repository" })).toHaveAttribute(
     "href",
-    "https://github.com/atrx07/NeuraLoc-Core",
+    "https://github.com/atrx07/Traelyx",
   );
   await page.getByRole("button", { name: "Close project details" }).click();
 
@@ -125,11 +130,11 @@ test("command palette to NeuraLoc terminal flow", async ({ page }) => {
   await page.getByRole("button", { name: /Open portfolio terminal/ }).click();
 
   const terminal = page.getByLabel("Portfolio terminal command");
-  await terminal.fill("project neuraloc");
+  await terminal.fill("project traelyx");
   await terminal.press("Enter");
 
-  await expect(page.getByRole("log")).toContainText("NeuraLoc-Core");
-  await expect(page.locator('a[href="https://github.com/atrx07/NeuraLoc-Core"]').first()).toBeAttached();
+  await expect(page.getByRole("log")).toContainText("Traelyx");
+  await expect(page.locator('a[href="https://github.com/atrx07/Traelyx"]').first()).toBeAttached();
 });
 
 test("mobile navigation and layout smoke", async ({ page }) => {
@@ -282,6 +287,9 @@ test("identity, project, dialog, and terminal layout repairs hold", async ({ pag
   if (viewport && viewport.width <= 900) {
     await neuralocCard.getByRole("button", { name: "Expand NeuraLoc-Core project card" }).click();
     await page.waitForTimeout(850);
+  } else {
+    await neuralocCard.hover();
+    await page.waitForTimeout(700);
   }
 
   const runtimeVisual = page.locator(".project-slice.is-expanded .runtime-visual");
@@ -432,11 +440,11 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
     wideArt: true,
   });
 
-  const firstCard = page.locator('[data-project-slug="neuraloc"]');
+  const firstCard = page.locator('[data-project-slug="traelyx"]');
   const secondCard = page.locator('[data-project-slug="voidchat"]');
   const first = firstCard.locator(".project-slice-hit");
   const second = secondCard.locator(".project-slice-hit");
-  await expect(first).toHaveAccessibleName("Expand NeuraLoc-Core project card");
+  await expect(first).toHaveAccessibleName("Expand Traelyx project card");
   await expect(second).toHaveAccessibleName("Expand void.chat project card");
   await expect(first).toHaveAttribute("aria-expanded", "false");
   await expect(second).toHaveAttribute("aria-expanded", "false");
@@ -448,8 +456,8 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
 
   await first.click();
   await expect(first).toHaveAttribute("aria-expanded", "true");
-  await expect(first).toHaveAccessibleName("Collapse NeuraLoc-Core project card");
-  await expect(page.getByRole("dialog", { name: /NeuraLoc-Core/ })).toHaveCount(0);
+  await expect(first).toHaveAccessibleName("Collapse Traelyx project card");
+  await expect(page.getByRole("dialog", { name: /Traelyx/ })).toHaveCount(0);
 
   await second.click();
   await expect(second).toHaveAttribute("aria-expanded", "true");
@@ -506,6 +514,62 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   await expect(page.locator(".hero-bottom .animate-magic-rainbow").first()).toHaveCSS(
     "animation-name",
     "none",
+  );
+});
+
+test("Traelyx foundation flow stays honest and contained across card and dialog", async ({ page }) => {
+  await page.goto("/#projects");
+
+  const viewport = page.viewportSize();
+  await expect(page.locator("#now .traelyx-agent-flow")).toHaveAttribute(
+    "data-layout",
+    viewport && viewport.width <= 900 ? "stacked" : "linear",
+  );
+  const card = page.locator('[data-project-slug="traelyx"]');
+  const toggle = card.locator(".project-slice-hit");
+
+  if (viewport && viewport.width <= 900) {
+    await toggle.click();
+  } else {
+    await card.hover();
+  }
+
+  await expect(card).toHaveClass(/is-expanded/);
+  const cardVisual = card.locator(".telemetry-visual");
+  await expect(cardVisual.locator('.traelyx-flow-brand img')).toHaveAttribute(
+    "src",
+    "/traelyx-mark.png",
+  );
+  await expect(cardVisual.locator("[data-node-id]")).toHaveCount(5);
+  await expect(cardVisual.locator('[data-node-id="app"]')).toHaveAttribute("data-status", "done");
+  await expect(cardVisual.locator('[data-node-id="recorder"]')).toHaveAttribute("data-status", "idle");
+  await expect(cardVisual.locator('[data-node-id="recorder"]')).toContainText("M2 / disabled");
+  await expect(cardVisual.locator('[data-slot="agent-flow"]')).toHaveAttribute(
+    "data-layout",
+    viewport && viewport.width <= 900 ? "stacked" : "linear",
+  );
+
+  const contained = await cardVisual.evaluate((visual) => {
+    const frame = visual.getBoundingClientRect();
+    return [...visual.querySelectorAll<HTMLElement>("[data-node-id]")].every((node) => {
+      const bounds = node.getBoundingClientRect();
+      return (
+        bounds.left >= frame.left - 1 &&
+        bounds.right <= frame.right + 1 &&
+        bounds.top >= frame.top - 1 &&
+        bounds.bottom <= frame.bottom + 1
+      );
+    });
+  });
+  expect(contained).toBe(true);
+
+  await card.getByRole("button", { name: "Inspect system" }).click();
+  const dialog = page.getByRole("dialog", { name: /Traelyx/ });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "stacked");
+  await expect(dialog.getByRole("link", { name: "Open repository" })).toHaveAttribute(
+    "href",
+    "https://github.com/atrx07/Traelyx",
   );
 });
 

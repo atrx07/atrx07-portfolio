@@ -3,6 +3,33 @@ import { projects } from "../data/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 describe("ProjectVisual", () => {
+  it("renders Traelyx as an honest foundation-to-roadmap flow", () => {
+    const project = projects.find((item) => item.slug === "traelyx");
+    expect(project).toBeDefined();
+
+    const { container, rerender } = render(<ProjectVisual project={project!} />);
+    const flow = container.querySelector('[data-slot="agent-flow"]');
+
+    expect(flow).toHaveAttribute("data-draggable", "false");
+    expect(flow).toHaveAttribute("data-pannable", "false");
+    expect(flow).toHaveAttribute("data-layout", "stacked");
+    expect(container.querySelectorAll("[data-node-id]")).toHaveLength(5);
+    expect(container.querySelector('[data-node-id="app"]')).toHaveAttribute("data-status", "done");
+    expect(container.querySelector('[data-node-id="drift"]')).toHaveTextContent("local authority");
+    expect(container.querySelector('[data-node-id="recorder"]')).toHaveTextContent("M2 / disabled");
+    expect(container.querySelector('[data-node-id="recorder"]')).toHaveAttribute("data-status", "idle");
+    expect(screen.getByText("FOUNDATION LIVE / RECORDER DISABLED")).toBeInTheDocument();
+    expect(container.querySelector('.traelyx-flow-brand img')).toHaveAttribute(
+      "src",
+      "/traelyx-mark.png",
+    );
+
+    rerender(<ProjectVisual project={project!} traelyxLayout="linear" />);
+
+    expect(container.querySelector('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "linear");
+    expect(container.querySelector('[data-node-id="dna"]')).toHaveStyle({ left: "770px", top: "170px" });
+  });
+
   it("renders void.chat as a layered architecture orbit", () => {
     const project = projects.find((item) => item.slug === "voidchat");
     expect(project).toBeDefined();

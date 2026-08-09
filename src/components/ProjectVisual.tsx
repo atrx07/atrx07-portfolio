@@ -17,6 +17,74 @@ function VoidNode({ code, label, tone }: VoidNodeProps) {
   );
 }
 
+const traelyxFlowNodes: AgentFlowNode[] = [
+  {
+    id: "app",
+    label: "Flutter app",
+    sublabel: "accountless shell",
+    icon: <span>UI</span>,
+    status: "done",
+    x: 110,
+    y: 170,
+  },
+  {
+    id: "bridge",
+    label: "Native bridge",
+    sublabel: "versioned contract",
+    icon: <span>IPC</span>,
+    status: "done",
+    x: 330,
+    y: 82,
+  },
+  {
+    id: "drift",
+    label: "Drift v1",
+    sublabel: "local authority",
+    icon: <span>DB</span>,
+    status: "done",
+    x: 330,
+    y: 258,
+  },
+  {
+    id: "recorder",
+    label: "Recorder",
+    sublabel: "M2 / disabled",
+    icon: <span>GN</span>,
+    status: "idle",
+    x: 550,
+    y: 82,
+  },
+  {
+    id: "dna",
+    label: "Drive DNA",
+    sublabel: "planned evidence",
+    icon: <span>DNA</span>,
+    status: "idle",
+    x: 550,
+    y: 258,
+  },
+];
+
+const traelyxLinearFlowNodes: AgentFlowNode[] = traelyxFlowNodes.map((node) => {
+  if (node.id === "recorder") return { ...node, x: 550, y: 116 };
+  if (node.id === "dna") return { ...node, x: 770, y: 170 };
+  return node;
+});
+
+const traelyxFlowEdges: AgentFlowEdge[] = [
+  { id: "app-bridge", from: "app", to: "bridge", curvature: 28, persist: true },
+  { id: "app-drift", from: "app", to: "drift", curvature: -28, persist: true },
+  { id: "bridge-recorder", from: "bridge", to: "recorder", animated: false },
+  { id: "drift-dna", from: "drift", to: "dna", animated: false },
+  { id: "recorder-dna", from: "recorder", to: "dna", animated: false, curvature: -58 },
+];
+
+const traelyxLinearFlowEdges: AgentFlowEdge[] = traelyxFlowEdges.map((edge) => {
+  if (edge.id === "drift-dna") return { ...edge, curvature: -34 };
+  if (edge.id === "recorder-dna") return { ...edge, curvature: 34 };
+  return edge;
+});
+
 const avelineFlowNodes: AgentFlowNode[] = [
   {
     id: "message",
@@ -80,13 +148,64 @@ type ProjectVisualProps = {
   project: Project;
   compact?: boolean;
   avelineLayout?: "stacked" | "linear";
+  traelyxLayout?: "stacked" | "linear";
 };
 
 export function ProjectVisual({
   project,
   compact = false,
   avelineLayout = "stacked",
+  traelyxLayout = "stacked",
 }: ProjectVisualProps) {
+  if (project.visual === "telemetry") {
+    const flowNodes = traelyxLayout === "linear" ? traelyxLinearFlowNodes : traelyxFlowNodes;
+    const flowEdges = traelyxLayout === "linear" ? traelyxLinearFlowEdges : traelyxFlowEdges;
+
+    return (
+      <div className="project-visual telemetry-visual" aria-hidden="true">
+        <div className="traelyx-flow-shell">
+          <div className="traelyx-flow-header">
+            <span className="traelyx-flow-brand">
+              <img src="/traelyx-mark.png" alt="" width="192" height="192" />
+              <b>TRAELYX / TRUST PATH</b>
+            </span>
+            <i>
+              <b /> M0 VALIDATED
+            </i>
+          </div>
+
+          <img
+            className="traelyx-flow-mark"
+            src="/traelyx-mark.png"
+            alt=""
+            width="192"
+            height="192"
+          />
+
+          <AgentFlow
+            key={`${compact ? "compact" : "full"}-${traelyxLayout}`}
+            className="traelyx-agent-flow"
+            data-layout={traelyxLayout}
+            nodes={flowNodes}
+            edges={flowEdges}
+            draggable={false}
+            pannable={false}
+            fitView
+            fitViewMaxScale={traelyxLayout === "linear" ? 1.16 : 1}
+            flowDuration={2.8}
+            aria-label="Traelyx validated Flutter, native bridge, and local database foundation with planned recorder and Drive DNA stages"
+          />
+
+          <div className="traelyx-flow-footer">
+            <span>LOCAL FIRST</span>
+            <strong>FOUNDATION LIVE / RECORDER DISABLED</strong>
+            <span>NEXT / M1</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (project.visual === "runtime") {
     return (
       <div className={`project-visual runtime-visual ${compact ? "is-compact" : ""}`} aria-hidden="true">

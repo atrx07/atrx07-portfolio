@@ -39,7 +39,7 @@ export const siteMetadata = {
   canonicalUrl: "https://atrx07.pages.dev/",
   socialImagePath: "/atrx-wide.jpg",
   socialImageAlt: "ATRX artwork for Arppith Andrews, engineering student and AI automation builder",
-  lastModified: "2026-07-22",
+  lastModified: "2026-08-09",
 } as const;
 
 export const fieldNotesMetadata = {
@@ -51,8 +51,8 @@ export const fieldNotesMetadata = {
 
 export const capabilityGroups = [
   {
-    title: "Native & local AI",
-    items: ["Rust", "Tauri 2", "SQLite", "llama.cpp", "GGUF"],
+    title: "Native, mobile & local AI",
+    items: ["Flutter", "Dart", "Kotlin", "Drift", "Rust", "Tauri 2", "SQLite", "llama.cpp", "GGUF"],
   },
   {
     title: "Interfaces",
