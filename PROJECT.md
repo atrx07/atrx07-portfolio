@@ -119,7 +119,7 @@ The portfolio should communicate three things immediately:
 
 ## Iteration Record
 
-### 18. Traelyx Current-Build Integration - `pending`
+### 18. Traelyx Current-Build Integration - `51aa1ef`
 
 - Added Traelyx as the current active build from its public Markdown and validated M0 state.
 - Kept implemented foundation, disabled recorder, and future Drive DNA/scoring work visually distinct.
