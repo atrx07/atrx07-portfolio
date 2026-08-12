@@ -1,76 +1,64 @@
-# Next Step - Traelyx live deployment verification and source-drift guard
+# Next Step - Verify the Traelyx M2.7 deployment and guard the M2.8 boundary
 
 ## Handoff
 
-- Source baseline: `51aa1ef` - add Traelyx as the current-build project across the hero, flagship,
-  seven-project lab, four-system architecture playground, terminal, capability map, metadata, and tests.
-- Truth boundary: the public Traelyx repository documents M0 as validated. The Flutter Android shell,
-  versioned Flutter/Kotlin bridge, Drift schema v1/settings, provider-neutral map contract, and CI
-  boundaries are present; the recorder remains intentionally disabled and no sensor, location, or
-  background-service collection is active.
-- Visual boundary: the canonical 192 px Traelyx launcher mark is stored at
-  `public/traelyx-mark.png`. The installed Agent Flow primitive is fixed and non-pannable; only the M0
-  app, bridge, and database nodes render complete, while recorder and Drive DNA remain idle.
-- Responsive proof: wide flagship/accordion flows use the linear layout; 900 px and narrower surfaces,
-  mobile accordions, and dialogs use the stacked layout. Desktop 1280 px and mobile 360 px browser QA
-  found no document overflow, node escape, label collision, or console warning.
+- Source baseline: `a3c2fc9` - advance Traelyx from the original M0 presentation to the public
+  repository's verified M1 and M2.1-M2.7 boundary.
+- Truth boundary: the controlled Android 14 proof covers native GNSS and calibrated dual-IMU capture,
+  bounded compressed/checksummed atomic chunks, contextual permissions and Drive controls,
+  interrupted-session recovery, and transactional Drift finalization of exactly 577 indexed chunks.
+- Reliability boundary: the proof is grounded in one Tecno Android 14 device. M2.8 still owns the
+  30-60 minute locked-screen real drive, intact export/replay, battery behavior, deep-sleep/reboot, and
+  broader device/OEM validation.
+- Roadmap boundary: processing, confidence, events, Drive DNA, scoring, synchronized replay, maps,
+  connected/social systems, Guardian, commentary, and ML remain unimplemented later milestones.
+- Visual boundary: Traelyx now uses a deterministic recorder evidence instrument with three explicitly
+  schematic signal channels, an integrity-chunk register, the public 577-chunk proof ledger, and a
+  verified-to-pending lifecycle rail. Aveline remains the only featured project using Agent Flow.
+- Responsive proof: the full recorder uses dedicated 500 px mobile stages in the flagship and detail
+  sheet; the mobile accordion uses a compact contained instrument. Desktop 1280 px, 640 px reflow, and
+  360 px browser QA found no document overflow or console warnings/errors.
 - Verification baseline: typecheck passed; 67 unit/component tests passed; production build passed;
-  Playwright passed 35 with one expected desktop skip.
-- Build graph: `index-ClUcVVJU.js` at 242.90 kB (79.26 kB gzip),
-  `PortfolioPage-5P7n3Beg.js` at 305.61 kB (107.18 kB gzip), `index-FoufsvxV.css` at 40.14 kB
-  (8.50 kB gzip), `PortfolioPage-C0IEp48R.css` at 55.44 kB (10.78 kB gzip), and the isolated
-  `registry-fixture-D1UUTQbj.js` body at 1.96 kB (0.83 kB gzip).
-- Deployment checkpoint: source commit `51aa1ef` is the deployment candidate. Confirm `origin/main`
-  contains it, then do not claim Cloudflare is serving it until the live page and exact public signals
-  are observed.
+  Playwright passed 35 with one expected desktop-only skip.
 
 ## Implementation sequence
 
-1. After push, verify `https://atrx07.pages.dev/` on fresh desktop and 360 px visits. Confirm the hero
-   says `Currently building Traelyx`, the current-build section exposes M0/disabled-recorder truth, the
-   project count is seven, Traelyx is first in the accordion, and the architecture playground has four
-   systems.
-2. Inspect the live Traelyx accordion, project dialog, command palette, terminal `project traelyx`,
-   repository CTA, canonical mark request, metadata, JSON-LD, sitemap date, console, and document
-   overflow. Record only observed deployment facts in `STATUS.md`.
-3. When Traelyx advances beyond M0, re-read its root, product, technical, milestone, status, and next-step
-   Markdown before changing portfolio claims. Update `src/data/projects.ts` first, then derived hero,
-   terminal, metadata, tests, and governance in the same atomic change.
-4. Do not light recorder, telemetry, Drive DNA, scoring, replay, Guardian, social, commentary, cloud, or
-   ML nodes until the public repository documents and validates the relevant milestone. Keep future
-   edges idle until implementation truth changes.
-5. Re-run typecheck, unit/component tests, production build, Playwright desktop/mobile matrix, and visual
-   QA after any content-state change. Recheck 1280 px, 360 px, 200 percent zoom, reduced motion, keyboard
-   focus, overflow, and console state.
+1. After `a3c2fc9` reaches Cloudflare Pages, verify `https://atrx07.pages.dev/` on fresh desktop and
+   360 px visits. Confirm the hero reports `M2.7 recorder verified`, the current-build section exposes
+   the evidence recorder, and the Traelyx accordion/detail view use the same current truth boundary.
+2. Inspect live terminal `project traelyx` and `now` output, architecture responsibilities, repository
+   CTA, JSON-LD, sitemap date, mark request, console, and document overflow. Record only observed facts
+   in ignored `STATUS.md`; do not infer deployment from the push alone.
+3. When Traelyx advances beyond M2.7, re-read its root README, product/technical documents, active
+   milestone, status, completed-milestone records, and next-step document before changing claims.
+4. If M2.8 becomes verified, update `src/data/projects.ts` first, then derived hero, flagship, terminal,
+   metadata, tests, README, and governance in one atomic change. Keep later intelligence features
+   planned until their own public milestone evidence exists.
+5. Re-run typecheck, unit/component tests, production build, the complete Playwright desktop/mobile
+   matrix, and visual QA after any new truth-state or responsive-layout change.
 
 ## Constraints
 
-- The local project data remains canonical for rendering; portfolio availability must not depend on the
-  GitHub API or a client token.
-- Preserve Traelyx's local-first and confidence-aware product direction without presenting roadmap
-  systems as shipped behavior.
-- Keep NeuraLoc-Core as the deepest local-AI case study even while Traelyx owns the current-build slot.
-- Preserve the existing route-owned JS/CSS boundary, static deployment, command allowlist, session-only
-  discovery, local visitor-mode persistence, and user-triggered sound behavior.
-- Do not invent drive traces, sensor values, scores, speeds, user counts, telemetry, screenshots, or
-  reliability claims.
-- Keep the canonical Traelyx mark local. Do not replace it with generated brand art unless the Traelyx
-  repository establishes a new public identity asset.
-- `STATUS.md` and `.agents/` remain ignored. No cloned repository content, local path, secret, token,
-  private source, or environment value may enter public history.
+- Local typed data remains canonical; rendering must not depend on GitHub API availability or tokens.
+- Never turn the schematic traces into fake live telemetry, route data, sensor readings, scores,
+  confidence, speed, users, downloads, or reliability metrics.
+- Keep NeuraLoc-Core as the deepest local-AI case study while Traelyx owns the current-build slot.
+- Keep the canonical `public/traelyx-mark.png` local and reuse no private Traelyx files or data.
+- Preserve route-owned JS/CSS loading, static deployment, keyboard access, reduced motion, command
+  allowlisting, local visitor-mode persistence, session-only discovery, and user-triggered sound.
+- `STATUS.md` and `.agents/` remain ignored. No clone paths, secrets, tokens, private source, device
+  identifiers, or environment values may enter public history.
 
 ## Required validation and exit criteria
 
-- Cloudflare is observed serving the Traelyx current-build experience from the pushed main baseline, or
-  the live-verification blocker remains explicitly documented.
-- The live hero, flagship, seven-project count, Traelyx accordion/dialog, four-system architecture,
-  terminal output, repository URL, and structured data agree with the local verified build.
-- M0 foundation nodes remain complete; recorder and Drive DNA remain visibly planned until repository
-  truth changes.
-- Desktop, 360 px, 200 percent zoom, reduced motion, keyboard, overflow, metadata, and console checks pass.
-- Typecheck, all unit/component tests, production build, and the complete Playwright desktop/mobile
-  matrix pass after any follow-up change.
+- The live Cloudflare page is observed serving the `a3c2fc9` Traelyx experience, or the precise live
+  verification blocker remains documented without claiming success.
+- Hero, flagship, project card/dialog, architecture, terminal, repository link, metadata, and sitemap
+  agree on the M2.7/M2.8 boundary.
+- No Traelyx surface contains Agent Flow; Aveline's existing Agent Flow remains intact.
+- Desktop, 360 px, narrow reflow, reduced motion, keyboard focus, overflow, metadata, and console checks
+  pass on the deployed experience.
+- Typecheck, all unit/component tests, production build, and the Playwright desktop/mobile matrix pass
+  after any follow-up change.
 - No unsupported claim, fake telemetry, private data, token, local path, college detail, or ignored
   control file enters source or emitted artifacts.
-- `STATUS.md`, `PROJECT.md`, `ARCHITECTURE.md`, `DESIGN.md`, README, and this handoff report the same
-  current-build boundary and exact observed verification state.

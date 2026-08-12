@@ -120,7 +120,7 @@ The portfolio should communicate three things immediately:
 
 ## Iteration Record
 
-### 19. Traelyx M2.7 Evidence Recorder Refresh - `pending`
+### 19. Traelyx M2.7 Evidence Recorder Refresh - `a3c2fc9`
 
 - Advanced the current-build narrative from the original M0 foundation to the public repository's
   verified M1 and M2.1-M2.7 boundary without implying completion of M2.8 or later intelligence work.
