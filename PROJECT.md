@@ -93,7 +93,8 @@ The portfolio should communicate three things immediately:
 - A strong hero with clear role/value copy, project and GitHub calls to action, a currently-building
   signal, boot copy, and Recruiter / Developer / Chaos modes.
 - A deep Traelyx current-build section with a pinned narrative, architecture responsibilities, verified
-  foundation, explicit disabled-recorder boundary, next milestone, and repository path.
+  native recorder/recovery boundary, explicit real-drive reliability gate, next milestone, and
+  repository path.
 - A seven-project lab for Traelyx, NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
   and AtrxInstaDown.
 - Interactive architecture diagrams for Traelyx, NeuraLoc-Core, void.chat, and Aveline Bot.
@@ -118,6 +119,16 @@ The portfolio should communicate three things immediately:
   `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents.
 
 ## Iteration Record
+
+### 19. Traelyx M2.7 Evidence Recorder Refresh - `pending`
+
+- Advanced the current-build narrative from the original M0 foundation to the public repository's
+  verified M1 and M2.1-M2.7 boundary without implying completion of M2.8 or later intelligence work.
+- Replaced Traelyx's reused Agent Flow with a project-specific evidence recorder instrument covering
+  GNSS, accelerometer, gyroscope, atomic integrity chunks, controlled-device proof, recovery, Drift
+  finalization, and the pending real-drive gate.
+- Kept the traces explicitly schematic, retained the canonical local mark, and preserved Aveline as the
+  sole featured project using the Agent Flow primitive.
 
 ### 18. Traelyx Current-Build Integration - `51aa1ef`
 

@@ -17,74 +17,6 @@ function VoidNode({ code, label, tone }: VoidNodeProps) {
   );
 }
 
-const traelyxFlowNodes: AgentFlowNode[] = [
-  {
-    id: "app",
-    label: "Flutter app",
-    sublabel: "accountless shell",
-    icon: <span>UI</span>,
-    status: "done",
-    x: 110,
-    y: 170,
-  },
-  {
-    id: "bridge",
-    label: "Native bridge",
-    sublabel: "versioned contract",
-    icon: <span>IPC</span>,
-    status: "done",
-    x: 330,
-    y: 82,
-  },
-  {
-    id: "drift",
-    label: "Drift v1",
-    sublabel: "local authority",
-    icon: <span>DB</span>,
-    status: "done",
-    x: 330,
-    y: 258,
-  },
-  {
-    id: "recorder",
-    label: "Recorder",
-    sublabel: "M2 / disabled",
-    icon: <span>GN</span>,
-    status: "idle",
-    x: 550,
-    y: 82,
-  },
-  {
-    id: "dna",
-    label: "Drive DNA",
-    sublabel: "planned evidence",
-    icon: <span>DNA</span>,
-    status: "idle",
-    x: 550,
-    y: 258,
-  },
-];
-
-const traelyxLinearFlowNodes: AgentFlowNode[] = traelyxFlowNodes.map((node) => {
-  if (node.id === "recorder") return { ...node, x: 550, y: 116 };
-  if (node.id === "dna") return { ...node, x: 770, y: 170 };
-  return node;
-});
-
-const traelyxFlowEdges: AgentFlowEdge[] = [
-  { id: "app-bridge", from: "app", to: "bridge", curvature: 28, persist: true },
-  { id: "app-drift", from: "app", to: "drift", curvature: -28, persist: true },
-  { id: "bridge-recorder", from: "bridge", to: "recorder", animated: false },
-  { id: "drift-dna", from: "drift", to: "dna", animated: false },
-  { id: "recorder-dna", from: "recorder", to: "dna", animated: false, curvature: -58 },
-];
-
-const traelyxLinearFlowEdges: AgentFlowEdge[] = traelyxFlowEdges.map((edge) => {
-  if (edge.id === "drift-dna") return { ...edge, curvature: -34 };
-  if (edge.id === "recorder-dna") return { ...edge, curvature: 34 };
-  return edge;
-});
-
 const avelineFlowNodes: AgentFlowNode[] = [
   {
     id: "message",
@@ -148,58 +80,100 @@ type ProjectVisualProps = {
   project: Project;
   compact?: boolean;
   avelineLayout?: "stacked" | "linear";
-  traelyxLayout?: "stacked" | "linear";
 };
 
 export function ProjectVisual({
   project,
   compact = false,
   avelineLayout = "stacked",
-  traelyxLayout = "stacked",
 }: ProjectVisualProps) {
   if (project.visual === "telemetry") {
-    const flowNodes = traelyxLayout === "linear" ? traelyxLinearFlowNodes : traelyxFlowNodes;
-    const flowEdges = traelyxLayout === "linear" ? traelyxLinearFlowEdges : traelyxFlowEdges;
-
     return (
-      <div className="project-visual telemetry-visual" aria-hidden="true">
-        <div className="traelyx-flow-shell">
-          <div className="traelyx-flow-header">
-            <span className="traelyx-flow-brand">
+      <div
+        className={`project-visual telemetry-visual ${compact ? "is-compact" : ""}`}
+        data-visual="traelyx-evidence-recorder"
+        aria-hidden="true"
+      >
+        <div className="traelyx-recorder-shell">
+          <div className="traelyx-recorder-header">
+            <span className="traelyx-recorder-brand">
               <img src="/traelyx-mark.png" alt="" width="192" height="192" />
-              <b>TRAELYX / TRUST PATH</b>
+              <b>TRAELYX / EVIDENCE RECORDER</b>
             </span>
             <i>
-              <b /> M0 VALIDATED
+              <b /> M2.7 VERIFIED
             </i>
           </div>
 
-          <img
-            className="traelyx-flow-mark"
-            src="/traelyx-mark.png"
-            alt=""
-            width="192"
-            height="192"
-          />
+          <div className="traelyx-recorder-body">
+            <div className="traelyx-signal-bank">
+              <div className="traelyx-signal-meta">
+                <span>SCHEMATIC / NOT LIVE</span>
+                <strong>MONOTONIC EVIDENCE BUS</strong>
+              </div>
 
-          <AgentFlow
-            key={`${compact ? "compact" : "full"}-${traelyxLayout}`}
-            className="traelyx-agent-flow"
-            data-layout={traelyxLayout}
-            nodes={flowNodes}
-            edges={flowEdges}
-            draggable={false}
-            pannable={false}
-            fitView
-            fitViewMaxScale={traelyxLayout === "linear" ? 1.16 : 1}
-            flowDuration={2.8}
-            aria-label="Traelyx validated Flutter, native bridge, and local database foundation with planned recorder and Drive DNA stages"
-          />
+              <div className="traelyx-channel" data-channel="gnss">
+                <span><b>GNSS</b><small>1 Hz requested</small></span>
+                <svg viewBox="0 0 620 54" preserveAspectRatio="none">
+                  <path className="traelyx-channel-grid" d="M0 27H620" />
+                  <path className="traelyx-channel-trace" d="M0 30 L48 30 L70 18 L92 34 L126 30 L180 30 L205 12 L228 42 L252 29 L310 29 L334 20 L356 36 L402 29 L458 29 L482 16 L510 39 L538 28 L620 28" />
+                </svg>
+              </div>
 
-          <div className="traelyx-flow-footer">
+              <div className="traelyx-channel" data-channel="accelerometer">
+                <span><b>ACC</b><small>100 Hz requested</small></span>
+                <svg viewBox="0 0 620 54" preserveAspectRatio="none">
+                  <path className="traelyx-channel-grid" d="M0 27H620" />
+                  <path className="traelyx-channel-trace" d="M0 28 L20 24 L38 32 L58 18 L76 39 L96 22 L116 31 L138 26 L160 29 L184 16 L204 41 L226 24 L248 30 L270 21 L292 36 L316 25 L338 30 L360 19 L382 38 L406 24 L430 30 L454 20 L478 36 L502 25 L526 31 L550 18 L574 38 L598 25 L620 28" />
+                </svg>
+              </div>
+
+              <div className="traelyx-channel" data-channel="gyroscope">
+                <span><b>GYRO</b><small>100 Hz requested</small></span>
+                <svg viewBox="0 0 620 54" preserveAspectRatio="none">
+                  <path className="traelyx-channel-grid" d="M0 27H620" />
+                  <path className="traelyx-channel-trace" d="M0 29 C24 8 44 46 68 27 S112 10 138 29 S184 44 208 27 S252 8 278 29 S324 45 348 27 S392 11 418 29 S462 43 488 27 S534 9 558 29 S598 42 620 27" />
+                </svg>
+              </div>
+
+              <div className="traelyx-chunk-strip">
+                <span>ATOMIC CHUNKS</span>
+                <div>
+                  {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
+                </div>
+                <strong>DEFLATE / SHA-256 / COMPLETE</strong>
+              </div>
+            </div>
+
+            <aside className="traelyx-proof-ledger">
+              <span>CONTROLLED DEVICE PROOF</span>
+              <strong>577</strong>
+              <small>verified chunks indexed</small>
+              <dl>
+                <div><dt>OFFLINE</dt><dd>PASS</dd></div>
+                <div><dt>GNSS LOSS</dt><dd>RECOVERED</dd></div>
+                <div><dt>COLD RELAUNCH</dt><dd>FINALIZED</dd></div>
+              </dl>
+              <em>ONE ANDROID 14 DEVICE</em>
+            </aside>
+          </div>
+
+          <div className="traelyx-lifecycle" aria-label="Verified recorder stages and pending real-drive gate">
+            {[
+              ["01", "CAPTURE"],
+              ["02", "RECOVER"],
+              ["03", "FINALIZE"],
+              ["04", "INDEX"],
+            ].map(([step, label]) => (
+              <span key={step} data-state="verified"><b>{step}</b>{label}</span>
+            ))}
+            <span data-state="pending"><b>05</b>REAL DRIVE</span>
+          </div>
+
+          <div className="traelyx-recorder-footer">
             <span>LOCAL FIRST</span>
-            <strong>FOUNDATION LIVE / RECORDER DISABLED</strong>
-            <span>NEXT / M1</span>
+            <strong>RAW EVIDENCE STAYS PRIVATE</strong>
+            <span>NEXT / M2.8</span>
           </div>
         </div>
       </div>

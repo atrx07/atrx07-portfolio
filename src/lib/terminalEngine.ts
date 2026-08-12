@@ -85,9 +85,9 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
     const current = projects.find((project) => project.slug === "traelyx");
     return {
       lines: current
-        ? [
+          ? [
             `${current.name} // active development`,
-            "Current checkpoint: M0 Android foundation validated; recorder registered but intentionally disabled.",
+            "Current checkpoint: M2.7 validated; native GNSS/dual-IMU recording, recovery, and Drift finalization are operational on the controlled Android 14 proof device.",
             `Next: ${current.next}`,
           ]
         : ["Current project signal unavailable."],

@@ -32,7 +32,11 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
       }}
     >
       {project && (
-        <div className="project-dialog-inner">
+        <div
+          className={`project-dialog-inner ${
+            project.slug === "traelyx" ? "project-dialog-inner--traelyx" : ""
+          }`}
+        >
           <button
             type="button"
             className="dialog-close icon-button"

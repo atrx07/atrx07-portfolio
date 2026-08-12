@@ -3,31 +3,28 @@ import { projects } from "../data/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 describe("ProjectVisual", () => {
-  it("renders Traelyx as an honest foundation-to-roadmap flow", () => {
+  it("renders Traelyx as a recorder evidence instrument instead of an agent flow", () => {
     const project = projects.find((item) => item.slug === "traelyx");
     expect(project).toBeDefined();
 
-    const { container, rerender } = render(<ProjectVisual project={project!} />);
-    const flow = container.querySelector('[data-slot="agent-flow"]');
+    const { container } = render(<ProjectVisual project={project!} />);
+    const visual = container.querySelector('[data-visual="traelyx-evidence-recorder"]');
 
-    expect(flow).toHaveAttribute("data-draggable", "false");
-    expect(flow).toHaveAttribute("data-pannable", "false");
-    expect(flow).toHaveAttribute("data-layout", "stacked");
-    expect(container.querySelectorAll("[data-node-id]")).toHaveLength(5);
-    expect(container.querySelector('[data-node-id="app"]')).toHaveAttribute("data-status", "done");
-    expect(container.querySelector('[data-node-id="drift"]')).toHaveTextContent("local authority");
-    expect(container.querySelector('[data-node-id="recorder"]')).toHaveTextContent("M2 / disabled");
-    expect(container.querySelector('[data-node-id="recorder"]')).toHaveAttribute("data-status", "idle");
-    expect(screen.getByText("FOUNDATION LIVE / RECORDER DISABLED")).toBeInTheDocument();
-    expect(container.querySelector('.traelyx-flow-brand img')).toHaveAttribute(
+    expect(visual).toBeInTheDocument();
+    expect(container.querySelector('[data-slot="agent-flow"]')).not.toBeInTheDocument();
+    expect(container.querySelectorAll("[data-channel]")).toHaveLength(3);
+    expect(container.querySelector('[data-channel="gnss"]')).toHaveTextContent("1 Hz requested");
+    expect(container.querySelector('[data-channel="accelerometer"]')).toHaveTextContent(
+      "100 Hz requested",
+    );
+    expect(container.querySelectorAll(".traelyx-chunk-strip i")).toHaveLength(12);
+    expect(screen.getByText("577")).toBeInTheDocument();
+    expect(screen.getByText("verified chunks indexed")).toBeInTheDocument();
+    expect(container.querySelector('[data-state="pending"]')).toHaveTextContent("REAL DRIVE");
+    expect(container.querySelector('.traelyx-recorder-brand img')).toHaveAttribute(
       "src",
       "/traelyx-mark.png",
     );
-
-    rerender(<ProjectVisual project={project!} traelyxLayout="linear" />);
-
-    expect(container.querySelector('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "linear");
-    expect(container.querySelector('[data-node-id="dna"]')).toHaveStyle({ left: "770px", top: "170px" });
   });
 
   it("renders void.chat as a layered architecture orbit", () => {

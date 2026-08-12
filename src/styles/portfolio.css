@@ -552,7 +552,7 @@ section[id] {
   text-transform: uppercase;
 }
 
-.flagship-visual .traelyx-flow-shell {
+.flagship-visual .traelyx-recorder-shell {
   padding-bottom: 90px;
 }
 
@@ -786,25 +786,28 @@ section[id] {
   background: #05070a;
 }
 
-.traelyx-flow-shell {
-  --primary: #54b9e8;
+.traelyx-recorder-shell {
+  --traelyx-blue: #54b9e8;
+  --traelyx-deep: #1c69d4;
 
   position: relative;
   display: grid;
   width: 100%;
   height: 100%;
   min-height: 320px;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   overflow: hidden;
   padding: clamp(14px, 3cqw, 26px);
   background:
-    radial-gradient(circle at 58% 46%, rgb(84 185 232 / 13%), transparent 34%),
-    linear-gradient(135deg, rgb(255 255 255 / 2%), transparent 44%),
+    linear-gradient(rgb(255 255 255 / 2.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 2.5%) 1px, transparent 1px),
+    radial-gradient(circle at 76% 44%, rgb(84 185 232 / 12%), transparent 30%),
     #05070a;
+  background-size: 28px 28px, 28px 28px, auto, auto;
   isolation: isolate;
 }
 
-.traelyx-flow-shell::before {
+.traelyx-recorder-shell::before {
   position: absolute;
   z-index: 0;
   inset: 12px;
@@ -813,20 +816,8 @@ section[id] {
   pointer-events: none;
 }
 
-.traelyx-flow-shell::after {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  right: 7%;
-  left: 7%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(84 185 232 / 18%), transparent);
-  content: "";
-  pointer-events: none;
-}
-
-.traelyx-flow-header,
-.traelyx-flow-footer {
+.traelyx-recorder-header,
+.traelyx-recorder-footer {
   position: relative;
   z-index: 3;
   display: flex;
@@ -839,31 +830,31 @@ section[id] {
   text-transform: uppercase;
 }
 
-.traelyx-flow-header {
+.traelyx-recorder-header {
   padding-bottom: 12px;
   border-bottom: 1px solid rgb(255 255 255 / 11%);
   color: var(--body);
 }
 
-.traelyx-flow-brand {
+.traelyx-recorder-brand {
   display: inline-flex;
   align-items: center;
   gap: 9px;
 }
 
-.traelyx-flow-brand img {
+.traelyx-recorder-brand img {
   width: 22px;
   height: 22px;
   object-fit: contain;
 }
 
-.traelyx-flow-brand b,
-.traelyx-flow-footer strong {
+.traelyx-recorder-brand b,
+.traelyx-recorder-footer strong {
   font-size: inherit;
   font-weight: 400;
 }
 
-.traelyx-flow-header > i {
+.traelyx-recorder-header > i {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -871,7 +862,7 @@ section[id] {
   font-style: normal;
 }
 
-.traelyx-flow-header > i b {
+.traelyx-recorder-header > i b {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -879,138 +870,321 @@ section[id] {
   box-shadow: 0 0 0 4px rgb(49 180 84 / 10%);
 }
 
-.traelyx-flow-footer {
-  padding-top: 12px;
-  border-top: 1px solid rgb(255 255 255 / 11%);
-}
-
-.traelyx-flow-footer strong {
-  color: var(--body);
-}
-
-.traelyx-flow-mark {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: 54%;
-  width: clamp(96px, 24cqw, 176px);
-  height: auto;
-  opacity: 0.055;
-  transform: translate(-50%, -50%) rotate(-6deg);
-  pointer-events: none;
-}
-
-.traelyx-agent-flow {
+.traelyx-recorder-body {
   position: relative;
   z-index: 1;
+  display: grid;
   min-width: 0;
   min-height: 0;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  background-image:
-    linear-gradient(rgb(255 255 255 / 3%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 3%) 1px, transparent 1px);
-  background-size: 30px 30px;
+  grid-template-columns: minmax(0, 1fr) minmax(142px, 0.31fr);
+  gap: clamp(14px, 3cqw, 28px);
+  padding: clamp(18px, 4cqw, 34px) 0;
 }
 
-.traelyx-agent-flow [data-node-id] {
-  --flow-node-tone: #54b9e8;
-  --primary: var(--flow-node-tone);
+.traelyx-signal-bank {
+  display: grid;
+  min-width: 0;
+  grid-template-rows: auto repeat(3, minmax(44px, 1fr)) auto;
+  border: 1px solid rgb(255 255 255 / 9%);
+  background: rgb(2 5 8 / 66%);
+}
 
-  z-index: 2;
-  min-width: 9.15rem;
-  border-color: var(--line-soft);
-  border-radius: 12px;
-  padding: 11px 13px;
-  background: rgb(5 7 10 / 94%);
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 2%),
-    0 14px 28px rgb(0 0 0 / 36%);
-  backdrop-filter: blur(12px);
+.traelyx-signal-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  padding: 9px 12px;
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: clamp(0.44rem, 1cqw, 0.58rem);
+  letter-spacing: 0.07em;
+}
+
+.traelyx-signal-meta strong {
+  color: var(--body);
+  font-weight: 400;
+}
+
+.traelyx-channel {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: clamp(68px, 13cqw, 104px) minmax(0, 1fr);
+  align-items: center;
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+}
+
+.traelyx-channel > span {
+  display: grid;
+  align-self: stretch;
+  align-content: center;
+  border-right: 1px solid rgb(255 255 255 / 8%);
+  padding: 8px 10px;
   font-family: Consolas, monospace;
 }
 
-.traelyx-agent-flow [data-node-id="bridge"] {
-  --flow-node-tone: #1c69d4;
-}
-
-.traelyx-agent-flow [data-node-id="drift"] {
-  --flow-node-tone: var(--success);
-}
-
-.traelyx-agent-flow [data-node-id="recorder"] {
-  --flow-node-tone: var(--warning);
-}
-
-.traelyx-agent-flow [data-node-id="dna"] {
-  --flow-node-tone: #75b7ff;
-}
-
-.traelyx-agent-flow [data-node-id] > span:first-of-type {
-  border-color: color-mix(in srgb, var(--flow-node-tone) 45%, var(--line));
-  border-radius: 0;
-  background: color-mix(in srgb, var(--flow-node-tone) 8%, var(--panel));
-  color: var(--flow-node-tone);
-}
-
-.traelyx-agent-flow [data-node-id] > span:last-child > span:first-child {
+.traelyx-channel b {
   color: var(--ink);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: clamp(0.58rem, 1.4cqw, 0.76rem);
+  letter-spacing: 0.08em;
 }
 
-.traelyx-agent-flow [data-node-id] > span:last-child > span:last-child {
+.traelyx-channel small {
+  margin-top: 3px;
   color: var(--muted);
-  font-size: 0.54rem;
-  letter-spacing: 0.025em;
+  font-size: clamp(0.43rem, 0.9cqw, 0.55rem);
 }
 
-.traelyx-agent-flow [data-status="done"] {
-  border-color: color-mix(in srgb, var(--flow-node-tone) 58%, var(--line));
-  background: color-mix(in srgb, var(--flow-node-tone) 5%, #05070a);
-  box-shadow:
-    0 0 24px -14px var(--flow-node-tone),
-    0 16px 30px rgb(0 0 0 / 42%);
+.traelyx-channel svg {
+  width: 100%;
+  height: 100%;
+  min-height: 42px;
+  overflow: visible;
 }
 
-.traelyx-agent-flow [data-status="done"] > span:first-of-type {
-  border-color: var(--flow-node-tone);
-  background: var(--flow-node-tone);
-  color: var(--canvas);
+.traelyx-channel-grid {
+  fill: none;
+  stroke: rgb(255 255 255 / 7%);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .traelyx-agent-flow [data-node-id]:hover {
-    border-color: var(--flow-node-tone);
-    background: color-mix(in srgb, var(--flow-node-tone) 7%, #05070a);
-  }
+.traelyx-channel-trace {
+  fill: none;
+  stroke: var(--traelyx-blue);
+  stroke-dasharray: 8 5;
+  stroke-linecap: square;
+  stroke-linejoin: bevel;
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  animation: traelyx-trace-shift 2.8s linear infinite;
 }
 
-@container (max-width: 500px) {
-  .traelyx-flow-shell {
-    padding: 12px;
-  }
+.traelyx-channel[data-channel="accelerometer"] .traelyx-channel-trace {
+  stroke: var(--success);
+  animation-duration: 2.1s;
+}
 
-  .traelyx-flow-footer strong {
-    display: none;
-  }
+.traelyx-channel[data-channel="gyroscope"] .traelyx-channel-trace {
+  stroke: #7da8ff;
+  animation-duration: 2.4s;
+}
 
-  .traelyx-agent-flow [data-node-id] {
-    min-width: 8.45rem;
-    gap: 8px;
-    padding: 9px 10px;
-  }
+@keyframes traelyx-trace-shift {
+  to { stroke-dashoffset: -52; }
+}
+
+.traelyx-chunk-strip {
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: clamp(0.42rem, 0.9cqw, 0.54rem);
+  letter-spacing: 0.05em;
+}
+
+.traelyx-chunk-strip > div {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+}
+
+.traelyx-chunk-strip i {
+  height: 9px;
+  border: 1px solid rgb(84 185 232 / 48%);
+  background: rgb(84 185 232 / 12%);
+}
+
+.traelyx-chunk-strip i:nth-child(3n) {
+  border-color: rgb(49 180 84 / 55%);
+  background: rgb(49 180 84 / 13%);
+}
+
+.traelyx-chunk-strip strong {
+  color: var(--body);
+  font-size: inherit;
+  font-weight: 400;
+}
+
+.traelyx-proof-ledger {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border-top: 2px solid var(--traelyx-blue);
+  border-right: 1px solid rgb(255 255 255 / 9%);
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+  border-left: 1px solid rgb(255 255 255 / 9%);
+  padding: clamp(13px, 2.8cqw, 22px);
+  background: linear-gradient(180deg, rgb(84 185 232 / 8%), rgb(2 5 8 / 80%));
+  font-family: Consolas, monospace;
+}
+
+.traelyx-proof-ledger > span,
+.traelyx-proof-ledger > small,
+.traelyx-proof-ledger > em {
+  color: var(--muted);
+  font-size: clamp(0.43rem, 0.9cqw, 0.56rem);
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
+
+.traelyx-proof-ledger > strong {
+  margin-top: auto;
+  color: var(--ink);
+  font-size: clamp(2.35rem, 7cqw, 4.6rem);
+  line-height: 0.9;
+}
+
+.traelyx-proof-ledger > small {
+  margin-top: 7px;
+  color: var(--body);
+}
+
+.traelyx-proof-ledger dl {
+  display: grid;
+  gap: 7px;
+  margin: clamp(14px, 3cqw, 26px) 0;
+}
+
+.traelyx-proof-ledger dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  padding-top: 6px;
+  font-size: clamp(0.42rem, 0.85cqw, 0.53rem);
+}
+
+.traelyx-proof-ledger dt { color: var(--muted); }
+.traelyx-proof-ledger dd { margin: 0; color: var(--success); }
+
+.traelyx-lifecycle {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+
+.traelyx-lifecycle span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  border-right: 1px solid rgb(255 255 255 / 8%);
+  padding: 9px 10px;
+  color: var(--body);
+  font-family: Consolas, monospace;
+  font-size: clamp(0.43rem, 0.92cqw, 0.56rem);
+  letter-spacing: 0.04em;
+}
+
+.traelyx-lifecycle span:last-child { border-right: 0; }
+.traelyx-lifecycle b { color: var(--success); font-size: inherit; }
+.traelyx-lifecycle [data-state="pending"] { color: var(--warning); }
+.traelyx-lifecycle [data-state="pending"] b { color: var(--warning); }
+
+.traelyx-recorder-footer {
+  padding-top: 12px;
+}
+
+.traelyx-recorder-footer strong {
+  color: var(--body);
+}
+
+@container (max-width: 560px) {
+  .traelyx-recorder-shell { padding: 12px; }
+  .traelyx-recorder-body { grid-template-columns: 1fr; gap: 10px; padding: 12px 0; }
+  .traelyx-proof-ledger { display: grid; grid-template-columns: auto auto 1fr; gap: 5px 10px; align-items: end; }
+  .traelyx-proof-ledger > strong { grid-row: span 2; margin: 0; font-size: clamp(2rem, 13cqw, 3rem); }
+  .traelyx-proof-ledger dl { display: none; }
+  .traelyx-proof-ledger > em { grid-column: 3; }
+  .traelyx-lifecycle span { justify-content: center; padding: 8px 4px; }
+  .traelyx-lifecycle span b { display: none; }
+  .traelyx-recorder-footer strong { display: none; }
+  .traelyx-signal-meta strong,
+  .traelyx-chunk-strip > strong { display: none; }
 }
 
 @container (max-width: 360px) {
-  .traelyx-flow-header > i,
-  .traelyx-flow-footer span:last-child,
-  .traelyx-agent-flow [data-node-id] > span:last-child > span:last-child {
-    display: none;
-  }
+  .traelyx-recorder-header > i,
+  .traelyx-recorder-footer span:last-child,
+  .traelyx-channel small,
+  .traelyx-proof-ledger > em { display: none; }
+  .traelyx-channel { grid-template-columns: 52px minmax(0, 1fr); }
+  .traelyx-channel > span { padding: 7px; }
+  .traelyx-lifecycle span { font-size: 0.38rem; }
+}
+
+.telemetry-visual.is-compact .traelyx-recorder-shell {
+  min-height: 100%;
+  padding: 10px;
+}
+
+.telemetry-visual.is-compact .traelyx-recorder-shell::before {
+  inset: 7px;
+}
+
+.telemetry-visual.is-compact .traelyx-recorder-header {
+  padding-bottom: 7px;
+}
+
+.telemetry-visual.is-compact .traelyx-recorder-body {
+  grid-template-columns: 1fr;
+  gap: 6px;
+  padding: 7px 0;
+}
+
+.telemetry-visual.is-compact .traelyx-signal-bank {
+  grid-template-rows: auto repeat(3, 34px) auto;
+}
+
+.telemetry-visual.is-compact .traelyx-signal-meta,
+.telemetry-visual.is-compact .traelyx-chunk-strip {
+  padding-block: 6px;
+}
+
+.telemetry-visual.is-compact .traelyx-channel svg {
+  min-height: 30px;
+}
+
+.telemetry-visual.is-compact .traelyx-proof-ledger {
+  display: grid;
+  min-height: 42px;
+  grid-template-columns: auto auto 1fr;
+  gap: 3px 8px;
+  align-items: end;
+  padding: 6px 9px;
+}
+
+.telemetry-visual.is-compact .traelyx-proof-ledger > strong {
+  grid-row: span 2;
+  margin: 0;
+  font-size: 1.65rem;
+}
+
+.telemetry-visual.is-compact .traelyx-proof-ledger dl,
+.telemetry-visual.is-compact .traelyx-proof-ledger > em {
+  display: none;
+}
+
+.telemetry-visual.is-compact .traelyx-lifecycle span {
+  justify-content: center;
+  padding: 5px 2px;
+  font-size: 0.38rem;
+}
+
+.telemetry-visual.is-compact .traelyx-lifecycle span b,
+.telemetry-visual.is-compact .traelyx-recorder-footer strong {
+  display: none;
+}
+
+.telemetry-visual.is-compact .traelyx-recorder-footer {
+  padding-top: 7px;
 }
 
 .runtime-visual {
@@ -3426,6 +3600,12 @@ dialog::backdrop {
     min-height: 360px;
   }
 
+  .flagship-visual--traelyx,
+  .flagship-visual--traelyx .project-visual {
+    height: 500px;
+    min-height: 500px;
+  }
+
   .runtime-visual {
     padding: 18px;
   }
@@ -3542,10 +3722,19 @@ dialog::backdrop {
     max-height: none;
   }
 
+  .project-dialog-inner--traelyx .project-dialog-visual,
+  .project-dialog-inner--traelyx .project-dialog-visual .project-visual {
+    min-height: 500px;
+  }
+
   .project-dialog-inner {
     height: 100%;
     min-height: 100%;
     grid-template-rows: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+  }
+
+  .project-dialog-inner.project-dialog-inner--traelyx {
+    grid-template-rows: 500px minmax(0, 1fr);
   }
 
   .project-dialog-copy {
@@ -3680,7 +3869,8 @@ dialog::backdrop {
     transform: none !important;
   }
 
-  .mask-action__fill {
+  .mask-action__fill,
+  .traelyx-channel-trace {
     animation: none !important;
   }
 }

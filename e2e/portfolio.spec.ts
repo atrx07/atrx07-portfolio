@@ -32,7 +32,7 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   expect(sitemapResponse.ok()).toBe(true);
   const sitemap = await sitemapResponse.text();
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
-  expect(sitemap).toContain("<lastmod>2026-08-09</lastmod>");
+  expect(sitemap).toContain("<lastmod>2026-08-12</lastmod>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
   expect(sitemap).toContain("<lastmod>2026-08-02</lastmod>");
   expect(sitemap).not.toContain("registry-fixture");
@@ -517,14 +517,19 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   );
 });
 
-test("Traelyx foundation flow stays honest and contained across card and dialog", async ({ page }) => {
+test("Traelyx evidence recorder stays honest and contained across flagship, card, and dialog", async ({ page }) => {
   await page.goto("/#projects");
 
   const viewport = page.viewportSize();
-  await expect(page.locator("#now .traelyx-agent-flow")).toHaveAttribute(
-    "data-layout",
-    viewport && viewport.width <= 900 ? "stacked" : "linear",
+  const flagshipVisual = page.locator('#now [data-visual="traelyx-evidence-recorder"]');
+  await expect(flagshipVisual).toBeVisible();
+  await expect(flagshipVisual.locator('[data-slot="agent-flow"]')).toHaveCount(0);
+  await expect(flagshipVisual.locator("[data-channel]")).toHaveCount(3);
+  await expect(flagshipVisual.locator(".traelyx-proof-ledger > strong")).toHaveText("577");
+  await expect(flagshipVisual.locator(".traelyx-proof-ledger > small")).toHaveText(
+    "verified chunks indexed",
   );
+
   const card = page.locator('[data-project-slug="traelyx"]');
   const toggle = card.locator(".project-slice-hit");
 
@@ -535,41 +540,58 @@ test("Traelyx foundation flow stays honest and contained across card and dialog"
   }
 
   await expect(card).toHaveClass(/is-expanded/);
+  await page.waitForTimeout(850);
   const cardVisual = card.locator(".telemetry-visual");
-  await expect(cardVisual.locator('.traelyx-flow-brand img')).toHaveAttribute(
+  await expect(cardVisual).toHaveAttribute("data-visual", "traelyx-evidence-recorder");
+  await expect(cardVisual.locator('.traelyx-recorder-brand img')).toHaveAttribute(
     "src",
     "/traelyx-mark.png",
   );
-  await expect(cardVisual.locator("[data-node-id]")).toHaveCount(5);
-  await expect(cardVisual.locator('[data-node-id="app"]')).toHaveAttribute("data-status", "done");
-  await expect(cardVisual.locator('[data-node-id="recorder"]')).toHaveAttribute("data-status", "idle");
-  await expect(cardVisual.locator('[data-node-id="recorder"]')).toContainText("M2 / disabled");
-  await expect(cardVisual.locator('[data-slot="agent-flow"]')).toHaveAttribute(
-    "data-layout",
-    viewport && viewport.width <= 900 ? "stacked" : "linear",
+  await expect(cardVisual.locator('[data-slot="agent-flow"]')).toHaveCount(0);
+  await expect(cardVisual.locator('[data-channel="gnss"]')).toContainText("1 Hz requested");
+  await expect(cardVisual.locator('[data-channel="accelerometer"]')).toContainText(
+    "100 Hz requested",
   );
+  await expect(cardVisual.locator(".traelyx-chunk-strip i")).toHaveCount(12);
+  await expect(cardVisual.locator('[data-state="pending"]')).toContainText("REAL DRIVE");
 
-  const contained = await cardVisual.evaluate((visual) => {
+  const overflowItems = await cardVisual.evaluate((visual) => {
     const frame = visual.getBoundingClientRect();
-    return [...visual.querySelectorAll<HTMLElement>("[data-node-id]")].every((node) => {
-      const bounds = node.getBoundingClientRect();
-      return (
+    return [...visual.querySelectorAll<HTMLElement>(".traelyx-recorder-shell > *")].flatMap((item) => {
+      const bounds = item.getBoundingClientRect();
+      const contained =
         bounds.left >= frame.left - 1 &&
         bounds.right <= frame.right + 1 &&
         bounds.top >= frame.top - 1 &&
-        bounds.bottom <= frame.bottom + 1
-      );
+        bounds.bottom <= frame.bottom + 1;
+      return contained
+        ? []
+        : [{
+          className: item.className,
+          frameTop: frame.top,
+          frameBottom: frame.bottom,
+          itemTop: bounds.top,
+          itemBottom: bounds.bottom,
+        }];
     });
   });
-  expect(contained).toBe(true);
+  expect(overflowItems).toEqual([]);
 
   await card.getByRole("button", { name: "Inspect system" }).click();
   const dialog = page.getByRole("dialog", { name: /Traelyx/ });
   await expect(dialog).toBeVisible();
-  await expect(dialog.locator('[data-slot="agent-flow"]')).toHaveAttribute("data-layout", "stacked");
+  await expect(dialog.locator('[data-visual="traelyx-evidence-recorder"]')).toBeVisible();
+  await expect(dialog.locator('[data-slot="agent-flow"]')).toHaveCount(0);
+  await expect(dialog.locator(".traelyx-lifecycle [data-state]")).toHaveCount(5);
   await expect(dialog.getByRole("link", { name: "Open repository" })).toHaveAttribute(
     "href",
     "https://github.com/atrx07/Traelyx",
+  );
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(dialog.locator(".traelyx-channel-trace").first()).toHaveCSS(
+    "animation-name",
+    "none",
   );
 });
 

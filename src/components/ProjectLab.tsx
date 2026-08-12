@@ -146,9 +146,8 @@ export function ProjectLab({
                 <div className="project-slice-visual">
                   <ProjectVisual
                     project={project}
-                    compact={!expanded}
+                    compact={!expanded || (mobileLayout && project.slug === "traelyx")}
                     avelineLayout={!mobileLayout && expanded ? "linear" : "stacked"}
-                    traelyxLayout={!mobileLayout && expanded ? "linear" : "stacked"}
                   />
                 </div>
                 <div className="project-slice-copy">

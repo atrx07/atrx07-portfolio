@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, Check, Database, ShieldCheck } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { projects } from "../data/projects";
 import type { VisitorMode } from "../types";
 import { ProjectVisual } from "./ProjectVisual";
@@ -12,28 +12,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const traelyx = projects.find((project) => project.slug === "traelyx")!;
 
 const capabilityIcons = [ShieldCheck, Database];
-const compactFlagshipQuery = "(max-width: 900px)";
-
-const isCompactFlagship = () =>
-  typeof window !== "undefined" &&
-  typeof window.matchMedia === "function" &&
-  window.matchMedia(compactFlagshipQuery).matches;
 
 export function Flagship({ mode }: { mode: VisitorMode }) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const [selectedNode, setSelectedNode] = useState(traelyx.architecture?.[0]);
-  const [compactVisual, setCompactVisual] = useState(isCompactFlagship);
-
-  useEffect(() => {
-    if (typeof window.matchMedia !== "function") return;
-
-    const media = window.matchMedia(compactFlagshipQuery);
-    const syncLayout = () => setCompactVisual(media.matches);
-    syncLayout();
-    media.addEventListener("change", syncLayout);
-    return () => media.removeEventListener("change", syncLayout);
-  }, []);
 
   useGSAP(
     () => {
@@ -99,10 +82,11 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
       <div className="flagship-grid">
         <div className="flagship-title" ref={titleRef}>
           <p className="eyebrow">Active development / local-first Android</p>
-          <h2 id="flagship-title">YOUR DRIVES. YOUR EVIDENCE. NO CLOUD REQUIRED.</h2>
+          <h2 id="flagship-title">THE RECORDER SURVIVES THE APP.</h2>
           <p>
-            Traelyx is building a trustworthy sensor-to-insight path around local data ownership,
-            confidence, and explainable scoring—without pretending the roadmap is already the product.
+            Traelyx now records real GNSS and motion evidence through a native Android lifecycle,
+            recovers interrupted work, and commits verified chunks into local history—without an
+            account or network.
           </p>
           <a className="text-link" href={traelyx.repoUrl} target="_blank" rel="noreferrer">
             Inspect repository <ArrowUpRight size={17} />
@@ -110,12 +94,12 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
         </div>
 
         <div className="flagship-content">
-          <div className="flagship-visual flagship-motion">
-            <ProjectVisual project={traelyx} traelyxLayout={compactVisual ? "stacked" : "linear"} />
+          <div className="flagship-visual flagship-visual--traelyx flagship-motion">
+            <ProjectVisual project={traelyx} />
             <div className="flagship-overlay">
-              <span>phase / M0 complete</span>
-              <span>recorder / disabled by design</span>
-              <span>cloud / optional</span>
+              <span>phase / M2.7 complete</span>
+              <span>recorder / operational</span>
+              <span>real drive / next gate</span>
             </div>
           </div>
 
@@ -144,7 +128,7 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="proof-bento flagship-motion">
             <article className="proof-main">
               <p className="eyebrow">Available now</p>
-              <h3>THE RECORDER STAYS OFF UNTIL THE FOUNDATION EARNS IT.</h3>
+              <h3>CAPTURE, RECOVER, VERIFY, THEN COMMIT.</h3>
               <ul>
                 {traelyx.proofPoints.map((point) => (
                   <li key={point}>
@@ -159,8 +143,8 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
               {capabilityIcons.slice(0, 2).map((Icon, index) => (
                 <div key={traelyx.technologies[index]}>
                   <Icon size={20} aria-hidden="true" />
-                  <span>{index === 0 ? "Honest capability state" : "Local authority"}</span>
-                  <strong>{index === 0 ? "Recorder disabled" : "Drift schema v1"}</strong>
+                  <span>{index === 0 ? "Native evidence" : "Local finalization"}</span>
+                  <strong>{index === 0 ? "GNSS + dual IMU" : "577 chunks indexed"}</strong>
                 </div>
               ))}
             </article>

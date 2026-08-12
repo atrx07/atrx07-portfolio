@@ -129,23 +129,27 @@ data ownership, explainable evidence, confidence, and integrity.
 - Kotlin Android native boundary
 - provider-neutral map contract
 
-**Available now / verified M0 boundary**
+**Available now / verified M2.7 boundary**
 
-- Flutter Android shell launched on physical Android 14 hardware
-- accountless application, routing, theme, and state-management foundations
-- Drift schema v1 and local settings persistence
-- versioned Flutter/Kotlin bridge contract
-- native recorder service registered but intentionally disabled
-- CI checks for generated source, formatting, analysis, Flutter/Kotlin tests, contracts, builds, and size
+- M0 and M1 complete: physical Android 14 shell, accountless navigation, semantic theme, typed local
+  settings, Drift schema v1 migrations, redacted diagnostics, and CI foundations
+- native Android foreground recorder with real GPS-provider GNSS plus calibrated accelerometer and
+  gyroscope acquisition
+- bounded one-second / 256-sample chunks with DEFLATE, SHA-256, atomic app-private storage, and
+  corrupt-file isolation
+- contextual permission flow and Drive start/stop through the versioned Flutter/Kotlin bridge
+- interrupted-session recovery and transactional, idempotent finalization of verified chunk indexes
+  into Drift
+- a controlled Android 14 proof that survived offline recording, GNSS loss/restoration, force-stop,
+  cold relaunch, and recovery, then indexed exactly 577 chunks for one trip
 
 **Honesty boundary**
 
-Do not present actual background recording, telemetry processing, Drive DNA, scoring, synchronized
-replay, cloud/social/Guardian features, ML, or commentary as implemented. The recorder is disabled and
-no location, sensor, or background-service collection is active in M0. Present those capabilities as
-planned milestones only. The next immediate phase is M1 application foundation; the first meaningful
-recording reliability gate is a later 30–60 minute physical locked-screen drive with synchronized GNSS
-and IMU data recovered and exported intact.
+Do not generalize the controlled proof into broad device, OEM, Android-version, deep-sleep, reboot,
+battery, or real-drive reliability. The M2.8 gate remains a legal 30–60 minute locked-screen physical
+drive with intact GNSS/IMU evidence that is exportable and replayable. Do not present telemetry
+processing, confidence, events, Drive DNA, scoring, synchronized replay, maps, cloud/social/Guardian
+features, ML, or commentary as implemented; those remain later milestones.
 
 ### NeuraLoc-Core — local AI engineering case study
 
