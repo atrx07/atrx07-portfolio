@@ -129,27 +129,29 @@ data ownership, explainable evidence, confidence, and integrity.
 - Kotlin Android native boundary
 - provider-neutral map contract
 
-**Available now / verified M2.7 boundary**
+**Available now / verified M3.7 boundary**
 
-- M0 and M1 complete: physical Android 14 shell, accountless navigation, semantic theme, typed local
-  settings, Drift schema v1 migrations, redacted diagnostics, and CI foundations
-- native Android foreground recorder with real GPS-provider GNSS plus calibrated accelerometer and
-  gyroscope acquisition
-- bounded one-second / 256-sample chunks with DEFLATE, SHA-256, atomic app-private storage, and
-  corrupt-file isolation
-- contextual permission flow and Drive start/stop through the versioned Flutter/Kotlin bridge
-- interrupted-session recovery and transactional, idempotent finalization of verified chunk indexes
-  into Drift
-- a controlled Android 14 proof that survived offline recording, GNSS loss/restoration, force-stop,
-  cold relaunch, and recovery, then indexed exactly 577 chunks for one trip
+- M0-M2 complete: accountless application foundation, real native GNSS/dual-IMU recording, bounded
+  compressed/checksummed chunks, recovery, Drift finalization, explicit private export, and accepted
+  locked-screen field fixture
+- accepted M2.8 proof: 39m17.1s approximately 99%-locked motorcycle trip, 3,689 ordered chunks, 2,322
+  GNSS fixes, 469,953 accelerometer samples, 469,942 gyroscope samples, strict independent inspection,
+  and exact device/host archive hash equality
+- M3.1-M3.2: fail-closed raw trip decoder, deterministic aligned timeline, auditable GNSS decisions,
+  and confidence-aware distance accumulation
+- M3.3-M3.5: bounded stationary calibration, explicit device/vehicle/world transforms, and lazy filtered
+  acceleration, jerk, yaw, speed, heading-rate, and movement channels with typed provenance
+- M3.6-M3.7: categorical confidence, metric-scoped eligibility, and bounded evidence-preserving replay
+  reduction without a fabricated global percentage
 
 **Honesty boundary**
 
-Do not generalize the controlled proof into broad device, OEM, Android-version, deep-sleep, reboot,
-battery, or real-drive reliability. The M2.8 gate remains a legal 30–60 minute locked-screen physical
-drive with intact GNSS/IMU evidence that is exportable and replayable. Do not present telemetry
-processing, confidence, events, Drive DNA, scoring, synchronized replay, maps, cloud/social/Guardian
-features, ML, or commentary as implemented; those remain later milestones.
+Do not generalize the accepted pocket-carried motorcycle fixture into mounted vehicle-frame validity,
+broad device/OEM/Android-version reliability, calibrated probability, or complete deep-sleep/reboot
+hardening. M3.8's governed car/motorcycle/device-move/GNSS-loss regression corpus remains pending
+explicit authorization. The M3.7 replay stream is local, ephemeral, bounded, and display-only. Do not
+present event detection, Drive DNA, scoring, replay UI, maps, cloud/social/Guardian features, ML, or
+commentary as implemented; those remain later milestones.
 
 ### NeuraLoc-Core — local AI engineering case study
 
@@ -404,7 +406,8 @@ Include:
 
 - product thesis
 - status: active development
-- architecture strip: Flutter app → versioned Kotlin bridge → Drift / local authority → planned recorder and Drive DNA stages
+- architecture strip: native evidence → fail-closed analysis timeline → explainable derived/confidence
+  channels → bounded replay reduction
 - current capabilities
 - engineering problems solved
 - next milestone

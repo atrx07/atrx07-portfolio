@@ -84,7 +84,7 @@ export function Hero({ mode, onModeChange }: Props) {
           <a className="current-build" href="#now">
             <span>Currently building</span>
             <strong>Traelyx</strong>
-            <i>M2.7 recorder verified</i>
+            <i>M3.7 telemetry verified</i>
           </a>
         </div>
       </div>

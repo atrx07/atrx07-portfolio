@@ -82,11 +82,11 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
       <div className="flagship-grid">
         <div className="flagship-title" ref={titleRef}>
           <p className="eyebrow">Active development / local-first Android</p>
-          <h2 id="flagship-title">THE RECORDER SURVIVES THE APP.</h2>
+          <h2 id="flagship-title">THE PIPELINE REFUSES TO GUESS.</h2>
           <p>
-            Traelyx now records real GNSS and motion evidence through a native Android lifecycle,
-            recovers interrupted work, and commits verified chunks into local history—without an
-            account or network.
+            Traelyx now carries verified GNSS and motion evidence from a resilient native recorder
+            through deterministic local processing, explaining what each channel can support instead
+            of hiding uncertainty behind one convenient score.
           </p>
           <a className="text-link" href={traelyx.repoUrl} target="_blank" rel="noreferrer">
             Inspect repository <ArrowUpRight size={17} />
@@ -97,9 +97,9 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="flagship-visual flagship-visual--traelyx flagship-motion">
             <ProjectVisual project={traelyx} />
             <div className="flagship-overlay">
-              <span>phase / M2.7 complete</span>
-              <span>recorder / operational</span>
-              <span>real drive / next gate</span>
+              <span>phase / M3.7 complete</span>
+              <span>processing / local</span>
+              <span>fixture corpus / next gate</span>
             </div>
           </div>
 
@@ -128,7 +128,7 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="proof-bento flagship-motion">
             <article className="proof-main">
               <p className="eyebrow">Available now</p>
-              <h3>CAPTURE, RECOVER, VERIFY, THEN COMMIT.</h3>
+              <h3>DECODE, DERIVE, EXPLAIN—WITHOUT INVENTING CERTAINTY.</h3>
               <ul>
                 {traelyx.proofPoints.map((point) => (
                   <li key={point}>
@@ -143,8 +143,8 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
               {capabilityIcons.slice(0, 2).map((Icon, index) => (
                 <div key={traelyx.technologies[index]}>
                   <Icon size={20} aria-hidden="true" />
-                  <span>{index === 0 ? "Native evidence" : "Local finalization"}</span>
-                  <strong>{index === 0 ? "GNSS + dual IMU" : "577 chunks indexed"}</strong>
+                  <span>{index === 0 ? "Accepted field proof" : "Local processing"}</span>
+                  <strong>{index === 0 ? "39m17 / 3,689 chunks" : "Categorical confidence"}</strong>
                 </div>
               ))}
             </article>

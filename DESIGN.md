@@ -555,15 +555,15 @@ small radius inside the ATRX control-room language rather than turning it into a
 Reduced motion resolves the graph into its completed, fully legible state without replaying the
 continuous sequence.
 
-Traelyx owns a distinct recorder evidence instrument rather than reusing Aveline's Agent Flow. Its
-canonical blue launcher mark anchors a dense black device surface with three labeled signal channels,
-an integrity-chunk register, a controlled-device proof ledger, and a five-stage lifecycle rail. The
-visual should feel like reviewing trustworthy field evidence after a recorder run, not watching a bot
-workflow or a consumer driving dashboard. Signal paths are schematic and explicitly say `NOT LIVE`;
-the 577-chunk ledger is grounded in the public M2.7 validation record. Capture, recovery, finalization,
-and indexing read as verified while the real-drive stage stays pending. Reduced motion freezes the
-traces without removing evidence. Do not invent speeds, routes, sensor readings, drive scores, or
-confidence telemetry.
+Traelyx owns a distinct local telemetry pipeline rather than reusing Aveline's Agent Flow. Its canonical
+blue launcher mark anchors a dense black device surface with three labeled evidence channels, an accepted
+private-fixture ledger, and a seven-stage M3 processing rail. The visual should feel like auditing a
+deterministic native pipeline after a field run, not watching a bot workflow or consumer driving
+dashboard. Signal paths are schematic and explicitly say `NOT LIVE`; the 39m17 fixture duration,
+3,689 chunks, 2,322 GNSS fixes, and 939,895 dual-IMU samples are grounded in the public M2.8 record.
+Decode through replay reduction reads as verified, while the footer keeps M3.8 fixtures visibly next.
+Reduced motion freezes the traces without removing evidence. Do not invent speeds, routes, sensor
+readings, drive scores, global confidence percentages, or live telemetry.
 
 8. When in doubt about emphasis: bigger photography before bigger type.
 

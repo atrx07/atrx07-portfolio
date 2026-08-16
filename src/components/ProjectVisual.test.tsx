@@ -3,24 +3,26 @@ import { projects } from "../data/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 describe("ProjectVisual", () => {
-  it("renders Traelyx as a recorder evidence instrument instead of an agent flow", () => {
+  it("renders Traelyx as a verified local telemetry pipeline instead of an agent flow", () => {
     const project = projects.find((item) => item.slug === "traelyx");
     expect(project).toBeDefined();
 
     const { container } = render(<ProjectVisual project={project!} />);
-    const visual = container.querySelector('[data-visual="traelyx-evidence-recorder"]');
+    const visual = container.querySelector('[data-visual="traelyx-telemetry-pipeline"]');
 
     expect(visual).toBeInTheDocument();
     expect(container.querySelector('[data-slot="agent-flow"]')).not.toBeInTheDocument();
     expect(container.querySelectorAll("[data-channel]")).toHaveLength(3);
-    expect(container.querySelector('[data-channel="gnss"]')).toHaveTextContent("1 Hz requested");
+    expect(container.querySelector('[data-channel="gnss"]')).toHaveTextContent("sanity filtered");
     expect(container.querySelector('[data-channel="accelerometer"]')).toHaveTextContent(
-      "100 Hz requested",
+      "calibrated / framed",
     );
     expect(container.querySelectorAll(".traelyx-chunk-strip i")).toHaveLength(12);
-    expect(screen.getByText("577")).toBeInTheDocument();
-    expect(screen.getByText("verified chunks indexed")).toBeInTheDocument();
-    expect(container.querySelector('[data-state="pending"]')).toHaveTextContent("REAL DRIVE");
+    expect(screen.getByText("39:17")).toBeInTheDocument();
+    expect(screen.getByText("locked ride / exact archive verification")).toBeInTheDocument();
+    expect(container.querySelectorAll('[data-state="verified"]')).toHaveLength(7);
+    expect(screen.getByText("CONFIDENCE")).toBeInTheDocument();
+    expect(screen.getByText("REDUCE")).toBeInTheDocument();
     expect(container.querySelector('.traelyx-recorder-brand img')).toHaveAttribute(
       "src",
       "/traelyx-mark.png",

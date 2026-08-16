@@ -93,7 +93,7 @@ The portfolio should communicate three things immediately:
 - A strong hero with clear role/value copy, project and GitHub calls to action, a currently-building
   signal, boot copy, and Recruiter / Developer / Chaos modes.
 - A deep Traelyx current-build section with a pinned narrative, architecture responsibilities, verified
-  native recorder/recovery boundary, explicit real-drive reliability gate, next milestone, and
+  native recording and M3.7 processing boundary, explicit fixture-corpus gate, next milestone, and
   repository path.
 - A seven-project lab for Traelyx, NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
   and AtrxInstaDown.
@@ -119,6 +119,16 @@ The portfolio should communicate three things immediately:
   `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents.
 
 ## Iteration Record
+
+### 20. Traelyx M3.7 Local Telemetry Pipeline Refresh - `pending`
+
+- Advanced the current-build truth boundary from M2.7 to completed M2 plus verified M3.1-M3.7 local
+  telemetry processing, while preserving the pending M3.8 authorization gate.
+- Evolved the Traelyx recorder instrument into a deterministic local pipeline grounded in the accepted
+  39m17 field fixture, fail-closed decoding, derived channels, categorical confidence, and replay
+  reduction without fake live data or a global score.
+- Updated the hero, flagship, project lab/dialog, architecture playground, terminal, metadata, tests,
+  README, and governance from the same public source baseline.
 
 ### 19. Traelyx M2.7 Evidence Recorder Refresh - `a3c2fc9`
 

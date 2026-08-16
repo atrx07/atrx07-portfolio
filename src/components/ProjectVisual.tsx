@@ -91,17 +91,17 @@ export function ProjectVisual({
     return (
       <div
         className={`project-visual telemetry-visual ${compact ? "is-compact" : ""}`}
-        data-visual="traelyx-evidence-recorder"
+        data-visual="traelyx-telemetry-pipeline"
         aria-hidden="true"
       >
         <div className="traelyx-recorder-shell">
           <div className="traelyx-recorder-header">
             <span className="traelyx-recorder-brand">
               <img src="/traelyx-mark.png" alt="" width="192" height="192" />
-              <b>TRAELYX / EVIDENCE RECORDER</b>
+              <b>TRAELYX / LOCAL TELEMETRY PIPELINE</b>
             </span>
             <i>
-              <b /> M2.7 VERIFIED
+              <b /> M3.7 VERIFIED
             </i>
           </div>
 
@@ -109,11 +109,11 @@ export function ProjectVisual({
             <div className="traelyx-signal-bank">
               <div className="traelyx-signal-meta">
                 <span>SCHEMATIC / NOT LIVE</span>
-                <strong>MONOTONIC EVIDENCE BUS</strong>
+                <strong>DETERMINISTIC / FAIL-CLOSED</strong>
               </div>
 
               <div className="traelyx-channel" data-channel="gnss">
-                <span><b>GNSS</b><small>1 Hz requested</small></span>
+                <span><b>GNSS</b><small>sanity filtered</small></span>
                 <svg viewBox="0 0 620 54" preserveAspectRatio="none">
                   <path className="traelyx-channel-grid" d="M0 27H620" />
                   <path className="traelyx-channel-trace" d="M0 30 L48 30 L70 18 L92 34 L126 30 L180 30 L205 12 L228 42 L252 29 L310 29 L334 20 L356 36 L402 29 L458 29 L482 16 L510 39 L538 28 L620 28" />
@@ -121,7 +121,7 @@ export function ProjectVisual({
               </div>
 
               <div className="traelyx-channel" data-channel="accelerometer">
-                <span><b>ACC</b><small>100 Hz requested</small></span>
+                <span><b>ACC</b><small>calibrated / framed</small></span>
                 <svg viewBox="0 0 620 54" preserveAspectRatio="none">
                   <path className="traelyx-channel-grid" d="M0 27H620" />
                   <path className="traelyx-channel-trace" d="M0 28 L20 24 L38 32 L58 18 L76 39 L96 22 L116 31 L138 26 L160 29 L184 16 L204 41 L226 24 L248 30 L270 21 L292 36 L316 25 L338 30 L360 19 L382 38 L406 24 L430 30 L454 20 L478 36 L502 25 L526 31 L550 18 L574 38 L598 25 L620 28" />
@@ -129,7 +129,7 @@ export function ProjectVisual({
               </div>
 
               <div className="traelyx-channel" data-channel="gyroscope">
-                <span><b>GYRO</b><small>100 Hz requested</small></span>
+                <span><b>GYRO</b><small>derived / corroborated</small></span>
                 <svg viewBox="0 0 620 54" preserveAspectRatio="none">
                   <path className="traelyx-channel-grid" d="M0 27H620" />
                   <path className="traelyx-channel-trace" d="M0 29 C24 8 44 46 68 27 S112 10 138 29 S184 44 208 27 S252 8 278 29 S324 45 348 27 S392 11 418 29 S462 43 488 27 S534 9 558 29 S598 42 620 27" />
@@ -137,43 +137,45 @@ export function ProjectVisual({
               </div>
 
               <div className="traelyx-chunk-strip">
-                <span>ATOMIC CHUNKS</span>
+                <span>M2 FIELD FIXTURE</span>
                 <div>
                   {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
                 </div>
-                <strong>DEFLATE / SHA-256 / COMPLETE</strong>
+                <strong>39:17 / 3,689 CHUNKS</strong>
               </div>
             </div>
 
             <aside className="traelyx-proof-ledger">
-              <span>CONTROLLED DEVICE PROOF</span>
-              <strong>577</strong>
-              <small>verified chunks indexed</small>
+              <span>ACCEPTED PRIVATE FIXTURE</span>
+              <strong>39:17</strong>
+              <small>locked ride / exact archive verification</small>
               <dl>
-                <div><dt>OFFLINE</dt><dd>PASS</dd></div>
-                <div><dt>GNSS LOSS</dt><dd>RECOVERED</dd></div>
-                <div><dt>COLD RELAUNCH</dt><dd>FINALIZED</dd></div>
+                <div><dt>RAW RECORD</dt><dd>3,689 CHUNKS</dd></div>
+                <div><dt>GNSS</dt><dd>2,322 FIXES</dd></div>
+                <div><dt>DUAL IMU</dt><dd>939,895 SAMPLES</dd></div>
               </dl>
               <em>ONE ANDROID 14 DEVICE</em>
             </aside>
           </div>
 
-          <div className="traelyx-lifecycle" aria-label="Verified recorder stages and pending real-drive gate">
+          <div className="traelyx-lifecycle" aria-label="Verified local telemetry processing stages">
             {[
-              ["01", "CAPTURE"],
-              ["02", "RECOVER"],
-              ["03", "FINALIZE"],
-              ["04", "INDEX"],
+              ["01", "DECODE"],
+              ["02", "FILTER"],
+              ["03", "CALIBRATE"],
+              ["04", "TRANSFORM"],
+              ["05", "DERIVE"],
+              ["06", "CONFIDENCE"],
+              ["07", "REDUCE"],
             ].map(([step, label]) => (
               <span key={step} data-state="verified"><b>{step}</b>{label}</span>
             ))}
-            <span data-state="pending"><b>05</b>REAL DRIVE</span>
           </div>
 
           <div className="traelyx-recorder-footer">
-            <span>LOCAL FIRST</span>
-            <strong>RAW EVIDENCE STAYS PRIVATE</strong>
-            <span>NEXT / M2.8</span>
+            <span>LOCAL ONLY</span>
+            <strong>NO GLOBAL SCORE / EVIDENCE STAYS EXPLAINABLE</strong>
+            <span>NEXT / M3.8 FIXTURES</span>
           </div>
         </div>
       </div>

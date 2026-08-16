@@ -6,9 +6,11 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 
 [Traelyx](https://github.com/atrx07/Traelyx) is the active project: an open-source, local-first Android
 driving-telemetry platform built around explainable evidence and data ownership. The portfolio reports
-its current boundary directly: M1 and M2.1-M2.7 are validated through a controlled Android 14 proof,
-including native GNSS/dual-IMU capture, integrity chunks, interrupted-trip recovery, and transactional
-Drift finalization. The first 30-60 minute locked-screen real-drive fixture remains the M2.8 gate.
+its current boundary directly: M0-M2 and M3.1-M3.7 are complete. An accepted 39m17.1s approximately
+99%-locked field fixture verified native recording and private export, while the local processing
+pipeline now covers fail-closed decoding, GNSS classification, IMU calibration, frame transforms,
+derived channels, categorical confidence, and bounded replay reduction. M3.8's governed regression
+corpus remains the next authorization gate.
 
 ## Stack
 
@@ -51,9 +53,10 @@ Public profile content is centralized in:
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
-The Traelyx current-build copy must continue to distinguish its validated M2.7 recorder boundary from
-the pending M2.8 real-drive/export/replay proof and later processing, Drive DNA, scoring, maps, cloud,
-social, Guardian, ML, and commentary capabilities.
+The Traelyx current-build copy must continue to distinguish its validated M3.7 local processing boundary
+from the pending M3.8 fixture corpus and later event detection, Drive DNA, scoring, replay UI, maps,
+cloud, social, Guardian, ML, and commentary capabilities. M3 replay reduction is display-only data, not
+a finished replay experience or scoring signal.
 
 Field Notes content lives in paired files under `src/blog/posts/`:
 

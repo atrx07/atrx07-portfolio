@@ -198,7 +198,7 @@ export const homePageMetadata: RouteMetadata = {
         "@id": `${siteMetadata.canonicalUrl}#software-traelyx`,
         name: "Traelyx",
         description:
-          "An open-source, local-first Android driving telemetry platform with a validated native GNSS and IMU recorder, crash-safe chunks, recovery, and Drift finalization.",
+          "An open-source, local-first Android driving telemetry platform with verified native recording, a strict private field fixture, deterministic telemetry processing, categorical confidence, and replay reduction.",
         codeRepository: "https://github.com/atrx07/Traelyx",
         programmingLanguage: ["Dart", "Kotlin"],
         runtimePlatform: "Android",

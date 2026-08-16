@@ -87,7 +87,7 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
       lines: current
           ? [
             `${current.name} // active development`,
-            "Current checkpoint: M2.7 validated; native GNSS/dual-IMU recording, recovery, and Drift finalization are operational on the controlled Android 14 proof device.",
+            "Current checkpoint: M2 complete and M3.1–M3.7 validated; verified local GNSS/dual-IMU evidence now flows through fail-closed decoding, filtering, calibration, derived channels, categorical confidence, and bounded replay reduction.",
             `Next: ${current.next}`,
           ]
         : ["Current project signal unavailable."],
