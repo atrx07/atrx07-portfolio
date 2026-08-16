@@ -1,64 +1,70 @@
-# Next Step - Verify the Traelyx M2.7 deployment and guard the M2.8 boundary
+# Next Step - Verify the Traelyx M3.7 deployment and guard M3.8
 
 ## Handoff
 
-- Source baseline: `a3c2fc9` - advance Traelyx from the original M0 presentation to the public
-  repository's verified M1 and M2.1-M2.7 boundary.
-- Truth boundary: the controlled Android 14 proof covers native GNSS and calibrated dual-IMU capture,
-  bounded compressed/checksummed atomic chunks, contextual permissions and Drive controls,
-  interrupted-session recovery, and transactional Drift finalization of exactly 577 indexed chunks.
-- Reliability boundary: the proof is grounded in one Tecno Android 14 device. M2.8 still owns the
-  30-60 minute locked-screen real drive, intact export/replay, battery behavior, deep-sleep/reboot, and
-  broader device/OEM validation.
-- Roadmap boundary: processing, confidence, events, Drive DNA, scoring, synchronized replay, maps,
-  connected/social systems, Guardian, commentary, and ML remain unimplemented later milestones.
-- Visual boundary: Traelyx now uses a deterministic recorder evidence instrument with three explicitly
-  schematic signal channels, an integrity-chunk register, the public 577-chunk proof ledger, and a
-  verified-to-pending lifecycle rail. Aveline remains the only featured project using Agent Flow.
-- Responsive proof: the full recorder uses dedicated 500 px mobile stages in the flagship and detail
-  sheet; the mobile accordion uses a compact contained instrument. Desktop 1280 px, 640 px reflow, and
-  360 px browser QA found no document overflow or console warnings/errors.
+- Portfolio baseline: `3cde4fc` - advance the Traelyx current-build story through verified M3.7 local
+  telemetry processing.
+- Traelyx source baseline: `d9fcda6458701f58a63e145c6cde5eed726cb16f` - public `main` on
+  2026-08-16, closing replay channel reduction.
+- Field-proof boundary: M0-M2 are complete. The accepted M2.8 fixture is one 39m17.1s,
+  approximately 99%-locked, pocket-carried motorcycle trip on one Android 14 Tecno device with 3,689
+  ordered chunks, 2,322 GNSS fixes, 469,953 accelerometer samples, 469,942 gyroscope samples, strict
+  independent inspection, and exact phone/host archive-hash equality.
+- Processing boundary: M3.1-M3.7 are implemented and validated across fail-closed raw decoding,
+  aligned monotonic timelines, GNSS sanity filtering, stationary calibration, explicit coordinate
+  transforms, derived motion channels, categorical confidence/metric eligibility, and bounded
+  evidence-preserving replay reduction.
+- Honesty boundary: the field fixture does not prove mounted vehicle-frame validity, broad OEM/device
+  reliability, calibrated probability, complete deep-sleep/reboot hardening, or real-drive scoring.
+  Replay output is local, ephemeral, display-only processing rather than a finished replay UI.
+- Next gate: M3.8 remains pending explicit authorization and owns the deterministic regression corpus
+  across car, motorcycle, device-move, and GNSS-loss fixtures. M4+ events, Drive DNA, scoring, maps,
+  connected/social features, Guardian, ML, and commentary remain unimplemented.
+- Visual boundary: Traelyx uses a code-native local telemetry pipeline with three evidence channels, an
+  accepted-fixture ledger, and seven verified processing stages. It does not use Agent Flow; Aveline
+  remains the only featured project using that component.
 - Verification baseline: typecheck passed; 67 unit/component tests passed; production build passed;
-  Playwright passed 35 with one expected desktop-only skip.
+  Playwright passed 35 with one expected desktop-only skip; 1280, 768, 640, and 360 px browser QA
+  passed without overflow or console warnings/errors.
 
 ## Implementation sequence
 
-1. After `a3c2fc9` reaches Cloudflare Pages, verify `https://atrx07.pages.dev/` on fresh desktop and
-   360 px visits. Confirm the hero reports `M2.7 recorder verified`, the current-build section exposes
-   the evidence recorder, and the Traelyx accordion/detail view use the same current truth boundary.
-2. Inspect live terminal `project traelyx` and `now` output, architecture responsibilities, repository
-   CTA, JSON-LD, sitemap date, mark request, console, and document overflow. Record only observed facts
-   in ignored `STATUS.md`; do not infer deployment from the push alone.
-3. When Traelyx advances beyond M2.7, re-read its root README, product/technical documents, active
-   milestone, status, completed-milestone records, and next-step document before changing claims.
-4. If M2.8 becomes verified, update `src/data/projects.ts` first, then derived hero, flagship, terminal,
-   metadata, tests, README, and governance in one atomic change. Keep later intelligence features
-   planned until their own public milestone evidence exists.
+1. After `3cde4fc` reaches Cloudflare Pages, inspect `https://atrx07.pages.dev/` on fresh desktop and
+   mobile visits. Confirm the hero, flagship, Traelyx accordion, and detail sheet all expose the M3.7
+   boundary and the M3.8 fixture-corpus gate.
+2. Verify the live `project traelyx` and `now` terminal output, architecture nodes, repository CTA,
+   JSON-LD, sitemap date, reduced-motion state, console, and document overflow. Record only observed
+   deployment facts in ignored `STATUS.md`.
+3. Before any later Traelyx update, fetch the public repository and re-read its root README, status,
+   active plan, completed milestones, and accepted validation records.
+4. If M3.8 is publicly authorized and completed, update `src/data/projects.ts` first, then synchronize
+   the hero, flagship, visual, terminal, metadata, tests, README, and governance. Do not promote M4+
+   capabilities from roadmap language alone.
 5. Re-run typecheck, unit/component tests, production build, the complete Playwright desktop/mobile
-   matrix, and visual QA after any new truth-state or responsive-layout change.
+   matrix, and responsive visual QA after any truth-state or layout change.
 
 ## Constraints
 
 - Local typed data remains canonical; rendering must not depend on GitHub API availability or tokens.
-- Never turn the schematic traces into fake live telemetry, route data, sensor readings, scores,
-  confidence, speed, users, downloads, or reliability metrics.
+- Never expose private trip-debug artifacts, precise routes, archive hashes, filenames, device
+  identifiers, local clone paths, secrets, tokens, or environment values.
+- Never turn schematic processing into fake live telemetry, a global confidence percentage, a driver
+  score, usage metrics, or broad reliability claims.
 - Keep NeuraLoc-Core as the deepest local-AI case study while Traelyx owns the current-build slot.
-- Keep the canonical `public/traelyx-mark.png` local and reuse no private Traelyx files or data.
 - Preserve route-owned JS/CSS loading, static deployment, keyboard access, reduced motion, command
   allowlisting, local visitor-mode persistence, session-only discovery, and user-triggered sound.
-- `STATUS.md` and `.agents/` remain ignored. No clone paths, secrets, tokens, private source, device
-  identifiers, or environment values may enter public history.
+- `STATUS.md` and `.agents/` remain ignored and outside public history.
 
 ## Required validation and exit criteria
 
-- The live Cloudflare page is observed serving the `a3c2fc9` Traelyx experience, or the precise live
-  verification blocker remains documented without claiming success.
+- The live Cloudflare page is observed serving `3cde4fc`, or the precise verification blocker remains
+  documented without claiming deployment success.
 - Hero, flagship, project card/dialog, architecture, terminal, repository link, metadata, and sitemap
-  agree on the M2.7/M2.8 boundary.
+  agree on the M3.7/M3.8 boundary.
 - No Traelyx surface contains Agent Flow; Aveline's existing Agent Flow remains intact.
-- Desktop, 360 px, narrow reflow, reduced motion, keyboard focus, overflow, metadata, and console checks
-  pass on the deployed experience.
+- Desktop, tablet, 640 px reflow, 360 px mobile, reduced motion, keyboard focus, overflow, metadata,
+  and console checks pass on the deployed experience.
 - Typecheck, all unit/component tests, production build, and the Playwright desktop/mobile matrix pass
   after any follow-up change.
-- No unsupported claim, fake telemetry, private data, token, local path, college detail, or ignored
-  control file enters source or emitted artifacts.
+- No unsupported claim, fake telemetry, private data, local path, college detail, or ignored control
+  file enters source or emitted artifacts.

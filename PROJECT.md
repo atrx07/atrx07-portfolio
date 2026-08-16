@@ -120,7 +120,7 @@ The portfolio should communicate three things immediately:
 
 ## Iteration Record
 
-### 20. Traelyx M3.7 Local Telemetry Pipeline Refresh - `pending`
+### 20. Traelyx M3.7 Local Telemetry Pipeline Refresh - `3cde4fc`
 
 - Advanced the current-build truth boundary from M2.7 to completed M2 plus verified M3.1-M3.7 local
   telemetry processing, while preserving the pending M3.8 authorization gate.
