@@ -1,62 +1,73 @@
 # Status — blog-field-notes
 
-## Pending source commit — 2026-08-23
+## Current release
 
-- Pulled and recovered current `main` at `ce3302a`; no pre-existing worktree edits were present.
-- Confirmed live Cloudflare serves the current pre-optimization graph: `/blog` and recovery request only
-  the shared `index-C4c_lvj9.js` / `index-FoufsvxV.css` graph plus the font stylesheet and footer mark;
-  `/` requests the matching portfolio JS/CSS, one portrait hero, the Traelyx mark, and all three mask
-  sprites. No inspected route emitted a warning/error or desktop page overflow.
-- Added responsive WebP hero sources with JPEG fallbacks, an optimized lossless WebP footer mark with a
-  PNG fallback, and interaction-aware mask attachment with reduced-motion and unsupported-mask static
-  fallbacks.
-- Measured source assets: portrait 274,649 B JPEG -> 161,506 B WebP; wide 332,350 B JPEG -> 203,542 B
-  WebP; footer 166,919 B PNG -> 42,660 B WebP. The three masks total 1,363,518 B and are now absent from
-  initial homepage delivery.
-- Measured initial visual request reduction: 1,600,920 B desktop and 1,616,585 B mobile, before transfer
-  compression or cache effects. First keyboard focus fetched only the selected forest sprite.
-- Production output: shared CSS `index-CAEqsc4T.css` at 40.18 kB / 8.51 kB gzip; portfolio CSS
-  `PortfolioPage-C4IXnPUw.css` at 59.70 kB / 11.76 kB gzip; shared JS `index-B4WWZioB.js` at
-  243.77 kB / 79.64 kB gzip; portfolio JS `PortfolioPage-BXmGPYdi.js` at 308.07 kB / 108.10 kB gzip;
-  draft body `registry-fixture-PKSplol0.js` at 1.96 kB / 0.83 kB gzip.
-- Verification complete: typecheck passed; 70 unit/component tests passed; production build passed;
-  Playwright passed 35 with one expected desktop skip; focused hero and deferred-mask request checks
-  passed in both desktop and mobile projects; local browser request/visual/console inspection passed.
-- Awaiting the source commit hash, push, and exact post-deployment Cloudflare verification.
+- Source commit: `76800e9` — `perf: defer portfolio artwork delivery`.
+- Branch: `main`.
+- Push: confirmed on `origin/main`.
+- Cloudflare: exact optimized production graph observed on 2026-08-23.
 
-Status source: **reconstructed from versioned evidence** because the historical root `STATUS.md` was ignored and is not recoverable from Git history.
+## Delivered Field Notes system
 
-## Last confirmed blog handoff
+- `/blog`, `/blog/:slug`, development-only draft preview, unpublished-note recovery, and global 404
+  behavior are implemented through the validated typed registry and lazy MDX boundary.
+- Route metadata, canonical/JSON-LD cleanup, sitemap truth, keyboard/focus behavior, reduced motion,
+  responsive long-form primitives, and raw-SPA disclosure are implemented and tested.
+- Direct Field Notes and recovery routes retain the shared route boundary and do not acquire the lazy
+  portfolio stylesheet, portfolio script, hero artwork, Traelyx mark, or mask sprites.
+- The homepage retains the current seven-project presentation and Traelyx M3.7 truth introduced after
+  the recovered Blog baseline.
 
-- Governance handoff: `3096a9a` — `docs: hand off visual asset delivery`.
-- Implementation baseline: `ed44e36` — `perf: isolate route-owned styles and artwork`.
-- Route-owned stylesheet split was implemented.
-- Shared eager CSS measured 40.14 kB (8.50 kB gzip).
-- Lazy portfolio stylesheet measured 50.81 kB (10.24 kB gzip).
-- Direct Field Notes and recovery routes locally avoided hero JPGs, mask sprites, portfolio JS, and portfolio CSS.
-- Homepage locally requested portfolio JS/CSS and exactly one breakpoint-correct high-priority hero.
-- Typecheck passed.
-- 65 unit/component tests passed.
-- Playwright passed 33 with one expected desktop skip.
-- Desktop, 360 px, narrow reflow, keyboard, reduced-motion, overflow, request, console, privacy, and ignored-control checks passed locally.
+## Asset-delivery result
 
-## Unresolved checkpoint at handoff
+- Responsive first-paint hero sources now prefer local WebP with explicit JPEG fallbacks.
+- The shared footer mark prefers a 320 x 258 lossless WebP with the original PNG fallback and lazy
+  decoding/loading.
+- Mask controls attach only the selected sprite on first fine-pointer, focus, keyboard, or touch
+  interaction. Reduced-motion and unsupported-mask environments keep a complete static native action.
+- Source measurements:
+  - portrait: 274,649 B JPEG -> 161,506 B WebP;
+  - wide: 332,350 B JPEG -> 203,542 B WebP;
+  - footer mark: 166,919 B PNG -> 42,660 B WebP;
+  - deferred mask set: 1,363,518 B total.
+- Initial visual-request reduction: 1,600,920 B desktop and 1,616,585 B mobile before transfer
+  compression or cache effects.
 
-Exact Cloudflare verification of `ed44e36` was **not claimed** because direct navigation was blocked by the browser safety gate.
+## Production output
 
-The next intended phase was live closure followed by visual-asset delivery optimization.
+- Shared CSS: `index-CAEqsc4T.css` — 40.18 kB / 8.51 kB gzip.
+- Portfolio CSS: `PortfolioPage-C4IXnPUw.css` — 59.70 kB / 11.76 kB gzip.
+- Shared JS: `index-B4WWZioB.js` — 243.77 kB / 79.64 kB gzip.
+- Portfolio JS: `PortfolioPage-BXmGPYdi.js` — 308.07 kB / 108.10 kB gzip.
+- Draft body: `registry-fixture-PKSplol0.js` — 1.96 kB / 0.83 kB gzip.
 
-## Current-state warning
+## Live verification
 
-Later project-display commits changed shared portfolio files. Before resuming optimization:
+- Fresh `/`: exact bundles above, `atrx-portrait.webp`, `atrx-mark.webp`, and `traelyx-mark.png`; no
+  initial mask requests. First keyboard focus on GitHub requested only
+  `mask-forest-CHaMJ_cx.png`.
+- Fresh `/blog`: exact shared JS/CSS, font resources, and `atrx-mark.webp`; no homepage visual or lazy
+  portfolio assets.
+- Fresh recovery route: exact shared JS/CSS and font resources; the below-fold lazy footer mark was not
+  requested in the observed initial viewport.
+- All inspected live routes had one main landmark, no desktop horizontal overflow, and no console
+  warnings/errors.
 
-1. compare the current implementation against the recovered baseline;
-2. retain current project-display behavior;
-3. rerun blog/route regressions;
-4. do not assume old transient bundle hashes still exist.
+## Verification
+
+- Typecheck: passed.
+- Unit/component: 70 passed across 24 files.
+- Production build: passed.
+- Playwright: 35 passed with one expected desktop skip across desktop and mobile projects.
+- Focused responsive-hero and deferred-mask request matrix: 4 passed.
+- Local production request graph, visual render, first keyboard interaction, overflow, and console: passed.
+- Privacy scan: no local path, secret, token, private repository detail, college detail, or new personal
+  data entered public source or emitted assets.
 
 ## Workstream state
 
-`active / recovered`
+`complete / maintenance-ready`
 
-Do not mark completed until the recovered next-step exit criteria and original Field Notes definition of done are satisfied or explicitly superseded by the user.
+The recovered implementation, deployment, and post-implementation asset-delivery checkpoints are
+closed. Preserve this workstream for future real Field Notes content or maintenance; do not invent a
+public article merely to change the empty archive state.
