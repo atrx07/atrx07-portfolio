@@ -31,18 +31,33 @@ const MASK_ASSETS: Record<MaskButtonMask, string> = {
   forest: new URL("../assets/mask-forest.png", import.meta.url).href,
 };
 
-function MaskLayers({ children, mask }: Required<Pick<MaskActionOptions, "children" | "mask">>) {
+function MaskLayers({
+  children,
+  mask,
+  ready,
+}: Required<Pick<MaskActionOptions, "children" | "mask">> & { ready: boolean }) {
   return (
     <>
       <span className="mask-action__content">{children}</span>
       <span
         className="mask-action__fill"
-        style={{ "--mask-image": `url("${MASK_ASSETS[mask]}")` } as CSSProperties}
+        style={ready ? ({ "--mask-image": `url("${MASK_ASSETS[mask]}")` } as CSSProperties) : undefined}
         aria-hidden="true"
       >
         <span>{children}</span>
       </span>
     </>
+  );
+}
+
+function canLoadAnimatedMask() {
+  if (typeof window === "undefined") return false;
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return false;
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function") return false;
+
+  return (
+    CSS.supports("mask-image", "linear-gradient(#000, #000)") ||
+    CSS.supports("-webkit-mask-image", "linear-gradient(#000, #000)")
   );
 }
 
@@ -52,14 +67,24 @@ function usePressedState<T extends HTMLButtonElement | HTMLAnchorElement>(
   onPointerDown?: (event: PointerEvent<T>) => void,
   onPointerUp?: (event: PointerEvent<T>) => void,
   onPointerCancel?: (event: PointerEvent<T>) => void,
+  onPointerEnter?: (event: PointerEvent<T>) => void,
+  onFocus?: FocusEventHandler<T>,
   onBlur?: FocusEventHandler<T>,
 ) {
   const [pressed, setPressed] = useState(false);
+  const [maskReady, setMaskReady] = useState(false);
+  const armMask = () => {
+    if (!maskReady && canLoadAnimatedMask()) setMaskReady(true);
+  };
 
   return {
     pressed,
+    maskReady,
     handleKeyDown: (event: KeyboardEvent<T>) => {
-      if (event.key === "Enter" || event.key === " ") setPressed(true);
+      if (event.key === "Enter" || event.key === " ") {
+        armMask();
+        setPressed(true);
+      }
       onKeyDown?.(event);
     },
     handleKeyUp: (event: KeyboardEvent<T>) => {
@@ -67,6 +92,7 @@ function usePressedState<T extends HTMLButtonElement | HTMLAnchorElement>(
       onKeyUp?.(event);
     },
     handlePointerDown: (event: PointerEvent<T>) => {
+      armMask();
       setPressed(true);
       onPointerDown?.(event);
     },
@@ -77,6 +103,14 @@ function usePressedState<T extends HTMLButtonElement | HTMLAnchorElement>(
     handlePointerCancel: (event: PointerEvent<T>) => {
       setPressed(false);
       onPointerCancel?.(event);
+    },
+    handlePointerEnter: (event: PointerEvent<T>) => {
+      armMask();
+      onPointerEnter?.(event);
+    },
+    handleFocus: (event: FocusEvent<T>) => {
+      armMask();
+      onFocus?.(event);
     },
     handleBlur: (event: FocusEvent<T>) => {
       setPressed(false);
@@ -99,6 +133,8 @@ const MaskButton = forwardRef<HTMLButtonElement, MaskButtonProps>(
       onPointerDown,
       onPointerUp,
       onPointerCancel,
+      onPointerEnter,
+      onFocus,
       onBlur,
       ...props
     },
@@ -110,6 +146,8 @@ const MaskButton = forwardRef<HTMLButtonElement, MaskButtonProps>(
       onPointerDown,
       onPointerUp,
       onPointerCancel,
+      onPointerEnter,
+      onFocus,
       onBlur,
     );
 
@@ -122,15 +160,18 @@ const MaskButton = forwardRef<HTMLButtonElement, MaskButtonProps>(
         data-variant={variant}
         data-size={size}
         data-pressed={press.pressed ? "true" : undefined}
+        data-mask-ready={press.maskReady ? "true" : undefined}
         onKeyDown={press.handleKeyDown}
         onKeyUp={press.handleKeyUp}
         onPointerDown={press.handlePointerDown}
         onPointerUp={press.handlePointerUp}
         onPointerCancel={press.handlePointerCancel}
+        onPointerEnter={press.handlePointerEnter}
+        onFocus={press.handleFocus}
         onBlur={press.handleBlur}
         {...props}
       >
-        <MaskLayers mask={mask}>{children}</MaskLayers>
+        <MaskLayers mask={mask} ready={press.maskReady}>{children}</MaskLayers>
       </button>
     );
   },
@@ -149,6 +190,8 @@ const MaskLink = forwardRef<HTMLAnchorElement, MaskLinkProps>(
       onPointerDown,
       onPointerUp,
       onPointerCancel,
+      onPointerEnter,
+      onFocus,
       onBlur,
       ...props
     },
@@ -160,6 +203,8 @@ const MaskLink = forwardRef<HTMLAnchorElement, MaskLinkProps>(
       onPointerDown,
       onPointerUp,
       onPointerCancel,
+      onPointerEnter,
+      onFocus,
       onBlur,
     );
 
@@ -171,15 +216,18 @@ const MaskLink = forwardRef<HTMLAnchorElement, MaskLinkProps>(
         data-variant={variant}
         data-size={size}
         data-pressed={press.pressed ? "true" : undefined}
+        data-mask-ready={press.maskReady ? "true" : undefined}
         onKeyDown={press.handleKeyDown}
         onKeyUp={press.handleKeyUp}
         onPointerDown={press.handlePointerDown}
         onPointerUp={press.handlePointerUp}
         onPointerCancel={press.handlePointerCancel}
+        onPointerEnter={press.handlePointerEnter}
+        onFocus={press.handleFocus}
         onBlur={press.handleBlur}
         {...props}
       >
-        <MaskLayers mask={mask}>{children}</MaskLayers>
+        <MaskLayers mask={mask} ready={press.maskReady}>{children}</MaskLayers>
       </a>
     );
   },

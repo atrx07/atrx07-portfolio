@@ -77,6 +77,11 @@ section[id] {
   -webkit-mask-image: var(--mask-image);
   -webkit-mask-position: 0 0;
   -webkit-mask-repeat: no-repeat;
+  opacity: 0;
+}
+
+.mask-action[data-mask-ready="true"] .mask-action__fill {
+  opacity: 1;
 }
 
 .mask-action[data-variant="secondary"] .mask-action__fill {
@@ -2783,6 +2788,10 @@ dialog::backdrop {
   transition:
     opacity 320ms ease,
     transform 700ms ease-out;
+}
+
+.field-note-portrait picture {
+  display: contents;
 }
 
 .field-note-portrait:hover .field-note-art {

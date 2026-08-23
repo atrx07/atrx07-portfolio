@@ -61,7 +61,9 @@ export function Hero({ mode, onModeChange }: Props) {
 
         <div className="hero-identity" aria-hidden="true">
           <picture>
+            <source media="(max-width: 640px)" srcSet="/atrx-wide.webp" type="image/webp" />
             <source media="(max-width: 640px)" srcSet="/atrx-wide.jpg" />
+            <source srcSet="/atrx-portrait.webp" type="image/webp" />
             <img
               src="/atrx-portrait.jpg"
               alt=""

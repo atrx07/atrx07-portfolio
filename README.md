@@ -98,9 +98,24 @@ behavior respects reduced motion and browser Back/Forward history.
 Direct Field Notes and recovery visits do not download portfolio-only GSAP, Framer Motion, or project
 interaction modules. A stable one-main loading shell covers the short portfolio chunk transition, and
 route focus waits for the real destination heading or fragment rather than focusing that temporary shell.
-They also avoid the portfolio stylesheet, responsive hero JPGs, and mask sprites. The raw document adds
-one high-priority responsive hero preload only for `/`; `PortfolioPage` loads the matching portfolio CSS
-alongside its existing lazy interaction chunk.
+They also avoid the portfolio stylesheet, responsive hero artwork, and mask sprites. The raw document
+adds one high-priority responsive WebP hero preload only for `/`; `PortfolioPage` loads the matching
+portfolio CSS alongside its existing lazy interaction chunk. Hero `<picture>` elements retain JPEG
+fallbacks. Mask buttons request only their own sprite on first pointer, focus, keyboard, or touch
+interaction; reduced-motion and unsupported-mask environments retain the complete native static action.
+
+## Visual assets
+
+The source JPEG/PNG artwork remains in `public/`. The browser-preferred derivatives are:
+
+- `atrx-portrait.webp`: 1080 x 1080, WebP quality 84, method 6
+- `atrx-wide.webp`: 1672 x 941, WebP quality 84, method 6
+- `atrx-mark.webp`: source mark resized to 320 px wide with Lanczos resampling, then lossless WebP method 6
+
+These files were generated locally with Pillow 11+; preserve the dimensions, encoding settings, and
+JPEG/PNG fallbacks when regenerating them. Social metadata intentionally continues to use the wide JPEG
+for crawler compatibility. Do not put the mask sprites in `public/`: Vite fingerprints them from
+`src/components/assets/`, and the interaction component controls when each URL becomes fetchable.
 
 Route metadata is applied from `src/lib/pageMetadata.ts`. The home route restores profile metadata;
 `/blog` uses collection metadata; published or archived notes use technical-article metadata; draft

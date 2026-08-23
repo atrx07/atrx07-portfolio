@@ -60,8 +60,9 @@
         heroArtwork.rel = "preload";
         heroArtwork.as = "image";
         heroArtwork.href = window.matchMedia("(max-width: 640px)").matches
-          ? "/atrx-wide.jpg"
-          : "/atrx-portrait.jpg";
+          ? "/atrx-wide.webp"
+          : "/atrx-portrait.webp";
+        heroArtwork.type = "image/webp";
         heroArtwork.fetchPriority = "high";
         heroArtwork.dataset.homeArtworkPreload = "";
         document.head.append(heroArtwork);

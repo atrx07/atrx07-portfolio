@@ -43,7 +43,10 @@ export function Footer() {
 function FooterMark() {
   return (
     <>
-      <img src="/atrx-mark.png" alt="" width="1396" height="1127" />
+      <picture>
+        <source srcSet="/atrx-mark.webp" type="image/webp" />
+        <img src="/atrx-mark.png" alt="" width="320" height="258" loading="lazy" decoding="async" />
+      </picture>
       <span className="sr-only">ATRX</span>
     </>
   );

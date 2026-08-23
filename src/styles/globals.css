@@ -280,6 +280,10 @@ img {
     transform 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
 }
 
+.wordmark picture {
+  display: inline-flex;
+}
+
 .wordmark:hover img {
   opacity: 0.82;
   transform: scale(1.035);

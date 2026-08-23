@@ -13,15 +13,18 @@ export function FieldNotes() {
   return (
     <section id="about" className="field-notes section-shell" aria-labelledby="field-notes-title">
       <div className="field-note-portrait motion-visual" aria-hidden="true">
-        <img
-          className="field-note-art"
-          src="/atrx-portrait.jpg"
-          alt=""
-          width="1080"
-          height="1080"
-          loading="lazy"
-          decoding="async"
-        />
+        <picture>
+          <source srcSet="/atrx-portrait.webp" type="image/webp" />
+          <img
+            className="field-note-art"
+            src="/atrx-portrait.jpg"
+            alt=""
+            width="1080"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
         <div className="portrait-stack" aria-hidden="true">
           <i />
           <i />

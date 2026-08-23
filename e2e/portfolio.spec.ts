@@ -180,6 +180,7 @@ test("project, architecture, principles, and contact interaction tour", async ({
 test("critical mobile copy stays inside its layout", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/");
+  await expect(page.locator("#contact .contact-inner")).toBeAttached();
 
   const containment = await page.evaluate(() => {
     const selectors = [
@@ -405,7 +406,7 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
     const modes = hero.querySelector<HTMLElement>(".hero-bottom .mode-switch");
     const actions = hero.querySelector<HTMLElement>(".hero-actions");
     const wideSource = hero.querySelector<HTMLSourceElement>(
-      '.hero-identity source[media="(max-width: 640px)"]',
+      '.hero-identity source[media="(max-width: 640px)"][type="image/webp"]',
     );
     if (!identity || !modes || !actions) {
       return {
@@ -428,7 +429,7 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
       fullBleed: identityBounds.width >= heroBounds.width - 1,
       horizontal: getComputedStyle(modes).flexDirection === "row",
       modesBelow: modeBounds.top >= identityBounds.bottom,
-      wideArt: wideSource?.getAttribute("srcset") === "/atrx-wide.jpg",
+      wideArt: wideSource?.getAttribute("srcset") === "/atrx-wide.webp",
     };
   });
   expect(heroMobileLayout).toEqual({
@@ -469,6 +470,12 @@ test("mobile project rack opens only on tap and reserves the dialog for inspecti
 });
 
 test("mask actions and visitor mode motion preserve their interaction contracts", async ({ page }) => {
+  const maskRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/\/mask-(?:nature|urban|forest)(?:-[^/?]+)?\.png(?:\?.*)?$/.test(request.url())) {
+      maskRequests.push(request.url());
+    }
+  });
   await page.goto("/");
 
   const explore = page.locator('.hero-actions .mask-action[href="#projects"]');
@@ -482,11 +489,18 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   await expect(explore).toHaveAttribute("data-variant", "primary");
   await expect(github).toHaveAttribute("data-mask", "forest");
   await expect(github).toHaveAttribute("data-variant", "secondary");
+  expect(maskRequests).toEqual([]);
 
   await explore.dispatchEvent("pointerdown", { pointerType: "touch" });
   await expect(explore).toHaveAttribute("data-pressed", "true");
+  await expect(explore).toHaveAttribute("data-mask-ready", "true");
+  await expect.poll(() => maskRequests.some((url) => url.includes("mask-urban"))).toBe(true);
   await explore.dispatchEvent("pointerup", { pointerType: "touch" });
   await expect(explore).not.toHaveAttribute("data-pressed");
+
+  await github.focus();
+  await expect(github).toHaveAttribute("data-mask-ready", "true");
+  await expect.poll(() => maskRequests.some((url) => url.includes("mask-forest"))).toBe(true);
 
   await expect(modeSwitch).toHaveAttribute("data-rainbow", "true");
   await recruiterTab.focus();

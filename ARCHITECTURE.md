@@ -60,8 +60,9 @@ flowchart TD
 ## Entry and Composition
 
 1. `index.html` provides the root element, homepage fallback metadata, crawler controls, and the
-   fallback homepage JSON-LD graph. A fixed inline path check appends exactly one responsive hero-image
-   preload only for a direct `/` document request; deep routes receive no homepage artwork hint.
+   fallback homepage JSON-LD graph. A fixed inline path check appends exactly one responsive WebP
+   hero-image preload only for a direct `/` document request; deep routes receive no homepage artwork
+   hint. The rendered `<picture>` retains the original JPEG as its fallback.
 2. `src/main.tsx` mounts `<App />` into `#root` under `React.StrictMode` and imports the eager shared
    stylesheet.
 3. `src/App.tsx` mounts `BrowserRouter`, `RouteEffects`, and the route tree from `src/router.tsx`.
@@ -102,7 +103,7 @@ flowchart TD
 | `Header.tsx` | Persistent route-aware system rail, desktop/mobile navigation, availability, optional portfolio controls, and GitHub |
 | `Hero.tsx` | Identity, role/value statement, CTAs, responsive artwork, visitor modes, boot copy, current-build signal |
 | `VisitorModeSwitch.tsx` | Controlled Recruiter/Developer/Chaos adapter shared by hero and mobile navigation |
-| `godui/mask-button.tsx` | Semantic button/link primitives with sprite-mask hover, focus, keyboard, and touch feedback |
+| `godui/mask-button.tsx` | Semantic button/link primitives that attach one supported sprite mask on first hover, focus, keyboard, or touch interaction while preserving a complete static fallback |
 | `godui/magic-tab.tsx` | Controlled/uncontrolled tab primitive with roving focus, manual activation, raised selection layers, and off-screen rainbow pausing |
 | `godui/orbiting-circles.tsx` | Reusable counter-rotating orbital tracks with fixed geometry, counter-rotated children, and a static reduced-motion fallback |
 | `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
@@ -120,7 +121,10 @@ flowchart TD
 | `Footer.tsx` | Closing identity and navigation context |
 
 The bundled mask sprite sheets live in `src/components/assets/` and are emitted as fingerprinted Vite
-assets. They are presentation-only: navigation remains a native anchor, copy actions remain native
+assets. Their URLs are attached only after the owning control receives its first pointer, focus,
+keyboard, or touch interaction, so merely rendering the homepage does not fetch all three sprites.
+Reduced-motion and unsupported-mask environments keep the unmasked native control and do not request a
+sprite. The masks are presentation-only: navigation remains a native anchor, copy actions remain native
 buttons, and no mask interaction changes routing or data ownership. Magic Tab has no runtime dependency
 beyond React; `VisitorModeSwitch` supplies the controlled value while `useVisitorMode` remains the sole
 owner of persisted mode state. Field Notes reuses the same primitive with its rainbow layer disabled,
@@ -262,10 +266,11 @@ There is no autoplay.
 
 ## Static Assets and SEO
 
-- `public/atrx-portrait.jpg` is the square primary identity artwork.
-- `public/atrx-wide.jpg` is the mobile hero and social-sharing artwork.
+- `public/atrx-portrait.webp` and `public/atrx-wide.webp` are the responsive first-paint hero sources.
+  The matching JPEG files remain local fallbacks; the wide JPEG also remains the social-sharing image.
 - `public/atrx-avatar.png` is the favicon/avatar asset.
-- `public/atrx-mark.png` is a retained ATRX mark asset.
+- `public/atrx-mark.webp` is the 320 x 258 shared footer source. `public/atrx-mark.png` remains its local
+  fallback and canonical source artwork.
 - `public/robots.txt` allows crawling and points to the canonical sitemap.
 - `public/sitemap.xml` contains `/`, `/blog`, and every indexable registry route. Its source test compares
   exact URLs and stable `lastmod` values against the validated published/archived registry, so drafts
@@ -273,8 +278,9 @@ There is no autoplay.
 - `index.html` owns the raw SPA-shell homepage fallback: canonical, title, description,
   robots/googlebot controls, Open Graph, Twitter, identity links, a fixed homepage-only responsive
   artwork preload, and homepage JSON-LD. It does not claim to prerender deep-route metadata.
-- The shared footer may request `atrx-mark.png` on every route. Hero JPGs and mask sprites are homepage
-  assets: direct Field Notes, loading, and recovery visits must not request them.
+- The shared footer may request the optimized `atrx-mark.webp` on every route. Responsive hero images
+  and mask sprites are homepage assets: direct Field Notes, loading, and recovery visits must not
+  request them. Homepage mask sprites remain absent until the corresponding action is engaged.
 - `src/lib/pageMetadata.ts` derives hydrated metadata for home, collection, public/archived article,
   draft preview, and recovery states from `src/data/profile.ts` plus validated article metadata.
 - `PageMetadata` updates the marked JSON-LD script and managed head fields without duplication. Draft

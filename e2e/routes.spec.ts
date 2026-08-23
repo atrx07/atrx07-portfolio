@@ -68,7 +68,7 @@ test("unknown routes and unpublished article slugs have deliberate recovery stat
 test("hero artwork preloading belongs only to the homepage route", async ({ page }) => {
   const artworkRequests: string[] = [];
   page.on("request", (request) => {
-    if (/\/atrx-(?:wide|portrait)\.jpg$/.test(request.url())) artworkRequests.push(request.url());
+    if (/\/atrx-(?:wide|portrait)\.(?:jpe?g|webp)$/.test(request.url())) artworkRequests.push(request.url());
   });
 
   await page.goto("/blog");
@@ -80,8 +80,9 @@ test("hero artwork preloading belongs only to the homepage route", async ({ page
   await expect(page.locator('link[data-home-artwork-preload]')).toHaveCount(0);
 
   await page.goto("/");
-  const expectedArtwork = (page.viewportSize()?.width ?? 1280) <= 640 ? "atrx-wide.jpg" : "atrx-portrait.jpg";
+  const expectedArtwork = (page.viewportSize()?.width ?? 1280) <= 640 ? "atrx-wide.webp" : "atrx-portrait.webp";
   await expect(page.locator('link[data-home-artwork-preload]')).toHaveAttribute("href", `/${expectedArtwork}`);
+  await expect(page.locator('link[data-home-artwork-preload]')).toHaveAttribute("type", "image/webp");
   expect(artworkRequests).toHaveLength(1);
   expect(artworkRequests[0]?.endsWith(`/${expectedArtwork}`)).toBe(true);
 });
