@@ -12,7 +12,8 @@
 - Portfolio source behavior: the article is in the public registry, appears as the single featured note,
   has indexable article metadata and a canonical URL, and is included in the sitemap. The separate
   `registry-fixture` draft remains development-only.
-- Repository delivery: pending push and exact Cloudflare verification. No live deployment is claimed yet.
+- Repository delivery: commits through `766f028` pushed to `origin/main`; exact Cloudflare publication
+  graph observed live on 2026-08-24.
 
 ## Publication verification
 
@@ -27,6 +28,19 @@
   360 px visual QA passed with one main landmark, one article, and two labeled scrollable tables.
 - Privacy scan: no local path, secret, API key, private repository detail, college detail, or new personal
   data entered the draft or its tests.
+
+## Publication live verification
+
+- Exact shared production script: `index--52D3sEc.js`; shared stylesheet:
+  `index-CAEqsc4T.css`.
+- Live `/blog`: one public note, featured article links resolve to the stable slug, canonical URL is exact,
+  no homepage-only visual assets were present, no horizontal overflow, and no console warnings/errors.
+- Live article: one main landmark, one article, one H1, two labeled technical tables, correct repository
+  and public status evidence links, indexable robots metadata, exact canonical URL, `article` Open Graph
+  type, `TechArticle` structured data, publication date `2026-08-24`, no draft notice, no horizontal
+  overflow, and no console warnings/errors.
+- Live sitemap: `/blog` and `/blog/local-ai-is-a-systems-problem` both carry `2026-08-24`; the
+  development-only `registry-fixture` remains absent.
 
 ## Current release
 
@@ -94,8 +108,7 @@
 
 ## Workstream state
 
-`active / pending live verification`
+`complete / maintenance-ready`
 
-The approved publication is locally complete and validated. Push the publication graph, then verify the
-exact live archive, direct article route, sitemap, metadata, and request boundary before closing the
-milestone.
+The first grounded real Field Note is published, pushed, and verified live. Preserve the workstream for
+future note maintenance or the next explicitly authorized grounded article.

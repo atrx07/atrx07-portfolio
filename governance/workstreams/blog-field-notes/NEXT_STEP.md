@@ -5,22 +5,19 @@
 
 ## Active implementation
 
-Push and verify the approved NeuraLoc-Core Field Note `Local AI is a systems problem`. The local source,
-sitemap, metadata, and tests are complete; live deployment is not yet observed.
+None. `Local AI is a systems problem` is published and verified live on the archive, direct article
+route, and sitemap.
 
 ## Next authorized milestone
 
-The topic, source boundary, prose, and publication are authorized. Next:
+The next milestone begins only when the user authorizes another grounded Field Note or asks for
+maintenance on the existing article. For another note:
 
-1. push local `main` to `origin/main`;
-2. wait for and identify the exact Cloudflare asset graph from publication commit `1f13272`;
-3. verify live `/blog` shows one featured public note and links the stable slug;
-4. verify the direct article route, canonical URL, indexable robots metadata, article structured data,
-   evidence links, headings, tables, overflow, and console state;
-5. verify `sitemap.xml` contains the archive and article with `2026-08-24` last-modified truth while the
-   local draft fixture remains absent;
-6. record observed live facts, mark this milestone complete, and retain the workstream for maintenance or
-   the next explicitly authorized real Field Note.
+1. select and inspect an authorized public evidence boundary;
+2. draft with explicit implemented/planned distinctions and keep status `draft` through review;
+3. obtain explicit prose approval before exposing or publishing it;
+4. synchronize public metadata and sitemap truth;
+5. run the complete local matrix, push, and verify the exact live archive and article routes.
 
 ## Maintenance triggers
 
