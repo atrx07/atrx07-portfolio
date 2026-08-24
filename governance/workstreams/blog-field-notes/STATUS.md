@@ -1,30 +1,30 @@
 # Status — blog-field-notes
 
-## Draft under review
+## First Field Note publication
 
 - Draft commit: `b007669` — `content: draft first NeuraLoc Field Note`.
-- Draft: `Local AI is a systems problem` at slug `local-ai-is-a-systems-problem`.
+- Publication commit: `1f13272` — `content: publish first NeuraLoc Field Note`.
+- Published source state: `Local AI is a systems problem` at slug
+  `local-ai-is-a-systems-problem`, dated 2026-08-24 and marked `featured`.
 - Source boundary: public `atrx07/NeuraLoc-Core` repository at commit
   `c85e9ebb8debd9b4bfe174f77d28d256e6323478`, inspected read-only.
-- Portfolio status: `draft`; the production registry excludes the article, the ordinary article route
-  resolves to the unpublished-note recovery state, and the development preview carries `noindex,
-  nofollow` without a canonical URL.
-- Publication approval: pending user review of the drafted prose. No live publication or Cloudflare
-  article deployment is claimed.
-- Repository delivery: the two validated commits remain local; `main` is two commits ahead of
-  `origin/main`. Pushing is pending explicit approval because the source repository is public and would
-  expose the unpublished prose even while portfolio routes continue to exclude it.
+- Publication approval: explicitly received from the user after reviewing the local page.
+- Portfolio source behavior: the article is in the public registry, appears as the single featured note,
+  has indexable article metadata and a canonical URL, and is included in the sitemap. The separate
+  `registry-fixture` draft remains development-only.
+- Repository delivery: pending push and exact Cloudflare verification. No live deployment is claimed yet.
 
-## Draft verification
+## Publication verification
 
 - Typecheck: passed.
 - Unit/component: 71 passed across 25 files.
-- Production build: passed; the draft body remains an isolated lazy chunk at 13.92 kB / 5.26 kB gzip.
+- Production build: passed; the article body remains an isolated lazy chunk at 13.92 kB / 5.26 kB gzip.
 - Playwright: stable serialized run passed 37 with one expected desktop skip across desktop and mobile
   projects. An earlier 12-worker run had one unrelated mobile-navigation animation timeout; that exact
   test passed in isolation and in the stable full run.
-- Local in-app browser QA: desktop and 360 px mobile preview passed with one main landmark, one article,
-  one H1, two labeled scrollable technical tables, and no page-level horizontal overflow.
+- Local in-app browser QA: the ordinary article route has one H1, indexable robots metadata, the exact
+  production canonical URL, no draft notice, and no page-level horizontal overflow. Earlier desktop and
+  360 px visual QA passed with one main landmark, one article, and two labeled scrollable tables.
 - Privacy scan: no local path, secret, API key, private repository detail, college detail, or new personal
   data entered the draft or its tests.
 
@@ -94,8 +94,8 @@
 
 ## Workstream state
 
-`active / draft review`
+`active / pending live verification`
 
-The Field Notes system release remains complete. The workstream is open only for review and revision of
-the first grounded real note. Keep the note non-public until the user explicitly approves its prose for
-publication.
+The approved publication is locally complete and validated. Push the publication graph, then verify the
+exact live archive, direct article route, sitemap, metadata, and request boundary before closing the
+milestone.

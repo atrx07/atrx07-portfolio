@@ -1,28 +1,26 @@
 # Next Step — blog-field-notes
 
-> Draft baseline: `b007669` — `content: draft first NeuraLoc Field Note`.
+> Publication baseline: `1f13272` — `content: publish first NeuraLoc Field Note`.
 > Published system baseline: `76800e9` — `perf: defer portfolio artwork delivery`.
 
 ## Active implementation
 
-Review and revise the NeuraLoc-Core draft `Local AI is a systems problem`. The article remains `draft`,
-is absent from the production registry and sitemap, and is available only through the development preview
-query.
+Push and verify the approved NeuraLoc-Core Field Note `Local AI is a systems problem`. The local source,
+sitemap, metadata, and tests are complete; live deployment is not yet observed.
 
 ## Next authorized milestone
 
-The topic and public source boundary are authorized. Publication is not. Next:
+The topic, source boundary, prose, and publication are authorized. Next:
 
-1. obtain the user's review of the drafted prose and make requested revisions while status stays `draft`;
-2. push the local draft commits only if the user explicitly approves exposing the review draft in the
-   public source repository; otherwise keep them local until publication approval;
-3. switch to `published` only after explicit approval of the content;
-4. on approval, set the final publication date, synchronize sitemap truth and publication-specific tests,
-   and keep the existing authoring contract unchanged unless implementation reality requires otherwise;
-5. run lint, all unit/component tests, build, the full Playwright matrix, and privacy checks;
-6. commit and push the publication change, then verify the exact Cloudflare `/blog` listing and direct
-   article deep link before reporting publication complete;
-7. if approval is withheld, retain the draft and leave public routes unchanged.
+1. push local `main` to `origin/main`;
+2. wait for and identify the exact Cloudflare asset graph from publication commit `1f13272`;
+3. verify live `/blog` shows one featured public note and links the stable slug;
+4. verify the direct article route, canonical URL, indexable robots metadata, article structured data,
+   evidence links, headings, tables, overflow, and console state;
+5. verify `sitemap.xml` contains the archive and article with `2026-08-24` last-modified truth while the
+   local draft fixture remains absent;
+6. record observed live facts, mark this milestone complete, and retain the workstream for maintenance or
+   the next explicitly authorized real Field Note.
 
 ## Maintenance triggers
 
