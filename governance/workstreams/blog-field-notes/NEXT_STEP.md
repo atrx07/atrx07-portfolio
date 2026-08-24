@@ -1,27 +1,28 @@
 # Next Step — blog-field-notes
 
-> Completed source baseline: `76800e9` — `perf: defer portfolio artwork delivery`.
+> Draft baseline: `b007669` — `content: draft first NeuraLoc Field Note`.
+> Published system baseline: `76800e9` — `perf: defer portfolio artwork delivery`.
 
 ## Active implementation
 
-None. The recovered Field Notes release and its route-performance / visual-asset continuation are
-complete and verified live.
+Review and revise the NeuraLoc-Core draft `Local AI is a systems problem`. The article remains `draft`,
+is absent from the production registry and sitemap, and is available only through the development preview
+query.
 
 ## Next authorized milestone
 
-Publish the first real Field Note only when the user supplies or explicitly authorizes a grounded topic
-and source material. Do not invent filler content to populate the archive.
+The topic and public source boundary are authorized. Publication is not. Next:
 
-When that request arrives:
-
-1. create the paired `<stable-slug>.meta.ts` and `<stable-slug>.mdx` files;
-2. keep the note in `draft` while editing and use the development-only preview query;
-3. validate claims, links, dates, code, tables, figures, overflow, keyboard behavior, and reduced motion;
-4. switch to `published` only with explicit content approval;
-5. synchronize sitemap `lastmod`, metadata tests, README only if the authoring contract changes, and
-   this workstream handoff;
-6. run lint, all unit/component tests, build, the full Playwright matrix, and exact Cloudflare deep-link
-   verification before reporting publication complete.
+1. obtain the user's review of the drafted prose and make requested revisions while status stays `draft`;
+2. push the local draft commits only if the user explicitly approves exposing the review draft in the
+   public source repository; otherwise keep them local until publication approval;
+3. switch to `published` only after explicit approval of the content;
+4. on approval, set the final publication date, synchronize sitemap truth and publication-specific tests,
+   and keep the existing authoring contract unchanged unless implementation reality requires otherwise;
+5. run lint, all unit/component tests, build, the full Playwright matrix, and privacy checks;
+6. commit and push the publication change, then verify the exact Cloudflare `/blog` listing and direct
+   article deep link before reporting publication complete;
+7. if approval is withheld, retain the draft and leave public routes unchanged.
 
 ## Maintenance triggers
 

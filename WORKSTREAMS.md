@@ -12,7 +12,7 @@
 
 | Workstream ID | State | Purpose | Durable/source baseline | Status | Versioned next step |
 | --- | --- | --- | --- | --- | --- |
-| `blog-field-notes` | complete / maintenance-ready | Maintain the delivered Field Notes/blog system and publish only grounded real notes | release baseline `76800e9`; recovered from blog handoff `3096a9a` | `governance/workstreams/blog-field-notes/STATUS.md` | `governance/workstreams/blog-field-notes/NEXT_STEP.md` |
+| `blog-field-notes` | active / draft review | Maintain the delivered Field Notes/blog system and publish only grounded real notes | draft baseline `b007669`; release baseline `76800e9`; recovered from blog handoff `3096a9a` | `governance/workstreams/blog-field-notes/STATUS.md` | `governance/workstreams/blog-field-notes/NEXT_STEP.md` |
 | `project-display-traelyx` | maintenance / pending live verification | Keep the **portfolio's display of Traelyx** aligned with verified public Traelyx truth | portfolio source baseline `3cde4fc`; handoff family through `c8b19b4` | `governance/workstreams/project-display-traelyx/STATUS.md` | `governance/workstreams/project-display-traelyx/NEXT_STEP.md` |
 
 ## Selecting a workstream
