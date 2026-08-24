@@ -1,0 +1,186 @@
+export { meta } from "./local-ai-is-a-systems-problem.meta"
+
+The quickest local-AI demo is a text box connected to a model process. It can be convincing in an
+afternoon: load a GGUF, send a prompt, stream some tokens, celebrate when the laptop gets warm.
+
+The awkward part begins after the first successful answer.
+
+What happens when the model does not fit? Who owns the process? Which prompt version produced an old
+conversation? How much history was actually admitted? What survives a crash? Can Stop mean “cancel this
+job” instead of “kill anything using this port”?
+
+That is the point where a local chat app stops being a chat-interface problem and becomes a systems
+problem. [NeuraLoc-Core](https://github.com/atrx07/NeuraLoc-Core) is my attempt to work through that
+boundary deliberately.
+
+> **Evidence boundary:** this note reflects the public NeuraLoc-Core repository at commit
+> [`c85e9eb`](https://github.com/atrx07/NeuraLoc-Core/commit/c85e9ebb8debd9b4bfe174f77d28d256e6323478),
+> with project status dated 18 July 2026. “Implemented” and “next” are kept separate throughout.
+
+## The product starts at the native boundary
+
+NeuraLoc-Core uses React and TypeScript for the interface, Tauri 2 for the desktop boundary, Rust for
+orchestration, and SQLite for durable metadata and conversation state. That stack matters less than the
+ownership rule behind it:
+
+```text
+React renderer
+  -> typed Tauri IPC
+    -> Rust services
+      -> verified engine package
+        -> owned llama.cpp child process
+```
+
+The renderer does not receive a general shell, unrestricted filesystem access, the internal loopback
+endpoint, or its session credential. Rust owns model validation, package verification, process launch,
+health checks, streaming transport, cancellation, persistence, and shutdown.
+
+That decision made the UI less powerful in the best possible way. A compromised or confused renderer
+cannot casually become a process supervisor. It must ask a typed command to perform a bounded action.
+
+## “Installed” is not the same as “trusted enough to run”
+
+The current CPU route pins one Windows x64 `llama.cpp` build. Installation records the expected archive
+size, SHA-256, route, architecture, required files, and a checksum inventory for the extracted package.
+Reverification rejects missing, changed, linked, or unexpected files.
+
+Starting the engine then crosses another set of gates:
+
+1. reverify the selected GGUF and engine inventory;
+2. launch only the canonical packaged executable with bounded arguments;
+3. clear the inherited child environment and restore a minimal platform baseline;
+4. bind the server to loopback with an application-owned credential;
+5. require health and identity checks to report the expected model path and pinned build;
+6. expose readiness to Chat only after those checks pass.
+
+The process manager tracks the exact child it started. Stop acts on that owned handle. It does not scan
+for a familiar executable name or kill whichever process happens to occupy a port.
+
+This sounds like infrastructure because it is infrastructure. The fact that it runs on one laptop does
+not make process ownership optional.
+
+## Context is a budget, not a transcript length
+
+One of the easiest mistakes in local chat is treating every saved message as if it will fit into the
+next request. Durable history and active model context are different things.
+
+NeuraLoc-Core keeps the full conversation in SQLite. Before generation, the Rust chat engine asks the
+authenticated `llama.cpp` tokenizer for a chat-template-aware input count. It reserves the requested
+output plus safety space, keeps the optional system prompt and current user message, then admits the
+newest complete historical turns that fit.
+
+```text
+durable transcript != admitted inference window
+
+admitted input = system prompt
+               + newest complete turns that fit
+               + current user message
+               + reserved output/safety capacity
+```
+
+Nothing is deleted from the transcript to make the request fit. Instead, each assistant draft stores the
+exact capacity, retained-turn, and omitted-turn decision that applied to that generation. The interface
+can therefore say what the model actually saw rather than quietly implying that the entire visible chat
+was present.
+
+Before the engine is ready, the UI may show an approximate character-based preview. Once the model is
+loaded, the authenticated tokenizer replaces approximation with the authoritative count. Approximation
+is useful; disguising it as exact is not.
+
+## Save the turn before asking the model
+
+Streaming introduces a nasty timing problem. If persistence happens only after a response completes,
+then cancellation, a process crash, or an application exit can erase the most useful failure evidence.
+
+The current conversation path creates the user message and assistant draft transactionally before
+inference. Completion finalizes the streamed content, usage, token count, and terminal reason. Startup
+marks abandoned drafts as interrupted instead of pretending they never existed.
+
+Branches follow the same “state should survive” rule. Branching copies the selected prefix into an
+independent conversation, remaps message parentage, and records source provenance. Retry does not
+overwrite the disappointing answer. It branches before the relevant user turn and generates a new answer
+there, leaving the original history intact.
+
+That costs more schema and service work than a mutable message array. It also means experiments remain
+auditable after restart.
+
+## Hardware fit should explain itself
+
+A model picker that says “recommended” without explaining why is only a confidence trick with nicer
+spacing.
+
+For the verified CPU route, NeuraLoc-Core estimates fit from the GGUF file size, metadata-derived KV-cache
+cost at the configured context, bounded runtime overhead, current available RAM, and an explicit system
+reserve. The result includes a category, confidence, component breakdown, assumptions, and remaining
+headroom.
+
+| Question | Current answer |
+| --- | --- |
+| Will this model definitely run? | No universal promise; show a conservative CPU estimate and its confidence. |
+| What if metadata is incomplete? | Use a bounded fallback and label the result low confidence. |
+| What if the estimate is known to exceed the budget? | Disable that choice instead of silently gambling with system memory. |
+| Does the same estimate prove CUDA, Vulkan, or projector compatibility? | No. Those routes need their own verified packages and probes. |
+
+This is intentionally not a fake global percentage. A medium-confidence CPU estimate is evidence about
+one route under one hardware snapshot, not a portable probability of success.
+
+## The real-model test changed the standard of proof
+
+On 15 July 2026, an opt-in integration test used a Qwen3 4B Q4_K_M GGUF with the pinned `llama.cpp`
+`b9986` CPU build. It loaded the model, checked authenticated health and identity, obtained an exact input
+count, streamed a bounded visible response with usage, cancelled a second request, stopped the runtime,
+and confirmed that no owned child process remained.
+
+That test did not prove every model, machine, backend, or driver combination. It proved something more
+useful for the current checkpoint: the actual native boundary could complete its full owned lifecycle on
+a real tensor-bearing model.
+
+A browser preview cannot provide that evidence. It is useful for layout and representative state, but it
+does not exercise Tauri IPC, SQLite, filesystem grants, hardware probes, or native child processes. The
+project documents that distinction instead of letting a polished preview impersonate a desktop test.
+
+## The roadmap is a dependency graph
+
+The local-chat checkpoint is still in progress. The next work is deliberately less cinematic than adding
+five new AI workspaces:
+
+| Next checkpoint | Why it comes next |
+| --- | --- |
+| Rust-persisted selector preference and clearer backend/projector explanations | Model choice must survive restart and communicate why a route is unavailable. |
+| Incremental draft checkpoints and deeper history pagination | Long generations and large histories need bounded recovery and loading behavior. |
+| Engine crash recovery and conservative OOM handling | A dependable lifecycle must include failure after startup, not only clean cancellation. |
+| Multi-layer prompt composition and an inspectable compiler view | Tool, project, and memory layers should remain visible and versioned rather than becoming hidden text. |
+| Signed catalog metadata with resumable verified downloads | Convenience cannot bypass checksum, license, compatibility, privacy, or partial-download rules. |
+
+Images, speech, TTS, broad APIs, and additional acceleration routes remain later phases. Building those
+before the chat lifecycle is dependable would multiply uncertainty across more engines and more kinds of
+state.
+
+## Rules I am carrying forward
+
+NeuraLoc-Core has made a few principles concrete for me:
+
+1. **Own the process you start.** Identity, health, cancellation, logs, and shutdown belong to one
+   lifecycle boundary.
+2. **Use exact measurements where policy depends on them.** Token admission and package verification are
+   bad places for confident guesses.
+3. **Keep durable truth separate from bounded working state.** A full transcript can survive even when
+   only part of it enters the next inference window.
+4. **Attach confidence to recommendations.** Hardware fit is scoped evidence, not prophecy.
+5. **Let the roadmap follow dependencies.** A smaller trustworthy path is more valuable than a large UI
+   full of disabled promises.
+
+The chat interface is still important. It is where all of this complexity has to become understandable.
+But the interface becomes credible only when the system beneath it can explain what it owns, what it
+measured, what survived, and what remains unfinished.
+
+That is the kind of local AI software I want to keep building: private by default, honest about limits,
+and boring in exactly the failure modes that should be boring.
+
+---
+
+Implementation details and current boundaries are documented in the public
+[README](https://github.com/atrx07/NeuraLoc-Core/blob/main/README.md),
+[status](https://github.com/atrx07/NeuraLoc-Core/blob/main/STATUS.md),
+[architecture](https://github.com/atrx07/NeuraLoc-Core/blob/main/ARCHITECTURE.md), and
+[next-step plan](https://github.com/atrx07/NeuraLoc-Core/blob/main/NEXT_STEPS.md).

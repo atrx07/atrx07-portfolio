@@ -52,6 +52,32 @@ test("development draft preview renders the long-form surface without page overf
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
+test("first real Field Note remains reviewable as a grounded non-public draft", async ({ page }) => {
+  const slug = "local-ai-is-a-systems-problem";
+
+  await page.goto(`/blog/${slug}`);
+  await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
+
+  await page.goto(`/blog/${slug}?preview=draft`);
+  await expect(page.getByRole("heading", { level: 1, name: "Local AI is a systems problem" })).toBeVisible();
+  await expect(page.getByRole("note")).toContainText("Local draft preview");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "The product starts at the native boundary" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "The roadmap is a dependency graph" }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Repository/ })).toHaveAttribute(
+    "href",
+    "https://github.com/atrx07/NeuraLoc-Core",
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
 test("unknown routes and unpublished article slugs have deliberate recovery states", async ({ page }) => {
   await page.goto("/blog/not-published");
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
