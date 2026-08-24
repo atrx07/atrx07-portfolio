@@ -20,7 +20,7 @@ test("Field Notes archive preserves cross-route navigation and browser history",
   const fieldNotesHeading = page.getByRole("heading", { level: 1, name: "FIELD NOTES" });
   await expect(fieldNotesHeading).toBeVisible();
   await expect(fieldNotesHeading).toBeFocused();
-  await expect(page.getByText(/No filler posts/)).toBeVisible();
+  await expect(page.getByRole("link", { name: /Local AI is a systems problem/ }).first()).toBeVisible();
 
   await page.reload();
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeVisible();
@@ -52,15 +52,12 @@ test("development draft preview renders the long-form surface without page overf
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
-test("first real Field Note remains reviewable as a grounded non-public draft", async ({ page }) => {
+test("first real Field Note is public with grounded article metadata", async ({ page }) => {
   const slug = "local-ai-is-a-systems-problem";
 
   await page.goto(`/blog/${slug}`);
-  await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
-
-  await page.goto(`/blog/${slug}?preview=draft`);
   await expect(page.getByRole("heading", { level: 1, name: "Local AI is a systems problem" })).toBeVisible();
-  await expect(page.getByRole("note")).toContainText("Local draft preview");
+  await expect(page.getByRole("note")).toHaveCount(0);
   await expect(
     page.getByRole("heading", { level: 2, name: "The product starts at the native boundary" }),
   ).toBeVisible();
@@ -71,8 +68,16 @@ test("first real Field Note remains reviewable as a grounded non-public draft", 
     "href",
     "https://github.com/atrx07/NeuraLoc-Core",
   );
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
-  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /index, follow/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://atrx07.pages.dev/blog/local-ai-is-a-systems-problem",
+  );
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
+  await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute(
+    "content",
+    "2026-08-24",
+  );
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);

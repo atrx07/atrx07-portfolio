@@ -3,11 +3,12 @@ import LocalAiSystemsNote from "./local-ai-is-a-systems-problem.mdx";
 import { meta } from "./local-ai-is-a-systems-problem.meta";
 import { mdxComponents } from "../mdx-components";
 
-describe("Local AI systems Field Note draft", () => {
+describe("Local AI systems Field Note", () => {
   it("renders the grounded engineering argument and public evidence links", () => {
     render(<LocalAiSystemsNote components={mdxComponents} />);
 
-    expect(meta.status).toBe("draft");
+    expect(meta.status).toBe("published");
+    expect(meta.publishedAt).toBe("2026-08-24");
     expect(meta.projectSlug).toBe("neuraloc");
     expect(
       screen.getByRole("heading", { level: 2, name: "The product starts at the native boundary" }),

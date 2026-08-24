@@ -5,8 +5,8 @@ export const meta = {
   title: "Local AI is a systems problem",
   description:
     "What NeuraLoc-Core taught me about verified runtimes, exact context budgets, durable branches, and honest hardware limits.",
-  publishedAt: "2026-08-23",
-  status: "draft",
+  publishedAt: "2026-08-24",
+  status: "published",
   tags: ["local-ai", "architecture", "testing", "debugging"],
   series: "Building NeuraLoc-Core",
   featured: true,

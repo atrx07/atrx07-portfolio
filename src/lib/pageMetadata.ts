@@ -262,7 +262,7 @@ export const blogIndexMetadata: RouteMetadata = {
         url: canonicalUrl("/blog"),
         name: fieldNotesMetadata.title,
         description: fieldNotesMetadata.description,
-        dateModified: fieldNotesMetadata.launchedAt,
+        dateModified: fieldNotesMetadata.lastModified,
         inLanguage: "en-IN",
         isPartOf: { "@id": `${siteMetadata.canonicalUrl}#website` },
         about: { "@id": `${siteMetadata.canonicalUrl}#person` },

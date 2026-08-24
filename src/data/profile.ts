@@ -47,6 +47,7 @@ export const fieldNotesMetadata = {
   description:
     "Engineering notes from Arppith Andrews (atrx07) on local AI, real-time systems, automation, debugging, and unusual browser tools.",
   launchedAt: "2026-08-02",
+  lastModified: "2026-08-24",
 } as const;
 
 export const capabilityGroups = [

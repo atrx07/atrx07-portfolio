@@ -22,7 +22,7 @@ describe("application route tree", () => {
     expect(screen.getAllByRole("main")).toHaveLength(1);
   });
 
-  it("renders the honest Field Notes foundation at /blog", () => {
+  it("renders the first published Field Note at /blog", () => {
     render(
       <MemoryRouter initialEntries={["/blog"]}>
         <AppRoutes />
@@ -31,8 +31,11 @@ describe("application route tree", () => {
 
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1, name: "FIELD NOTES" })).toBeInTheDocument();
-    expect(screen.getByText(/No filler posts/)).toBeInTheDocument();
-    expect(screen.getByText("00 / PUBLIC NOTES")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Local AI is a systems problem/ })).toHaveAttribute(
+      "href",
+      "/blog/local-ai-is-a-systems-problem",
+    );
+    expect(screen.getByText("01 / PUBLIC NOTES")).toBeInTheDocument();
   });
 
   it("loads the local draft only through the explicit development preview route", async () => {

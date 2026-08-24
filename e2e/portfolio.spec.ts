@@ -34,7 +34,8 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
   expect(sitemap).toContain("<lastmod>2026-08-16</lastmod>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
-  expect(sitemap).toContain("<lastmod>2026-08-02</lastmod>");
+  expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog/local-ai-is-a-systems-problem</loc>");
+  expect(sitemap).toContain("<lastmod>2026-08-24</lastmod>");
   expect(sitemap).not.toContain("registry-fixture");
   expect(sitemap).not.toContain("<changefreq>");
   expect(sitemap).not.toContain("<priority>");
@@ -63,7 +64,11 @@ test("Field Notes keeps the local draft fixture outside public routes", async ({
   ) as { "@graph"?: Array<{ "@type"?: string }> };
   expect(collectionGraph["@graph"]?.some((node) => node["@type"] === "CollectionPage")).toBe(true);
   await expect(page.locator("[data-published-count]"))
-    .toHaveAttribute("data-published-count", "0");
+    .toHaveAttribute("data-published-count", "1");
+  await expect(page.getByRole("link", { name: /Local AI is a systems problem/ }).first()).toHaveAttribute(
+    "href",
+    "/blog/local-ai-is-a-systems-problem",
+  );
 
   await page.goto("/blog/registry-fixture");
   await expect(page.getByRole("heading", { level: 1, name: "FIELD NOTE NOT FOUND" })).toBeVisible();
