@@ -1,5 +1,21 @@
 # Status — blog-field-notes
 
+## Second Field Note publication — SecureScope
+
+- Publication commit: `5b53f6b` — `content: publish SecureScope evidence Field Note`.
+- Published source state: `A security tool should know when it is guessing` at slug
+  `a-security-tool-should-know-when-it-is-guessing`, dated 2026-08-25.
+- Source boundary: public `atrx07/securescope` repository at commit
+  `0d0b11f22ceffc84fcfb8de2e3bf2bec5ab5323e`, inspected read-only.
+- Publication approval: explicitly received from the user in-chat after reviewing the full proposed prose.
+- Portfolio source behavior: the article is marked `published`, the archive count expectation is now two,
+  the direct article route has dedicated metadata/e2e coverage, and the sitemap includes the stable slug.
+- Validation authored with the publication: article component test plus desktop/mobile route expectations and
+  sitemap/archive assertions were updated. This chat did not have a local Node/browser execution environment,
+  so do not claim that the complete local typecheck/unit/build/Playwright matrix was executed here.
+- Repository delivery: publication commit is on `main`; exact Cloudflare deployment remains pending direct
+  observation and must not be inferred from the Git push.
+
 ## First Field Note publication
 
 - Draft commit: `b007669` — `content: draft first NeuraLoc Field Note`.
@@ -110,5 +126,5 @@
 
 `complete / maintenance-ready`
 
-The first grounded real Field Note is published, pushed, and verified live. Preserve the workstream for
-future note maintenance or the next explicitly authorized grounded article.
+Two grounded real Field Notes are now published in source. Preserve the workstream for live verification,
+future note maintenance, or the next explicitly authorized grounded article.
