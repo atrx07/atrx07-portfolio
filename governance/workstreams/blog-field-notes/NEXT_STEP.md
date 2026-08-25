@@ -7,21 +7,19 @@
 
 ## Active implementation
 
-Push and verify correction commit `1f7589c`. Two grounded Field Notes remain published:
+None. Correction commit `1f7589c` is pushed and verified live. Two grounded Field Notes remain published:
 
 - `Local AI is a systems problem`
 - `A security tool should know when it is guessing`
 
 The SecureScope note was explicitly approved by the user before publication. Its public evidence boundary is the read-only `atrx07/securescope` repository at commit `0d0b11f22ceffc84fcfb8de2e3bf2bec5ab5323e`.
 
-## Correction deployment checkpoint
+## Completed correction checkpoint
 
-1. push local `main` to `origin/main`;
-2. wait for Cloudflare to serve the correction build rather than inferring deployment from the push;
-3. verify live `/blog` `CollectionPage.dateModified` is `2026-08-25` while its count remains two;
-4. verify both direct article routes, the sitemap, canonical/index metadata, route isolation, overflow, and
-   console state remain correct;
-5. record the exact live asset graph and return the workstream to `complete / maintenance-ready`.
+- Local typecheck, all 72 unit/component tests, production build, and the full stable Playwright matrix
+  passed.
+- Cloudflare serves `index-Sv2LCrwa.js`; live collection metadata is dated 2026-08-25 with two notes.
+- Both direct articles and the sitemap passed metadata, isolation, overflow, and console regression checks.
 
 ## Next authorized milestone
 

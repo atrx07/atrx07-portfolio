@@ -18,8 +18,15 @@
 - Pre-correction live verification: the SecureScope article, archive, evidence links, sitemap, desktop and
   360 px layouts, canonical/index metadata, structured article data, overflow, and console state passed.
   The archive `CollectionPage.dateModified` mismatch was reproduced live as 2026-08-24.
-- Correction push and exact post-deployment metadata verification remain pending. Do not infer deployment
-  from the correction commit.
+- Correction and handoff commits were pushed through `b1781b1`; exact post-deployment verification passed.
+- Corrected live graph: shared script `index-Sv2LCrwa.js` and shared stylesheet
+  `index-CAEqsc4T.css`.
+- Corrected live `/blog`: two public notes, `CollectionPage.dateModified` `2026-08-25`, exact canonical,
+  one main/H1, no homepage-only visuals, no horizontal overflow, and no console warnings/errors.
+- Both live articles retain exact canonicals, indexable robots metadata, `TechArticle` structured data,
+  one main/article/H1, expected labeled tables, no horizontal overflow, and no console warnings/errors.
+- Live sitemap retains the archive and SecureScope note at `2026-08-25`, the NeuraLoc note at
+  `2026-08-24`, and no development-only draft fixture.
 
 ## Second Field Note publication — SecureScope
 
@@ -145,7 +152,7 @@
 
 ## Workstream state
 
-`active / pending correction deployment`
+`complete / maintenance-ready`
 
-Two grounded real Field Notes remain published. The corrective source and regression matrix are complete;
-push and verify the corrected live collection metadata before returning this workstream to maintenance.
+Two grounded real Field Notes are published, locally validated, and verified on the corrected live graph.
+Preserve the workstream for future article maintenance or the next explicitly authorized grounded note.
