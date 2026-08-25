@@ -1,21 +1,27 @@
 # Next Step — blog-field-notes
 
 > Latest publication baseline: `5b53f6b` — `content: publish SecureScope evidence Field Note`.
+> Correction baseline: `1f7589c` — `fix: synchronize Field Notes publication metadata`.
 > First publication baseline: `1f13272` — `content: publish first NeuraLoc Field Note`.
 > Published system baseline: `76800e9` — `perf: defer portfolio artwork delivery`.
 
 ## Active implementation
 
-None. Two grounded Field Notes are now published in source:
+Push and verify correction commit `1f7589c`. Two grounded Field Notes remain published:
 
 - `Local AI is a systems problem`
 - `A security tool should know when it is guessing`
 
 The SecureScope note was explicitly approved by the user before publication. Its public evidence boundary is the read-only `atrx07/securescope` repository at commit `0d0b11f22ceffc84fcfb8de2e3bf2bec5ab5323e`.
 
-## Live verification checkpoint
+## Correction deployment checkpoint
 
-The source publication commit is on `main`. Cloudflare live verification remains a separate observation step; do not infer deployment merely from the push. Verify the archive, direct article route, canonical metadata, sitemap, responsive layout, and console state when live access is available.
+1. push local `main` to `origin/main`;
+2. wait for Cloudflare to serve the correction build rather than inferring deployment from the push;
+3. verify live `/blog` `CollectionPage.dateModified` is `2026-08-25` while its count remains two;
+4. verify both direct article routes, the sitemap, canonical/index metadata, route isolation, overflow, and
+   console state remain correct;
+5. record the exact live asset graph and return the workstream to `complete / maintenance-ready`.
 
 ## Next authorized milestone
 

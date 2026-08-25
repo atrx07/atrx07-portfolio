@@ -1,5 +1,26 @@
 # Status — blog-field-notes
 
+## SecureScope publication correction audit — 2026-08-25
+
+- Local `main` was fast-forwarded from `40f2d03` to remote handoff `50c34fd` before review.
+- Public SecureScope evidence commit `0d0b11f22ceffc84fcfb8de2e3bf2bec5ab5323e` was independently
+  confirmed as the current public `main`; the note's implementation claims match its README, Cloudflare
+  function, prompt, and result parsing behavior.
+- The audit found a stale router test expecting one public note and Field Notes collection JSON-LD still
+  dated 2026-08-24 while the second publication and sitemap were dated 2026-08-25.
+- Correction commit: `1f7589c` — `fix: synchronize Field Notes publication metadata`.
+- The router test now asserts both stable article links and two public notes. Field Notes collection
+  metadata is dated 2026-08-25. Sitemap and route-metadata tests now prevent the two last-modified truths
+  from drifting.
+- Local verification: typecheck passed; 72 unit/component tests passed across 26 files; production build
+  passed; stable serialized Playwright run passed 39 with one expected desktop skip across desktop and
+  mobile projects.
+- Pre-correction live verification: the SecureScope article, archive, evidence links, sitemap, desktop and
+  360 px layouts, canonical/index metadata, structured article data, overflow, and console state passed.
+  The archive `CollectionPage.dateModified` mismatch was reproduced live as 2026-08-24.
+- Correction push and exact post-deployment metadata verification remain pending. Do not infer deployment
+  from the correction commit.
+
 ## Second Field Note publication — SecureScope
 
 - Publication commit: `5b53f6b` — `content: publish SecureScope evidence Field Note`.
@@ -124,7 +145,7 @@
 
 ## Workstream state
 
-`complete / maintenance-ready`
+`active / pending correction deployment`
 
-Two grounded real Field Notes are now published in source. Preserve the workstream for live verification,
-future note maintenance, or the next explicitly authorized grounded article.
+Two grounded real Field Notes remain published. The corrective source and regression matrix are complete;
+push and verify the corrected live collection metadata before returning this workstream to maintenance.
