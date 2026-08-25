@@ -20,6 +20,7 @@ test("Field Notes archive preserves cross-route navigation and browser history",
   const fieldNotesHeading = page.getByRole("heading", { level: 1, name: "FIELD NOTES" });
   await expect(fieldNotesHeading).toBeVisible();
   await expect(fieldNotesHeading).toBeFocused();
+  await expect(page.getByRole("link", { name: /A security tool should know when it is guessing/ }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: /Local AI is a systems problem/ }).first()).toBeVisible();
 
   await page.reload();
@@ -77,6 +78,39 @@ test("first real Field Note is public with grounded article metadata", async ({ 
   await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute(
     "content",
     "2026-08-24",
+  );
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test("SecureScope Field Note is public with its evidence boundary intact", async ({ page }) => {
+  const slug = "a-security-tool-should-know-when-it-is-guessing";
+
+  await page.goto(`/blog/${slug}`);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "A security tool should know when it is guessing" }),
+  ).toBeVisible();
+  await expect(page.getByRole("note")).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Structured output is not structured evidence" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "The honesty label is a feature" }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Repository/ })).toHaveAttribute(
+    "href",
+    "https://github.com/atrx07/securescope",
+  );
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /index, follow/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://atrx07.pages.dev/blog/a-security-tool-should-know-when-it-is-guessing",
+  );
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute("content", "article");
+  await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute(
+    "content",
+    "2026-08-25",
   );
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

@@ -1,0 +1,357 @@
+export { meta } from "./a-security-tool-should-know-when-it-is-guessing.meta"
+
+The easiest way to make an AI security tool look impressive is to give every finding a severity badge.
+
+Red means critical. Orange means high. Yellow means medium.
+
+Add an OWASP label, a CWE number, maybe a percentage beside it, and suddenly a language-model response
+starts looking a lot like a scanner result.
+
+That visual confidence is exactly where the dangerous part begins.
+
+[SecureScope](https://github.com/atrx07/securescope) started as an experiment in AI-assisted web and code
+security review: take a target or code sample, ask a model to reason across common vulnerability
+categories, then turn the response into something closer to a structured security report than a chat
+transcript.
+
+The interesting engineering problem was not getting the model to produce findings.
+
+It was deciding **what those findings are allowed to mean**.
+
+> **Evidence boundary:** this note reflects the public SecureScope repository at commit
+> [`0d0b11f`](https://github.com/atrx07/securescope/commit/0d0b11f22ceffc84fcfb8de2e3bf2bec5ab5323e).
+> SecureScope is an AI-assisted analysis prototype, not a deterministic SAST, DAST, dependency, network,
+> or malware scanner.
+
+## Structured output is not structured evidence
+
+SecureScope asks the model to return machine-readable JSON.
+
+That is useful.
+
+A predictable result shape makes it possible to build a proper interface around findings instead of
+scraping prose. Severity, category, explanation, remediation, and supporting context can become real UI
+primitives.
+
+But there is an important distinction:
+
+```text
+structured response
+        !=
+verified finding
+```
+
+JSON tells me that the output has a shape.
+
+It does not tell me that the claim inside that shape is true.
+
+A model can produce beautifully structured nonsense just as reliably as beautifully structured insight.
+
+That means the parser boundary and the evidence boundary are two completely different problems.
+
+The application can validate:
+
+- whether JSON is valid;
+- whether required fields exist;
+- whether severity belongs to an allowed set;
+- whether the result fits the expected schema.
+
+None of those checks prove that an SQL injection exists.
+
+They prove that the model successfully described one.
+
+## A scanner observes. An AI reviewer infers.
+
+Traditional security tooling gets much of its authority from observation.
+
+A dependency scanner can inspect an exact package version.
+
+A SAST rule can match a specific code path.
+
+A DAST engine can send a request and observe a response.
+
+A TLS inspector can inspect the certificate actually presented by a server.
+
+There are still false positives, incomplete rules, environmental problems, and interpretation errors, but
+the finding normally has some deterministic evidence behind it.
+
+A language model works differently.
+
+It is very good at connecting clues.
+
+Give it a dangerous-looking query builder, weak authorization logic, suspicious string interpolation, or
+exposed configuration and it can often explain the risk surprisingly well.
+
+But reasoning about a vulnerability and **demonstrating that vulnerability exists** are different levels
+of evidence.
+
+I now think of the distinction as an evidence ladder:
+
+| Level | Meaning |
+| --- | --- |
+| Observation | A concrete artifact or runtime behavior was inspected |
+| Deterministic detection | A reproducible rule matched known evidence |
+| Inference | Available evidence suggests a plausible security issue |
+| Hypothesis | Something may be wrong and deserves investigation |
+
+An AI reviewer can be extremely useful in the bottom half of that ladder.
+
+The mistake is rendering every hypothesis as though it arrived from the top.
+
+## Confidence needs a subject
+
+A tempting fix is to add a confidence percentage.
+
+`92% CONFIDENT`
+
+Problem solved.
+
+Except now there is another question:
+
+92% confident **about what?**
+
+That the code pattern is dangerous?
+
+That exploitation is possible?
+
+That the application actually routes user-controlled input there?
+
+That no validation exists elsewhere?
+
+That the deployed version contains this code?
+
+One percentage collapses several different uncertainties into a number that looks scientific.
+
+That is worse than admitting uncertainty.
+
+A better report says what was observed and what remains unknown.
+
+For example:
+
+```text
+Observed:
+user-controlled value reaches an HTML rendering path
+
+Not established:
+whether upstream sanitization exists
+
+Assessment:
+manual review recommended for possible XSS exposure
+```
+
+Less dramatic.
+
+Much more useful.
+
+## Reliability is not correctness
+
+SecureScope's backend has a small resilience mechanism I actually like for a completely different reason.
+
+Its Cloudflare function can use several configured Groq API keys. If one receives a `429` rate-limit
+response, the request can move to the next configured key.
+
+That improves availability.
+
+But it also illustrates another distinction that AI applications regularly blur:
+
+```text
+the model answered
+        !=
+the model was correct
+```
+
+Retries, fallbacks, key rotation, JSON repair, and timeout recovery improve **delivery reliability**.
+
+They do not improve **epistemic reliability**.
+
+A system that successfully returns the same hallucinated vulnerability after three retries has excellent
+uptime and terrible security evidence.
+
+Those qualities need separate measurements.
+
+## Security UX can accidentally manufacture authority
+
+The interface matters more here than it would in a normal chatbot.
+
+A chat bubble already signals conversation.
+
+A security dashboard signals **measurement**.
+
+Put the same sentence inside a dark panel with:
+
+```text
+CRITICAL
+CWE-89
+CVSS 9.8
+SQL INJECTION
+```
+
+and the human brain treats it differently.
+
+The design has changed the perceived certainty of the information even if the underlying model output did
+not change at all.
+
+That means an AI security interface needs unusually disciplined language.
+
+I would rather show:
+
+**Potential SQL injection — requires verification**
+
+than:
+
+**SQL injection detected**
+
+unless something actually detected it.
+
+Likewise:
+
+**AI review**
+
+is more accurate than:
+
+**scan**
+
+when no deterministic scanner was involved.
+
+This sounds like copywriting.
+
+It is actually part of the security model.
+
+## Models are useful where rules become expensive
+
+None of this means AI is useless for security review.
+
+Quite the opposite.
+
+The reason SecureScope interested me in the first place is that models are useful exactly where
+deterministic rules get awkward.
+
+They can connect intent across files.
+
+They can explain why a weak authorization check matters.
+
+They can translate an ugly implementation smell into language a developer understands.
+
+They can recognize suspicious combinations that would require many narrow handcrafted rules.
+
+They can suggest remediation while preserving the context of the original code.
+
+And perhaps most importantly, they can make a first review approachable enough that somebody actually
+performs one.
+
+The right mental model is not:
+
+> AI replaces the scanner.
+
+It is closer to:
+
+```text
+deterministic tools -> evidence
+human/code context   -> evidence
+AI reasoning         -> interpretation + hypotheses
+developer            -> verification + decision
+```
+
+AI belongs inside the pipeline.
+
+It should not impersonate the entire pipeline.
+
+## A useful result should tell me what to do next
+
+A security report is valuable when it reduces uncertainty.
+
+So every AI-generated finding should eventually answer four questions:
+
+1. **What evidence caused this finding?**
+2. **What is inferred rather than observed?**
+3. **How can I verify it?**
+4. **What would disprove it?**
+
+That fourth question is especially useful.
+
+If a finding cannot describe what evidence would make it wrong, then it is difficult to distinguish
+analysis from confident storytelling.
+
+For an authentication issue, disproving evidence might be an upstream authorization middleware.
+
+For a dependency concern, it may be an exact patched package version.
+
+For a suspected secret, it may be confirmation that the string is synthetic test data rather than an
+active credential.
+
+A good reviewer should make its own uncertainty inspectable.
+
+## The prototype changed what I would build next
+
+If I pushed SecureScope further, I would not begin by adding twenty more vulnerability categories.
+
+I would make the evidence model stronger.
+
+Something closer to:
+
+```text
+Finding
+├── source evidence
+├── evidence type
+├── inference
+├── uncertainty
+├── verification procedure
+├── remediation
+└── final human disposition
+```
+
+Then deterministic tools could eventually plug into the same model.
+
+A real header inspection could contribute observed evidence.
+
+A dependency database could contribute version-backed evidence.
+
+Static analysis could contribute rule-backed evidence.
+
+The language model could then reason **over evidence that has provenance** instead of being asked to
+manufacture the entire security assessment from one prompt.
+
+At that point the UI stops being an AI vulnerability generator and starts becoming a security-review
+workspace.
+
+That is a much more interesting product.
+
+## The honesty label is a feature
+
+There is always pressure to make software sound more capable.
+
+“AI security scanner” is a better headline than “interface that generates security-review hypotheses.”
+
+One fits nicely on a landing page.
+
+The other sounds like somebody from legal wrote it.
+
+But security software is one of the worst places to optimize credibility through vocabulary.
+
+A false negative can create confidence where caution was needed.
+
+A false positive can waste hours.
+
+A fabricated severity score can reorder real engineering work.
+
+And a polished AI explanation can be convincing enough that nobody asks where the evidence came from.
+
+So one rule from SecureScope is worth keeping even if the implementation changes completely:
+
+**Never let the interface claim a stronger form of evidence than the system actually produced.**
+
+The model can reason.
+
+The UI can organize.
+
+The developer can investigate.
+
+The scanner can scan when there is actually a scanner.
+
+Those roles become much more useful once they stop pretending to be each other.
+
+---
+
+Implementation details and the current honesty boundary are documented in the public
+[SecureScope repository](https://github.com/atrx07/securescope) and its
+[README](https://github.com/atrx07/securescope/blob/main/README.md).
