@@ -88,6 +88,12 @@ describe("route metadata", () => {
     expect(document.title).toBe("Field Notes | Arppith Andrews (atrx07)");
     expect(document.head.querySelector('meta[property="article:published_time"]')).toBeNull();
     expect(document.head.querySelectorAll('meta[property="article:tag"]')).toHaveLength(0);
+    const blogGraph = JSON.parse(
+      document.head.querySelector('script[data-route-structured-data]')?.textContent ?? "{}",
+    ) as { "@graph"?: Array<{ "@type"?: string; dateModified?: string }> };
+    expect(blogGraph["@graph"]?.find((node) => node["@type"] === "CollectionPage")?.dateModified).toBe(
+      "2026-08-25",
+    );
 
     applyPageMetadata(
       noindexPageMetadata({ title: "Signal Lost / 404 | ATRX", description: "Unknown route." }),

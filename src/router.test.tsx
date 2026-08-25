@@ -22,7 +22,7 @@ describe("application route tree", () => {
     expect(screen.getAllByRole("main")).toHaveLength(1);
   });
 
-  it("renders the first published Field Note at /blog", () => {
+  it("renders the published Field Notes archive at /blog", () => {
     render(
       <MemoryRouter initialEntries={["/blog"]}>
         <AppRoutes />
@@ -35,7 +35,10 @@ describe("application route tree", () => {
       "href",
       "/blog/local-ai-is-a-systems-problem",
     );
-    expect(screen.getByText("01 / PUBLIC NOTES")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /A security tool should know when it is guessing/ }),
+    ).toHaveAttribute("href", "/blog/a-security-tool-should-know-when-it-is-guessing");
+    expect(screen.getByText("02 / PUBLIC NOTES")).toBeInTheDocument();
   });
 
   it("loads the local draft only through the explicit development preview route", async () => {

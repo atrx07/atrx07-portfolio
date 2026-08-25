@@ -32,6 +32,7 @@ describe("public sitemap", () => {
     ];
     const sitemap = readFileSync("public/sitemap.xml", "utf8");
 
+    expect(fieldNotesMetadata.lastModified).toBe(blogLastModified);
     expect(entriesFromXml(sitemap)).toEqual(expected);
     expect(sitemap).not.toContain("registry-fixture");
     expect(sitemap).not.toContain("<changefreq>");
