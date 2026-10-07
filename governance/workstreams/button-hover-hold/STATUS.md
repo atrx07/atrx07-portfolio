@@ -2,7 +2,7 @@
 
 ## State
 
-`verified-local` — 2026-10-07; baseline `fa3d24d` on `main`.
+`completed` / `verified-live` — 2026-10-07; source correction `6dfb950` on `main`.
 
 ## Verified facts
 
@@ -27,5 +27,13 @@
 
 ## Notes
 
-Pending source commit: CSS cascade correction and browser regression assertions. Live verification
-remains pending. Expected production portfolio stylesheet: `PortfolioPage-BAloPNYZ.css`.
+Source correction `6dfb950` (`fix: restore desktop mask button hover animation`) was pushed to main.
+Cloudflare was verified after deployment, not inferred from that push. Its JavaScript hashes differ
+from the Windows local build, but the live route loads the exact corrected
+`PortfolioPage-BAloPNYZ.css` stylesheet. Observed live entry: `index-B6VB5mKS.js`; portfolio chunk:
+`PortfolioPage-c3GLyas1.js`.
+
+Live Chromium checks passed at 1280 px desktop and 360 px mobile: mouse hover/leave and native touch
+hold/cancel resolved to the expected animation states. Local regressions additionally covered release,
+mobile hover inactivity, keyboard, and reduced motion. Live screenshots were captured and inspected.
+No remaining work or blockers for this request.
