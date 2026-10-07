@@ -502,12 +502,26 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   await expect(github).toHaveAttribute("data-variant", "secondary");
   expect(maskRequests).toEqual([]);
 
+  const exploreFill = explore.locator(".mask-action__fill");
+  const hasHover = await page.evaluate(() =>
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+  );
+  await explore.hover();
+  await expect(exploreFill).toHaveCSS("animation-name", hasHover ? "mask-button-in" : "mask-button-out");
+  await page.mouse.move(0, 0);
+  await expect(exploreFill).toHaveCSS("animation-name", "mask-button-out");
+
   await explore.dispatchEvent("pointerdown", { pointerType: "touch" });
   await expect(explore).toHaveAttribute("data-pressed", "true");
+  await expect(exploreFill).toHaveCSS("animation-name", "mask-button-in");
   await expect(explore).toHaveAttribute("data-mask-ready", "true");
   await expect.poll(() => maskRequests.some((url) => url.includes("mask-urban"))).toBe(true);
   await explore.dispatchEvent("pointerup", { pointerType: "touch" });
   await expect(explore).not.toHaveAttribute("data-pressed");
+  await expect(exploreFill).toHaveCSS("animation-name", "mask-button-out");
+  await explore.dispatchEvent("pointerdown", { pointerType: "touch" });
+  await explore.dispatchEvent("pointercancel", { pointerType: "touch" });
+  await expect(exploreFill).toHaveCSS("animation-name", "mask-button-out");
 
   await github.focus();
   await expect(github).toHaveAttribute("data-mask-ready", "true");

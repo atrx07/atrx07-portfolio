@@ -1,11 +1,5 @@
 /* Portfolio route styles: loaded with PortfolioPage. */
 
-@media (hover: hover) and (pointer: fine) {
-  .mask-action:hover .mask-action__fill {
-    animation-name: mask-button-in;
-  }
-}
-
 .section-shell {
   width: min(100% - 48px, 1440px);
   margin-inline: auto;
@@ -105,6 +99,13 @@ section[id] {
   mask-size: 7100% 100%;
   -webkit-mask-size: 7100% 100%;
   animation: mask-button-out 700ms steps(70) both;
+}
+
+/* Activation follows sprite defaults so their shorthand cannot reset hover. */
+@media (hover: hover) and (pointer: fine) {
+  .mask-action:hover .mask-action__fill {
+    animation-name: mask-button-in;
+  }
 }
 
 .mask-action:focus-visible .mask-action__fill,
