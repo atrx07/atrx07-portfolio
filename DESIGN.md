@@ -1270,7 +1270,12 @@ Before public release, inspect:
 
 ### Field Notes component inventory
 
-Recommended initial primitives:
+This is a design inventory, not a claim that every primitive is implemented. Current source delivers
+the index/header/footer/layout primitives, tag filter, archive rows, code-copy controls, semantic
+Markdown, and contained tables. Standalone table-of-contents, typed callout, figure, comparison-table,
+metric, architecture-figure, and related-notes components remain conditional future additions.
+
+Recommended primitives when needed:
 
 | Component | Responsibility |
 | --- | --- |

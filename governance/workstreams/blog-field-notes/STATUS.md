@@ -1,5 +1,19 @@
 # Status — blog-field-notes
 
+## Documentation dependency and live recheck — 2026-10-07
+
+- The user-authorized `documentation-health` audit corrected stale zero-note descriptions, component
+  ownership, and singleton handoff references in shared durable docs. No article, runtime source,
+  publication status, or approved evidence boundary changed.
+- The 2026-10-06 baseline checks passed: typecheck, 72 unit/component tests, production build, and
+  39 Playwright checks with one expected desktop skip. Live archive and both articles had exact
+  canonicals, one main/H1, correct collection/article structured data, no horizontal overflow, and no
+  browser warnings/errors at 1280 and 360 px. The sitemap contained exactly the four public routes.
+- Fresh 2026-10-07 desktop/mobile archive screenshots retain two public notes and were visually
+  inspected. This is a dated health observation, not a new publication or replacement of this roadmap.
+- The release sections below are historical snapshots. The latest publication/correction boundary
+  remains the SecureScope correction audit; older pending-deployment wording was resolved there.
+
 ## SecureScope publication correction audit — 2026-08-25
 
 - Local `main` was fast-forwarded from `40f2d03` to remote handoff `50c34fd` before review.
@@ -86,7 +100,7 @@
 - Live sitemap: `/blog` and `/blog/local-ai-is-a-systems-problem` both carry `2026-08-24`; the
   development-only `registry-fixture` remains absent.
 
-## Current release
+## Historical system-release baseline — 2026-08-23
 
 - Source commit: `76800e9` — `perf: defer portfolio artwork delivery`.
 - Branch: `main`.

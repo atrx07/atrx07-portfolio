@@ -21,6 +21,13 @@
 
 ## Implementation sequence — portfolio only
 
+Live checkpoint update — 2026-10-07: the documentation audit observed the deployed portfolio's expected
+M3.7 representation, developer constraints, terminal checkpoint, responsive dialog, repository CTA,
+reduced motion, console, overflow, canonical/structured metadata, and sitemap. The deployment
+verification sequence below is retained for the next portfolio representation change; the old pending
+checkpoint is resolved by direct observation. A future content advancement still begins with step 4's
+read-only public-evidence audit, not external development.
+
 1. After the relevant portfolio source commit is deployed, inspect `https://atrx07.pages.dev/` on fresh desktop and mobile visits.
 2. Verify that the **portfolio** hero, flagship, Traelyx accordion, detail sheet, architecture, terminal output, repository CTA, JSON-LD, sitemap date, reduced-motion behavior, console, and overflow all agree on the M3.7/M3.8 truth boundary.
 3. Record only observed **portfolio deployment** facts in this workstream's `STATUS.md`.

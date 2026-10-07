@@ -69,6 +69,11 @@ companions. Drafts do not enter public lists or direct public route resolution. 
 `registry-fixture` pair is intentionally non-public and exists only to verify the compiler, registry,
 semantic component mapping, and lazy-chunk boundary.
 
+Before publication, verify the article's evidence and obtain explicit user approval of the prose.
+Then mark it `published`, synchronize the collection metadata and sitemap, run the verification matrix,
+and verify the deployed archive and direct article route. Record the publication in the
+`blog-field-notes` handoff; preserve existing slugs and historical outcomes when maintaining an article.
+
 To inspect a draft article locally, start the development server and use the explicit preview query:
 
 ```text
@@ -83,9 +88,10 @@ the same draft slug even if the query is present.
 - `/` resolves the complete interactive portfolio through a route-level lazy boundary and preserves its
   section fragments. Homepage metadata is applied outside that boundary so it does not wait for the
   interaction chunk.
-- `/blog` renders the editorial archive from the validated public registry and currently reports zero
-  published notes truthfully. Featured notes, tag controls, and chronological rows appear only when
-  real published or archived metadata exists.
+- `/blog` renders the editorial archive from the validated public registry. Two notes are published:
+  **Local AI is a systems problem** (2026-08-24, featured) and **A security tool should know when it is
+  guessing** (2026-08-25). Featured selection, counts, tags, and archive rows derive from public metadata;
+  the development-only `registry-fixture` is excluded.
 - `/blog/:slug` resolves published or archived notes through a lazy MDX module and rejects drafts or
   unknown slugs through the intentional recovery page.
 - Unknown routes render the shared ATRX not-found experience.
@@ -135,7 +141,9 @@ drift or draft exposure.
 
 ## Deployment
 
-The build is static and works on Cloudflare Pages, Vercel, or GitHub Pages.
+The production configuration targets Cloudflare Pages. Other static hosts need equivalent SPA
+deep-route fallback and canonical-origin configuration. GitHub Pages additionally needs an explicit
+history-routing fallback and base-path strategy; this repository does not provide those adaptations.
 
 ```powershell
 pnpm.cmd build
@@ -166,3 +174,10 @@ This deployment is currently a client-rendered BrowserRouter SPA. Raw deep-route
 tags, and JSON-LD replace that fallback after hydration. Do not describe those deep routes as
 prerendered. If crawler-independent deep-route HTML becomes necessary, add a documented static
 generation/prerender step using the same registry and metadata builders.
+
+## Governance and maintenance
+
+`WORKSTREAMS.md` lists independent goals. Root `NEXT_STEP.md` routes to their scoped handoffs under
+`governance/workstreams/<id>/`; `governance/STATUS.md` is an index. Root `STATUS.md` is ignored local
+scratch and must not be used to select or continue a goal. Durable product, architecture, design, and
+agent documents are versioned. Dated test and live-deployment evidence belongs to the owning workstream.

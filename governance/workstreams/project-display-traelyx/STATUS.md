@@ -4,7 +4,24 @@
 
 This file describes the **portfolio's Traelyx representation**. It does not describe work being performed on Traelyx itself.
 
-## Last known portfolio handoff
+## Portfolio live recheck — 2026-10-07
+
+- The user-authorized documentation audit verified the portfolio's current-build and project/detail
+  surfaces at 1280, 768, 640, and 360 px. The Traelyx mark and repository CTA resolve, the dialog opens
+  and closes with Escape, reduced motion disables channel-trace animation, and no page overflow or
+  browser warnings/errors were observed.
+- The portfolio's developer detail constraints still say M3.8 is pending explicit authorization.
+  Desktop and mobile `now` terminal output reports M3.1–M3.7 validated with the next authorization gate.
+- The 2026-10-06 live home canonical/structured metadata and sitemap checks passed. Cloudflare served
+  shared script `index-Sv2LCrwa.js`, consistent with the last recorded Field Notes correction release.
+- The portfolio baseline passed typecheck, 72 unit/component tests, production build, and 39 Playwright
+  checks with one expected desktop skip on 2026-10-06. Older verification totals below remain historical.
+- The public Traelyx evidence baseline was not advanced or re-audited. These observations verify the
+  deployed portfolio representation only; they do not verify a new external milestone or build commit.
+- Dependency: `documentation-health` corrected shared counts, architecture, and workflow descriptions.
+  The portfolio's Traelyx source boundary, scope, and future refresh roadmap remain unchanged.
+
+## Historical portfolio handoff
 
 - Portfolio source baseline: `3cde4fc` (`feat: advance Traelyx to M3 telemetry`).
 - Later governance handoff: `c8b19b4` (`docs: hand off Traelyx M3.7 deployment verification`).
@@ -17,7 +34,7 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 - M3.8 represented as pending explicit authorization / regression-corpus gate.
 - M4+ represented as unimplemented.
 
-## Last known local portfolio verification
+## Historical local portfolio verification — M3.7 handoff
 
 - typecheck passed;
 - 67 unit/component tests passed;
@@ -25,12 +42,13 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 - Playwright 35 passed with one expected desktop-only skip;
 - 1280, 768, 640, and 360 px QA passed without overflow or console warnings/errors.
 
-## Pending
+## Remaining maintenance
 
-- Re-observe the deployed portfolio and confirm it serves the expected current-build representation.
+- Recheck the deployed portfolio after any future representation change; the current representation
+  was observed live in the dated checkpoint above.
 - Before any future content advancement, re-verify public Traelyx source truth.
 - Do not infer a new Traelyx milestone merely because it appears in a roadmap.
 
 ## State
 
-`maintenance / pending live portfolio verification`
+`maintenance / verified-live portfolio representation`

@@ -7,6 +7,10 @@
 
 ## Active implementation
 
+Documentation dependency (2026-10-07): `documentation-health` reconciled shared descriptions with the
+delivered system. The archive remains live with two notes; article/publication ownership and the
+maintenance triggers below are unchanged. Older bundle hashes below identify their dated releases.
+
 None. Correction commit `1f7589c` is pushed and verified live. Two grounded Field Notes remain published:
 
 - `Local AI is a systems problem`

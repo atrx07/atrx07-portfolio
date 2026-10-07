@@ -232,7 +232,10 @@ If any answer is unclear, resolve it before writing.
 
 ## 10. Recovery guarantee
 
-`blog-field-notes` is an unfinished persistent goal recovered from handoff `3096a9a`, with implementation baseline `ed44e36`.
+`blog-field-notes` was recovered as an unfinished persistent goal from handoff `3096a9a`, with
+implementation baseline `ed44e36`. Its later versioned handoffs record delivery, two approved
+publications, and live correction verification through `de59801`. It is now maintenance-ready; its
+scope and recovery history remain persistent for future authorized maintenance/publication work.
 
 No project-display refresh, UI tweak, project addition, metadata refresh, or unrelated feature may delete, replace, reinterpret, or silently complete that workstream.
 

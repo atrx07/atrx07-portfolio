@@ -944,22 +944,18 @@ If analytics are later requested:
 
 ### Project control files
 
-Before editing, read these control documents in this order:
-
-1. `PROJECT.md` - purpose, goals, product expectations, non-goals, and iteration history.
-2. `STATUS.md` - current branch, latest commit, deployment state, verification baseline, known issues, and next actions.
-3. `NEXT_STEP.md` - the immediate implementation target, ordered work plan, constraints, and completion checks for the next successful run.
-4. `ARCHITECTURE.md` - runtime structure, component responsibilities, data flow, persistence, deployment, and test boundaries.
-5. `DESIGN.md` - visual system and interaction direction when present.
-6. `AGENTS.md` - operating constraints, privacy rules, content truth, and delivery workflow.
+Before editing, apply `AGENTS.override.md`, identify the conversation's workstream in `WORKSTREAMS.md`,
+and read its `SCOPE.md`, `STATUS.md`, and `NEXT_STEP.md`. Then read relevant durable product,
+architecture, design, and agent requirements. The exact authority order is defined by the override.
+Root `NEXT_STEP.md` is only a router; root `STATUS.md` is ignored local scratch.
 
 Control-document responsibilities:
 
 - `PROJECT.md` is the durable product contract. Update it when the purpose, audience, scope, goals,
   non-goals, quality bar, or major product direction changes.
-- `STATUS.md` is the live handoff. Update it for every commit with the date, commit hash, branch,
+- The active workstream's versioned `STATUS.md` is its handoff. Update it with date, commit hash, branch,
   summary, verification performed, known issues, and next action.
-- `NEXT_STEP.md` is the current execution brief. After every successful run, replace its completed plan
+- The active workstream's versioned `NEXT_STEP.md` is its execution brief. Update its remaining plan
   with the next immediate step, including implementation sequence, relevant constraints, validation,
   exit criteria, and the source commit that established the handoff. Never leave stale completed work as
   the active next step.
@@ -971,21 +967,22 @@ Control-document responsibilities:
 
 Commit synchronization rules:
 
-1. Before a commit, update `STATUS.md` with a pending entry describing the exact intended change.
+1. Before a commit, update the active workstream's `STATUS.md` with a pending entry for the exact change.
 2. Update `PROJECT.md` in the same work session when the change affects purpose, goals, scope, or product expectations.
 3. Update `ARCHITECTURE.md` in the same work session when the change affects structure, data, state, dependencies, or deployment.
 4. Create and validate the source commit.
-5. Replace the pending `STATUS.md` entry with the real commit hash and final verification result.
-6. After the successful run, update `NEXT_STEP.md` with the next immediate implementation brief before
+5. Replace that pending entry with the real commit hash and observed verification result.
+6. After the successful run, update that workstream's `NEXT_STEP.md` with its remaining sequence before
    handing off.
-7. Confirm `STATUS.md` and `.agents/` remain ignored before pushing; `AGENTS.md`, `PROJECT.md`,
-   `DESIGN.md`, `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents.
+7. Confirm root `STATUS.md` and `.agents/` remain ignored before pushing. Durable specifications,
+   workstream handoffs, registry, router, and governance index are versioned; preserve other goals.
 
-`STATUS.md` and `.agents/` are private local references. The versioned governance documents must still
+Root `STATUS.md` and `.agents/` are private local references. Versioned workstream handoffs are the
+authoritative task state. The versioned governance documents must still
 never contain secrets, tokens, private repository contents, personal data, environment values, or other
 material unsuitable for public Git history.
 
-`STATUS.md` must report facts rather than intentions. Do not mark a test, build, deployment, or live
+Workstream status files must report facts rather than intentions. Do not mark a test, build, deployment, or live
 verification as passed unless it was actually run. Carry forward unresolved issues until they are fixed
 or intentionally closed.
 
@@ -1115,21 +1112,11 @@ Build the portfolio like a small product—not a decorated résumé.
 
 ## 23. Source precedence and conflict handling
 
-The control files are complementary, but they are not interchangeable. Use the following authority order
-when implementing or reviewing the portfolio:
-
-1. The user's latest explicit instruction wins for the scoped task.
-2. The checked-out repository is the current implementation reality. Never describe code as present until
-   it exists in the repository.
-3. `STATUS.md` determines the current branch, validated commit, known issues, active work, and deployment
-   state.
-4. `PROJECT.md` determines durable product purpose, audience, scope, non-goals, and acceptance criteria.
-5. `ARCHITECTURE.md` determines intended technical ownership, routing, data flow, state boundaries,
-   deployment behavior, and verification boundaries.
-6. `DESIGN.md` determines ATRX visual language, interaction rules, article presentation, responsive
-   behavior, and accessibility expectations.
-7. `AGENTS.md` determines workflow, safety, factual grounding, implementation discipline, Git behavior,
-   and validation requirements.
+The control files are complementary, but they are not interchangeable. `AGENTS.override.md` section 1
+defines the operational authority order, including the user's scoped instruction, workstream scope,
+implementation reality, scoped handoffs, and durable specifications. Never use ignored root
+`STATUS.md` to select a goal or override a versioned handoff. Independent workstreams retain independent
+ownership even when they change shared files.
 
 Reading order does not make a stale instruction more authoritative than a newer product decision. When
 sources conflict:
@@ -1138,7 +1125,7 @@ sources conflict:
 - preserve currently working behavior unless the task intentionally changes it;
 - apply the highest-authority current instruction;
 - update the stale control document in the same work session;
-- record any unresolved ambiguity in `STATUS.md` rather than silently inventing an answer.
+- record unresolved ambiguity in the active workstream's `STATUS.md` rather than inventing an answer.
 
 The BMW material inside `DESIGN.md` is retained as historical visual research. It is inspiration only.
 ATRX-specific authority notices, the production implementation, and the blog rules added to `DESIGN.md`
@@ -1463,7 +1450,7 @@ returning home.
 The application is statically hosted. Client-side metadata does not guarantee rich previews for every
 crawler. Do not claim full article SEO parity with prerendered pages unless direct production responses
 or an implemented prerender/static-generation step prove that route-specific HTML is actually served.
-Record this limitation in `STATUS.md` if the first release remains SPA-only.
+Record this limitation in the `blog-field-notes` workstream's `STATUS.md`; the delivered release is SPA-only.
 
 ### 24.13 Sitemap, robots, and route discovery
 
@@ -1594,10 +1581,10 @@ For every new note:
 5. Verify all factual claims, snippets, screenshots, links, dates, and repository associations.
 6. Run metadata/registry tests.
 7. Inspect desktop, mobile, keyboard, reduced-motion, code, table, and image behavior.
-8. Change status to `published` only when the note is ready to be public.
+8. Obtain explicit user approval of the prose, then change status to `published` when ready to be public.
 9. Update or generate the sitemap from the same publication state.
 10. Run the complete repository verification loop.
-11. Add the pending and final entries to `STATUS.md` around the source commit.
+11. Add pending and final entries to `governance/workstreams/blog-field-notes/STATUS.md` around the commit.
 12. Verify the deployed article URL and metadata after Cloudflare finishes building.
 
 For edits to a published note:
@@ -1645,7 +1632,7 @@ Implement in bounded stages while keeping the repository valid after each commit
 
 - add unit/component and Playwright coverage;
 - update README publishing instructions;
-- update all affected governance files and `STATUS.md`;
+- update affected durable governance and the `blog-field-notes` handoff; preserve other workstreams;
 - run lint, tests, build, E2E, visual QA, deployment verification, and privacy checks.
 
 Do not combine unrelated project-visual refactors with the blog implementation unless required to make
@@ -1671,5 +1658,5 @@ The portfolio-plus-blog release is complete only when all existing completion co
 - direct production checks distinguish real article rendering from a cached or generic HTTP 200;
 - existing portfolio tests and interactions continue to pass;
 - new unit/component and E2E blog tests pass;
-- `PROJECT.md`, `ARCHITECTURE.md`, `DESIGN.md`, `STATUS.md`, README, and any content-editing documentation
+- `PROJECT.md`, `ARCHITECTURE.md`, `DESIGN.md`, the `blog-field-notes` handoff, README, and content-editing documentation
   accurately describe the delivered system.

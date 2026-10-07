@@ -1,7 +1,7 @@
-# ATRX Portfolio - Private Project Record
+# ATRX Portfolio — Product Record
 
-This file is a local design and implementation record. It is intentionally excluded from Git because it
-contains the project's internal expectations, design rationale, and iteration history.
+This versioned document records durable product expectations, design rationale, and iteration history.
+Operational state belongs to the isolated handoffs indexed by `WORKSTREAMS.md`, not to this document.
 
 ## Purpose
 
@@ -115,10 +115,14 @@ The portfolio should communicate three things immediately:
   motion, and usable 360 px / tablet / desktop layouts.
 - Fast initial load, optimized images, no scroll hijacking, no forced audio, and no unbounded decorative
   animation.
-- `STATUS.md` and `.agents/` remain private and local; `AGENTS.md`, `PROJECT.md`, `DESIGN.md`,
-  `ARCHITECTURE.md`, and `NEXT_STEP.md` are versioned governance documents.
+- Root `STATUS.md` is ignored local scratch and `.agents/` remains private. Durable specifications,
+  the registry/router, and `governance/workstreams/<id>/` handoffs are versioned.
 
 ## Iteration Record
+
+These entries describe behavior and governance at each historical commit. Older ignore rules, project
+counts, and deployment milestones are historical observations; current ownership and counts are
+defined above and in the workstream registry.
 
 ### 20. Traelyx M3.7 Local Telemetry Pipeline Refresh - `3cde4fc`
 
@@ -336,9 +340,18 @@ site with two connected evidence layers:
 2. **Field Notes (`/blog` and `/blog/:slug`)** — durable written evidence explaining engineering
    decisions, experiments, failures, constraints, model evaluations, debugging, and lessons learned.
 
-This is an extension of the existing product, not a replacement or redesign of the homepage. The six
+This is an extension of the existing product, not a replacement or redesign of the homepage. The seven
 featured projects retain their custom visual and interaction treatments. The blog does not require the
 project system to become a generic content-management framework.
+
+### Delivered publication boundary
+
+The route, MDX, registry, editorial layout, metadata, sitemap, and route-specific asset-delivery system
+is delivered. Two approved notes are public: **Local AI is a systems problem** (2026-08-24) and
+**A security tool should know when it is guessing** (2026-08-25). The separate registry fixture remains
+a development-only draft. New publications require grounded evidence and explicit prose approval;
+prerendering, feeds, comments, and other future possibilities below are not implemented capabilities.
+Current validation and deployment evidence lives in the `blog-field-notes` handoff.
 
 ### Why Field Notes exists
 
@@ -464,7 +477,9 @@ The first public implementation includes:
 - tag filtering;
 - typed metadata;
 - local MDX content;
-- shared article components for code, figures, callouts, metrics, diagrams, and related links;
+- shared article header/footer, code-copy controls, semantic Markdown, contained tables, and related
+  project/repository links; additional figure/callout/metric/diagram primitives remain conditional on
+  an article needing them;
 - draft, published, and archived states;
 - per-route metadata and structured data;
 - published-route sitemap synchronization;
@@ -659,7 +674,8 @@ The blog changes durable product scope and therefore requires synchronized updat
 - `PROJECT.md` owns the product purpose and acceptance criteria in this section;
 - `ARCHITECTURE.md` owns routes, content loading, metadata flow, deployment, and test boundaries;
 - `DESIGN.md` owns Field Notes index and article presentation;
-- `STATUS.md` must track the active implementation commit, verification, known SPA/prerender limitation,
-  and production deployment state.
+- `governance/workstreams/blog-field-notes/STATUS.md` tracks the blog implementation commit,
+  verification, known SPA/prerender limitation, and production deployment state. Its scoped
+  `NEXT_STEP.md` owns maintenance/publication continuation; the root router and index remain task-neutral.
 
 The original portfolio goals and iteration record remain valid and are not removed by this expansion.

@@ -15,7 +15,7 @@ playwright.config.d.ts
 !.env.example
 
 # Private local handoff and agent reference material
-STATUS.md
+/STATUS.md
 .agents/
 
 .DS_Store

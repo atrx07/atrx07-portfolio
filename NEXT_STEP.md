@@ -37,6 +37,12 @@ governance/workstreams/project-display-traelyx/STATUS.md
 governance/workstreams/project-display-traelyx/NEXT_STEP.md
 ```
 
+### Documentation and health audit
+
+Use `governance/workstreams/documentation-health/SCOPE.md`, `STATUS.md`, and `NEXT_STEP.md` for the
+documentation cleanup requested in this conversation. This does not transfer ownership of the blog or
+Traelyx display goals.
+
 ## Invariant
 
 Never replace this router with the detailed next steps of one workstream.
