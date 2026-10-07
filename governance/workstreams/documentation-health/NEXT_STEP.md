@@ -4,16 +4,19 @@
 
 ## Handoff
 
+- Correction: `4af556a`, pushed and independently confirmed on GitHub `main` on 2026-10-07.
 - Baseline: `de59801`; documentation corrections and full local matrix verified 2026-10-07.
 - The user authorized stale-documentation cleanup and related portfolio fixes.
 - No blocker observed.
 
-## Remaining delivery
+## Remaining work
 
-1. Commit reviewed documentation on `main` and push to `origin`.
-2. Verify the remote revision and freshly observe the live portfolio; distinguish live health from
-   proof of a new exact Cloudflare build revision.
-3. Record source commit/delivery facts, close this audit, and retain its history.
+None for this audit. Remote correction delivery and post-push portfolio route/sitemap health were
+observed directly. Exact new Cloudflare build identity is not inferred from the push; no runtime source
+changed. Retain this workstream's history.
+
+Future documentation discrepancies may reopen this workstream when authorized. Blog publication and
+Traelyx representation maintenance continue through their own handoffs, not this audit roadmap.
 
 ## Constraints
 

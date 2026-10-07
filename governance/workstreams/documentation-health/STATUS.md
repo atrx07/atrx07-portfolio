@@ -2,7 +2,7 @@
 
 ## State
 
-`verified-local / pending delivery` — 2026-10-07
+`completed` — 2026-10-07
 
 ## Baseline and audit findings
 
@@ -55,7 +55,18 @@ The earlier usage-limit interruption is resolved. No current blocker observed.
 This audit corrects documentation for the existing workstreams. Their scope, publication approvals,
 external evidence boundaries, and maintenance ownership remain unchanged.
 
-## Notes
+## Delivery and post-push verification — 2026-10-07
 
-Pending commit: reconcile stale portfolio documentation and workstream verification state. All
-correction checks above have run; commit/push and post-delivery observation remain.
+- Correction commit: `4af556a` — `docs: reconcile portfolio state and workstream handoffs`.
+- Push to `origin/main` succeeded; independent remote-head read returned
+  `4af556a5550d518c8e96f6d1bb77ee826176ca95`. The public README at that exact commit returned HTTP 200
+  and contained the corrected two-note description.
+- Fresh post-push homepage, archive, and both articles passed at 1280 and 360 px: HTTP 200, exact
+  canonical, one main/H1, no overflow, and no browser warnings/errors. Archive count stayed two and
+  `CollectionPage.dateModified` stayed `2026-08-25`. Sitemap returned exactly the four public routes
+  and excluded the draft fixture.
+- Live script remained `index-Sv2LCrwa.js`. This verifies the served portfolio's health, not a new exact
+  Cloudflare build revision. This correction changes documentation and Git ignore behavior only, so
+  it does not require a new runtime artifact to expose its changes.
+- All requested audit corrections are delivered. No reproducible runtime issue remains from the
+  executed checks. A closing documentation commit records these observations and retains the audit.
