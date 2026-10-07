@@ -8,7 +8,7 @@
 - Phase: first isolated working preview, awaiting design feedback and refinement.
 - Preview: experiments/redesign-3d/; run npm run dev --prefix experiments/redesign-3d; open http://127.0.0.1:4180.
 - Verification/limitations: STATUS.md; reproduction/provenance: preview README / THIRD_PARTY.
-- Source commit: pending synchronization after verified prototype pass.
+- Source commit: `383729e`, verified prototype pass on main.
 
 ## Remaining sequence
 

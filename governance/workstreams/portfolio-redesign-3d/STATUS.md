@@ -11,9 +11,9 @@
 - Source baseline: `520c6054029bb33dc7c4bd40ea6153cb069c62b5`, main, clean before this workstream.
 - Research inspected the four original tabs (ThreeUI, Dribbble, 21st, GSAP), the later GodUI tab, and selected additional references. Evidence, licensing limits, alternatives, and proposed budgets remain in RESEARCH.md. Research preceded application/dependency changes.
 
-## Pending commit
+## Source synchronization
 
-First isolated prototype: experiments/redesign-3d/, research/scope/handoff, additive registry entry, and architecture note. Validation below completed before commit; source hash pending.
+Source commit: `383729e` on `main`. Contains the isolated prototype, research/scope/handoff, additive registry entry, and architecture note. Validation below completed before commit. Remote synchronization and live deployment observation are not inferred from this local commit.
 
 ## Verified local implementation
 
