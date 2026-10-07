@@ -16,6 +16,7 @@
 | `project-display-traelyx` | maintenance / verified-live representation | Keep the **portfolio's display of Traelyx** aligned with verified public Traelyx truth | portfolio refresh `f5c68f9`; public evidence `9508af2`; verified-live 2026-10-07; historical display `3cde4fc` | `governance/workstreams/project-display-traelyx/STATUS.md` | `governance/workstreams/project-display-traelyx/NEXT_STEP.md` |
 | `documentation-health` | completed | Correct stale portfolio documentation and related audit findings | correction `4af556a`; audit baseline `de59801` (2026-10-06) | `governance/workstreams/documentation-health/STATUS.md` | `governance/workstreams/documentation-health/NEXT_STEP.md` |
 | `button-hover-hold` | completed / verified-live | Restore desktop hover and mobile hold animation for portfolio mask actions | correction `6dfb950`; verified-live 2026-10-07 | `governance/workstreams/button-hover-hold/STATUS.md` | `governance/workstreams/button-hover-hold/NEXT_STEP.md` |
+| `portfolio-redesign-3d` | verified-local preview / design review pending | Develop an original interactive 3D portfolio in isolation; retain current production until user-approved replacement | discovery baseline `520c605`; isolated exhibition prototype 2026-10-07 | `governance/workstreams/portfolio-redesign-3d/STATUS.md` | `governance/workstreams/portfolio-redesign-3d/NEXT_STEP.md` |
 
 ## Selecting a workstream
 

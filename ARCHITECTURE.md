@@ -4,6 +4,17 @@ This is the durable technical map for the ATRX portfolio. It records the structu
 ownership, interactions, verification boundaries, and deployment model. Update it whenever those areas
 materially change.
 
+## Isolated redesign preview
+
+`experiments/redesign-3d/` is a separate experimental React/Vite app with its own manifest,
+lockfile, entry, tests, local port 4180, and output directory. It imports portfolio project/profile
+records, published note metadata, and the existing GodUI-derived Magic Tab read-only. Original
+procedural Three.js scenes and GSAP interactions belong solely to that preview. Root entry,
+build scripts, dependencies, routes, and Cloudflare's root `dist/` artifact remain the production
+system described below. The preview has no production hosting configuration and is not release-approved.
+Its scope, verification, limitations, and continuation live under
+`governance/workstreams/portfolio-redesign-3d/`.
+
 ## System Summary
 
 The portfolio is a static, route-based React application built by Vite and deployed to Cloudflare Pages.
