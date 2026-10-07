@@ -125,7 +125,7 @@ These entries describe behavior and governance at each historical commit. Older 
 counts, and deployment milestones are historical observations; current ownership and counts are
 defined above and in the workstream registry.
 
-### 21. Traelyx Connected Experience Refresh — 2026-10-07
+### 21. Traelyx Connected Experience Refresh — `f5c68f9` (2026-10-07)
 
 - Re-verified public Traelyx `main` at `9508af2`: M0–M5 and M6.1–M6.7 complete, M6.8 partial.
 - Updated the portfolio's hero, flagship, project/dialog, architecture, schematic, terminal, stack,

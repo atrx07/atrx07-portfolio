@@ -13,7 +13,7 @@
 | Workstream ID | State | Purpose | Durable/source baseline | Status | Versioned next step |
 | --- | --- | --- | --- | --- | --- |
 | `blog-field-notes` | complete / maintenance-ready | Maintain the delivered Field Notes/blog system and publish only grounded real notes | correction baseline `1f7589c`; latest publication `5b53f6b`; first publication `1f13272`; release baseline `76800e9`; recovered from blog handoff `3096a9a` | `governance/workstreams/blog-field-notes/STATUS.md` | `governance/workstreams/blog-field-notes/NEXT_STEP.md` |
-| `project-display-traelyx` | verified-local / pending new live verification | Keep the **portfolio's display of Traelyx** aligned with verified public Traelyx truth | portfolio baseline `917ca3b`; new public evidence `9508af2` (2026-10-07); historical display `3cde4fc` | `governance/workstreams/project-display-traelyx/STATUS.md` | `governance/workstreams/project-display-traelyx/NEXT_STEP.md` |
+| `project-display-traelyx` | maintenance / verified-live representation | Keep the **portfolio's display of Traelyx** aligned with verified public Traelyx truth | portfolio refresh `f5c68f9`; public evidence `9508af2`; verified-live 2026-10-07; historical display `3cde4fc` | `governance/workstreams/project-display-traelyx/STATUS.md` | `governance/workstreams/project-display-traelyx/NEXT_STEP.md` |
 | `documentation-health` | completed | Correct stale portfolio documentation and related audit findings | correction `4af556a`; audit baseline `de59801` (2026-10-06) | `governance/workstreams/documentation-health/STATUS.md` | `governance/workstreams/documentation-health/NEXT_STEP.md` |
 
 ## Selecting a workstream

@@ -5,7 +5,9 @@
 Shared dependency: the `project-display-traelyx` refresh updates the shared Traelyx metadata summary and
 homepage modification date, adding a raw/hydrated metadata-agreement regression. Article prose,
 publication dates, collection date, route ownership, and blog continuation remain unchanged. The full
-blog/route regression matrix must pass before the portfolio refresh is delivered.
+blog/route regression matrix passed with 73 unit tests and 39 Playwright passes (one expected skip).
+Post-deployment checks of the archive, both articles, draft rejection, and route asset isolation also
+passed. Field Notes publication dates and ownership remain unchanged.
 
 - The user-authorized `documentation-health` audit corrected stale zero-note descriptions, component
   ownership, and singleton handoff references in shared durable docs. No article, runtime source,

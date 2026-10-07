@@ -4,7 +4,7 @@
 
 This file describes the **portfolio's Traelyx representation**. It does not describe work being performed on Traelyx itself.
 
-## Portfolio refresh in progress — 2026-10-07
+## Portfolio connected-experience refresh — 2026-10-07
 
 - The user authorized updating the portfolio to match current public Traelyx evidence.
 - Portfolio baseline: clean `main` at `917ca3b`.
@@ -30,11 +30,27 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 - The portfolio raw homepage had a stale 2026-08-09 structured modification date at baseline. It now
   agrees with typed home metadata and sitemap at 2026-10-07; a new regression locks description/date
   agreement across raw and hydrated HTML.
-- Portfolio expected artifact: shared JS `index-j0YQc93s.js`, shared CSS `index-CAEqsc4T.css`, portfolio
+- Portfolio local production artifact: shared JS `index-j0YQc93s.js`, shared CSS `index-CAEqsc4T.css`, portfolio
   JS `PortfolioPage-ig0IA9TT.js`, portfolio CSS `PortfolioPage-9KkjH1NL.css`.
 - Portfolio privacy-pattern and diff-whitespace checks passed. No private evidence, credentials,
   external source changes, dependency changes, or blog publication changes were introduced.
-- Pending portfolio source commit/push and direct verification of the new deployment.
+- Portfolio source commit: `f5c68f9` — `feat: refresh portfolio Traelyx connected experience`.
+  The portfolio push to `origin/main` succeeded; local/tracked remote are clean and aligned.
+- The first post-push portfolio observation served the older M3.7 artifact; the subsequent fresh
+  response served the new representation. GitHub's Cloudflare Pages check completed successfully for
+  portfolio commit `f5c68f9`, identifying deployment preview `https://4f1e0b3b.atrx07.pages.dev`.
+- Portfolio production now serves shared JS `index-X8WrfSfz.js`, portfolio JS `PortfolioPage-OYIJCxMJ.js`,
+  and portfolio CSS `PortfolioPage-9KkjH1NL.css`. These live observations are distinct from local hashes.
+- Portfolio live checks passed at 1280, 768, 640, and 360 px: new headline/hero signal, pinned source
+  link, partial-alert rail, developer constraints, consent-boundary architecture selection, dialog
+  open/Escape, reduced-motion traces, `now` terminal output, exact home canonical, raw/hydrated
+  Traelyx description and 2026-10-07 modification date. No overflow or browser warnings/errors occurred.
+- Portfolio live archive and both articles preserve exact canonicals, indexability, no page overflow,
+  and no portfolio-only asset requests. Production rejects the draft-preview query with the recovery
+  page and noindex. The sitemap has exactly four public routes: only the home date advanced; blog and
+  article dates retain 2026-08-25/2026-08-24 publication truth.
+- The portfolio refresh is delivered and verified-live. No external Traelyx files, services, devices,
+  milestones, or delivery settings were changed by this workstream.
 - The older portfolio verification/history below remains intact; it does not validate this new change.
 
 ## Portfolio live recheck — 2026-10-07
@@ -84,4 +100,4 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 
 ## State
 
-`verified-local portfolio refresh / pending new live verification`
+`maintenance / verified-live connected-experience representation`

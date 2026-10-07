@@ -5,19 +5,21 @@
 ## Portfolio handoff — 2026-10-07
 
 - Portfolio pre-refresh baseline: `917ca3b`; historical M3.7 display: `3cde4fc`.
+- Portfolio refresh source: `f5c68f9`, pushed and verified-live with a successful Cloudflare deployment check.
 - Pinned public Traelyx evidence: `9508af2d808c3394905fe106ade4755914b900ad`.
 - The portfolio now represents M0–M5/M6.1–M6.7 implemented, M6.8 partial, experimental synthetic
   scoring, and future M7/M8 work. Further receiver/recorder/two-phone gates and default-off delivery
   remain explicit. See scope/status for exact limitations and historical verification.
 
-## Remaining portfolio delivery
+## Current portfolio continuation
 
 Local validation is complete: typecheck/build, 73 unit tests, 39 Playwright passes plus one expected
 skip, responsive production-preview QA, 200-percent text, keyboard/reduced-motion, and blog isolation.
 
-1. Commit/push the validated portfolio change and directly verify the deployed portfolio's intended
-   artifact, hero, schematic, dialog, architecture, terminal, source link, metadata and sitemap.
-2. Record observed portfolio delivery facts, then return this workstream to maintenance.
+No implementation or live-verification task remains for this refresh. The portfolio's new source,
+hero/schematic/dialog/architecture/terminal, metadata/sitemap, and blog regressions were observed live.
+This workstream returns to maintenance. Preserve the pinned public boundary until the user authorizes
+another portfolio update; future refreshes use the evidence-first sequence below.
 
 ## Future portfolio refresh
 
