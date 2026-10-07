@@ -4,12 +4,16 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useState } from "react";
 import { projects } from "../data/projects";
+import { traelyxEvidence, traelyxPresentation } from "../data/traelyx";
 import type { VisitorMode } from "../types";
 import { ProjectVisual } from "./ProjectVisual";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const traelyx = projects.find((project) => project.slug === "traelyx")!;
+const evidenceDate = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit", month: "short", year: "numeric", timeZone: "UTC",
+}).format(new Date(`${traelyxEvidence.checkedAt}T00:00:00Z`));
 
 const capabilityIcons = [ShieldCheck, Database];
 
@@ -82,14 +86,13 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
       <div className="flagship-grid">
         <div className="flagship-title" ref={titleRef}>
           <p className="eyebrow">Active development / local-first Android</p>
-          <h2 id="flagship-title">THE PIPELINE REFUSES TO GUESS.</h2>
-          <p>
-            Traelyx now carries verified GNSS and motion evidence from a resilient native recorder
-            through deterministic local processing, explaining what each channel can support instead
-            of hiding uncertainty behind one convenient score.
-          </p>
+          <h2 id="flagship-title">{traelyxPresentation.headline}</h2>
+          <p>{traelyxPresentation.introduction}</p>
           <a className="text-link" href={traelyx.repoUrl} target="_blank" rel="noreferrer">
             Inspect repository <ArrowUpRight size={17} />
+          </a>
+          <a className="traelyx-source-link" href={traelyxEvidence.url} target="_blank" rel="noreferrer">
+            Evidence snapshot / {evidenceDate} <ArrowUpRight size={13} />
           </a>
         </div>
 
@@ -97,9 +100,9 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="flagship-visual flagship-visual--traelyx flagship-motion">
             <ProjectVisual project={traelyx} />
             <div className="flagship-overlay">
-              <span>phase / M3.7 complete</span>
-              <span>processing / local</span>
-              <span>fixture corpus / next gate</span>
+              <span>M0–M5 / complete</span>
+              <span>M6.1–M6.7 / complete</span>
+              <span>M6.8 / in progress</span>
             </div>
           </div>
 
@@ -128,7 +131,7 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
           <div className="proof-bento flagship-motion">
             <article className="proof-main">
               <p className="eyebrow">Available now</p>
-              <h3>DECODE, DERIVE, EXPLAIN—WITHOUT INVENTING CERTAINTY.</h3>
+              <h3>{traelyxPresentation.availableHeading}</h3>
               <ul>
                 {traelyx.proofPoints.map((point) => (
                   <li key={point}>
@@ -143,8 +146,8 @@ export function Flagship({ mode }: { mode: VisitorMode }) {
               {capabilityIcons.slice(0, 2).map((Icon, index) => (
                 <div key={traelyx.technologies[index]}>
                   <Icon size={20} aria-hidden="true" />
-                  <span>{index === 0 ? "Accepted field proof" : "Local processing"}</span>
-                  <strong>{index === 0 ? "39m17 / 3,689 chunks" : "Categorical confidence"}</strong>
+                  <span>{index === 0 ? "Local experience" : "Optional connection"}</span>
+                  <strong>{index === 0 ? "M0–M5 complete" : "M6.1–M6.7 complete"}</strong>
                 </div>
               ))}
             </article>

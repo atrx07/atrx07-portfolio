@@ -1,40 +1,30 @@
 # Next Step — project-display-traelyx
 
-> This roadmap applies only to **how Traelyx is represented on atrx07-portfolio**. It is not a Traelyx implementation roadmap.
+> This roadmap applies only to Traelyx's representation on the portfolio, never to Traelyx development.
 
-## Portfolio handoff
+## Portfolio handoff — 2026-10-07
 
-- Portfolio source baseline: `3cde4fc` — the portfolio was updated to represent verified Traelyx M3.7 local telemetry processing.
-- External evidence baseline recorded by the prior handoff: `d9fcda6458701f58a63e145c6cde5eed726cb16f` on public Traelyx `main` (2026-08-16).
-- Portfolio truth boundary:
-  - M0–M2 complete;
-  - M3.1–M3.7 implemented/validated in the external public source;
-  - M3.8 regression corpus pending explicit authorization;
-  - M4+ capabilities remain unimplemented.
-- Portfolio verification baseline from the prior handoff:
-  - typecheck passed;
-  - 67 unit/component tests passed;
-  - production build passed;
-  - Playwright passed 35 with one expected desktop-only skip;
-  - 1280, 768, 640, and 360 px browser QA passed without overflow or console warnings/errors.
-- Exact live Cloudflare verification of the portfolio baseline remained a separate checkpoint.
+- Portfolio pre-refresh baseline: `917ca3b`; historical M3.7 display: `3cde4fc`.
+- Pinned public Traelyx evidence: `9508af2d808c3394905fe106ade4755914b900ad`.
+- The portfolio now represents M0–M5/M6.1–M6.7 implemented, M6.8 partial, experimental synthetic
+  scoring, and future M7/M8 work. Further receiver/recorder/two-phone gates and default-off delivery
+  remain explicit. See scope/status for exact limitations and historical verification.
 
-## Implementation sequence — portfolio only
+## Remaining portfolio delivery
 
-Live checkpoint update — 2026-10-07: the documentation audit observed the deployed portfolio's expected
-M3.7 representation, developer constraints, terminal checkpoint, responsive dialog, repository CTA,
-reduced motion, console, overflow, canonical/structured metadata, and sitemap. The deployment
-verification sequence below is retained for the next portfolio representation change; the old pending
-checkpoint is resolved by direct observation. A future content advancement still begins with step 4's
-read-only public-evidence audit, not external development.
+Local validation is complete: typecheck/build, 73 unit tests, 39 Playwright passes plus one expected
+skip, responsive production-preview QA, 200-percent text, keyboard/reduced-motion, and blog isolation.
 
-1. After the relevant portfolio source commit is deployed, inspect `https://atrx07.pages.dev/` on fresh desktop and mobile visits.
-2. Verify that the **portfolio** hero, flagship, Traelyx accordion, detail sheet, architecture, terminal output, repository CTA, JSON-LD, sitemap date, reduced-motion behavior, console, and overflow all agree on the M3.7/M3.8 truth boundary.
-3. Record only observed **portfolio deployment** facts in this workstream's `STATUS.md`.
-4. Before a future Traelyx representation refresh, inspect the public Traelyx repository as **read-only evidence**. Re-read its public README/status/plans/completed milestones and validation records only to determine what the portfolio is allowed to claim.
-5. If public evidence later verifies M3.8, update `atrx07-portfolio` beginning with `src/data/projects.ts`, then synchronize the portfolio hero, flagship, visual, terminal, metadata, tests, README, and durable governance.
-6. Do not implement, authorize, test, or advance M3.8/M4 in Traelyx from this workstream.
-7. After any portfolio truth/layout change, rerun typecheck, unit/component tests, production build, complete Playwright desktop/mobile coverage, and responsive visual QA.
+1. Commit/push the validated portfolio change and directly verify the deployed portfolio's intended
+   artifact, hero, schematic, dialog, architecture, terminal, source link, metadata and sitemap.
+2. Record observed portfolio delivery facts, then return this workstream to maintenance.
+
+## Future portfolio refresh
+
+Before changing the portfolio's claims again, pin public Traelyx source and inspect its implemented
+code/completed validation rather than promoting roadmap text. Synchronize `src/data/traelyx.ts`, its
+project-list import, presentation, metadata, tests and durable docs; repeat portfolio verification.
+External source roadmaps remain read-only evidence.
 
 ## Constraints
 
@@ -49,9 +39,8 @@ read-only public-evidence audit, not external development.
 
 ## Exit criteria
 
-- The deployed **portfolio** is observed serving the intended Traelyx representation, or the precise portfolio live-verification blocker remains documented.
-- All portfolio surfaces agree on the same verified Traelyx boundary.
-- No portfolio surface implies M3.8/M4 implementation before public evidence supports it.
-- Desktop, tablet, 640 px reflow, 360 px mobile, reduced motion, keyboard focus, overflow, metadata, and console checks pass.
-- Typecheck, unit/component tests, production build, and Playwright pass after any follow-up change.
-- No unsupported claim, fake telemetry, private data, local path, college detail, or ignored control file enters source or emitted artifacts.
+- Every portfolio surface agrees on the pinned M0–M5/M6.1–M6.7 completion and partial M6.8 boundary.
+- Experimental scoring, optional consent and unimplemented/deferred capabilities remain explicit.
+- The local matrix and responsive/accessibility/route regressions pass.
+- The deployed portfolio is directly verified, or its precise live-verification blocker is recorded.
+- No external project is modified; no private artifact or unsupported claim enters the portfolio.

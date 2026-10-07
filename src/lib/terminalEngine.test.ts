@@ -8,14 +8,16 @@ describe("terminalEngine", () => {
     expect(result.lines.join(" ")).toContain("Verified pinned llama.cpp");
   });
 
-  it("reports Traelyx as the current project at its verified M3.7 boundary", () => {
+  it("reports Traelyx's connected checkpoint without promoting partial alerts or scoring", () => {
     const project = executeTerminalCommand("project traelyx");
     const now = executeTerminalCommand("now");
 
-    expect(project.lines.join(" ")).toContain("M0–M2 are complete");
+    expect(project.lines.join(" ")).toContain("M0–M5 and M6.1–M6.7 are complete");
     expect(now.lines[0]).toContain("Traelyx");
-    expect(now.lines.join(" ")).toContain("M3.1–M3.7 validated");
-    expect(now.lines.join(" ")).toContain("fixture regression corpus");
+    expect(now.lines.join(" ")).toContain("M6.8 Guardian alerts in progress");
+    expect(now.lines.join(" ")).toContain("experimental synthetic baseline");
+    expect(now.lines.join(" ")).toContain("two-phone validation gates");
+    expect(now.lines.join(" ")).toContain("M7 ML and M8 public-release hardening remain future work");
   });
 
   it("returns a useful response for an unknown command", () => {

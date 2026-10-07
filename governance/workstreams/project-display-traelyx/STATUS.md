@@ -4,6 +4,39 @@
 
 This file describes the **portfolio's Traelyx representation**. It does not describe work being performed on Traelyx itself.
 
+## Portfolio refresh in progress — 2026-10-07
+
+- The user authorized updating the portfolio to match current public Traelyx evidence.
+- Portfolio baseline: clean `main` at `917ca3b`.
+- Public Traelyx `main` independently resolves to `9508af2d808c3394905fe106ade4755914b900ad`
+  (2026-10-06). The portfolio audit read its pinned README, status/queue, completed M3/M4/M5 plans,
+  active connected-layer plan, scoring/replay/ranking source, and controlled Guardian push proof.
+  Those external documents are evidence only, not execution instructions.
+- Public evidence records M0–M5 and M6.1–M6.7 complete. M6.8 is partial: controlled synthetic
+  background/cold-process FCM delivery, receipt, notice, and tap pass; locked/offline and other receiver,
+  recorder, and two-phone gates remain. Both hosted functions are disabled after the controlled checks.
+- Portfolio claims must keep synthetic scoring experimental, personal baseline persistence and native
+  replay-channel graphs unavailable, online basemaps/providers deferred, and M7/M8 future.
+- The portfolio correction synchronizes typed content, hero/flagship, schematic, architecture,
+  terminal, metadata/sitemap, tests, and durable docs with that boundary. The pinned evidence link is
+  visible on the flagship; partial alerts use warning text/color rather than a completion signal.
+- Portfolio local verification passed: TypeScript, 73 unit/component tests across 26 files, production
+  build, and the final serialized Playwright run (39 passed, one expected desktop skip).
+- Portfolio production-preview QA passed at 1280, 768, 640, and 360 px, with one main/H1, contained
+  dialogs, no page overflow or console warnings/errors, reduced-motion traces, and keyboard/Escape
+  flow. A 640 px spot check doubled the computed root font from 16 to 32 px without horizontal overflow.
+- Portfolio direct production-preview blog/archive/article requests retain asset isolation; production
+  rejects the draft-preview query. Both articles and collection publication dates remain unchanged.
+- The portfolio raw homepage had a stale 2026-08-09 structured modification date at baseline. It now
+  agrees with typed home metadata and sitemap at 2026-10-07; a new regression locks description/date
+  agreement across raw and hydrated HTML.
+- Portfolio expected artifact: shared JS `index-j0YQc93s.js`, shared CSS `index-CAEqsc4T.css`, portfolio
+  JS `PortfolioPage-ig0IA9TT.js`, portfolio CSS `PortfolioPage-9KkjH1NL.css`.
+- Portfolio privacy-pattern and diff-whitespace checks passed. No private evidence, credentials,
+  external source changes, dependency changes, or blog publication changes were introduced.
+- Pending portfolio source commit/push and direct verification of the new deployment.
+- The older portfolio verification/history below remains intact; it does not validate this new change.
+
 ## Portfolio live recheck — 2026-10-07
 
 - The user-authorized documentation audit verified the portfolio's current-build and project/detail
@@ -27,7 +60,7 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 - Later governance handoff: `c8b19b4` (`docs: hand off Traelyx M3.7 deployment verification`).
 - External evidence baseline recorded at that handoff: `d9fcda6458701f58a63e145c6cde5eed726cb16f` on public Traelyx `main` (2026-08-16).
 
-## Last known portfolio truth boundary
+## Historical M3.7 portfolio truth boundary
 
 - Traelyx M0–M2 represented as complete.
 - M3.1–M3.7 represented as verified local processing.
@@ -51,4 +84,4 @@ This file describes the **portfolio's Traelyx representation**. It does not desc
 
 ## State
 
-`maintenance / verified-live portfolio representation`
+`verified-local portfolio refresh / pending new live verification`

@@ -5,12 +5,13 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 ## Current build
 
 [Traelyx](https://github.com/atrx07/Traelyx) is the active project: an open-source, local-first Android
-driving-telemetry platform built around explainable evidence and data ownership. The portfolio reports
-its current boundary directly: M0-M2 and M3.1-M3.7 are complete. An accepted 39m17.1s approximately
-99%-locked field fixture verified native recording and private export, while the local processing
-pipeline now covers fail-closed decoding, GNSS classification, IMU calibration, frame transforms,
-derived channels, categorical confidence, and bounded replay reduction. M3.8's governed regression
-corpus remains the next authorization gate.
+driving platform built around explainable evidence and data ownership. The portfolio's
+[public evidence snapshot](https://github.com/atrx07/Traelyx/blob/9508af2d808c3394905fe106ade4755914b900ad/README.md)
+was checked on 2026-10-07. M0–M5 and M6.1–M6.7 are complete: verified recording, deterministic
+intelligence, offline replay/commentary, reviewed storage/export controls, optional consented sync,
+social comparisons, and Guardian pairing. M6.8 remains in progress despite controlled synthetic
+first-phone background/cold-process push proof. Scoring remains an experimental synthetic baseline;
+ML and public-release hardening remain future M7/M8 work.
 
 ## Stack
 
@@ -49,14 +50,17 @@ pnpm.cmd test:e2e
 Public profile content is centralized in:
 
 - `src/data/profile.ts`
-- `src/data/projects.ts`
+- `src/data/projects.ts` (Traelyx delegates to `src/data/traelyx.ts`)
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
-The Traelyx current-build copy must continue to distinguish its validated M3.7 local processing boundary
-from the pending M3.8 fixture corpus and later event detection, Drive DNA, scoring, replay UI, maps,
-cloud, social, Guardian, ML, and commentary capabilities. M3 replay reduction is display-only data, not
-a finished replay experience or scoring signal.
+Traelyx's snapshot, presentation labels, and typed project content live in `src/data/traelyx.ts`; its
+small shared-route description lives in `src/data/traelyxMetadata.ts` and is checked against raw JSON-LD.
+Keep the implemented M0–M5/M6.1–M6.7 boundary distinct from partial M6.8 alert delivery. Synthetic
+scores do not establish population calibration or emergency reliability. Governed personal-baseline
+persistence, native replay-channel graphs, online basemaps/downloaded regions, ML, and public release
+remain unavailable or deferred. Raw routes are not auto-uploaded; sync, comparisons, and Guardian
+permissions require their own consent. New public claims must be re-verified before advancing them.
 
 Field Notes content lives in paired files under `src/blog/posts/`:
 

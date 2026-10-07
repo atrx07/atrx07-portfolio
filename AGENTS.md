@@ -128,8 +128,10 @@ data ownership, explainable evidence, confidence, and integrity.
 - Drift / SQLite
 - Kotlin Android native boundary
 - provider-neutral map contract
+- optional Supabase / PostgreSQL account and consented connected layer
+- Firebase / FCM for the partial Guardian-alert delivery path
 
-**Available now / verified M3.7 boundary**
+**Available now / public snapshot `9508af2`, checked 2026-10-07**
 
 - M0-M2 complete: accountless application foundation, real native GNSS/dual-IMU recording, bounded
   compressed/checksummed chunks, recovery, Drift finalization, explicit private export, and accepted
@@ -141,17 +143,32 @@ data ownership, explainable evidence, confidence, and integrity.
   and confidence-aware distance accumulation
 - M3.3-M3.5: bounded stationary calibration, explicit device/vehicle/world transforms, and lazy filtered
   acceleration, jerk, yaw, speed, heading-rate, and movement channels with typed provenance
-- M3.6-M3.7: categorical confidence, metric-scoped eligibility, and bounded evidence-preserving replay
-  reduction without a fabricated global percentage
+- M3 complete: categorical confidence, metric-scoped eligibility, bounded display replay reduction,
+  and governed deterministic regression fixtures without fabricated global percentages
+- M4 complete: ten maneuver types, merge/debounce, integrity/rank audits, versioned evidence-eligible
+  scores, Drive DNA/lifecycle policies, and typed reason paths; scoring is an experimental synthetic baseline
+- M5 complete: truthful Drive/history/results, Drive DNA presentation, offline local-canvas route replay
+  with one clock and 0.5×/1×/2× playback, six deterministic non-evidentiary commentary tones, accessible
+  reduced-motion alternatives, reviewed local storage/retention, private/redacted exports, and confirmed deletion
+- M6.1–M6.7 complete: optional encrypted-session accounts, owner-only access, separately consented compact
+  sync, private profile/vehicle metadata, mutual friendship/blocking, friends-only vehicle-class comparisons,
+  and private, two-sided, revocable Guardian pairing
+- M6.8 partial: controlled synthetic first-phone background and cold-process FCM receipt, generic notice,
+  and tap routing pass. Further receiver, recorder, and two-phone gates remain; hosted delivery is disabled
+  after the controlled checks. Do not present M6 as wholly complete.
 
 **Honesty boundary**
 
 Do not generalize the accepted pocket-carried motorcycle fixture into mounted vehicle-frame validity,
 broad device/OEM/Android-version reliability, calibrated probability, or complete deep-sleep/reboot
-hardening. M3.8's governed car/motorcycle/device-move/GNSS-loss regression corpus remains pending
-explicit authorization. The M3.7 replay stream is local, ephemeral, bounded, and display-only. Do not
-present event detection, Drive DNA, scoring, replay UI, maps, cloud/social/Guardian features, ML, or
-commentary as implemented; those remain later milestones.
+hardening. Scoring and confidence policies remain synthetic experimental baselines, not calibrated
+probabilities, population competence ratings, or safety certification. Explicit local analysis is
+separate from finalization. Governed personal-baseline persistence and native replay-channel graphs
+remain unavailable; offline route rendering does not imply online basemaps or downloaded regions.
+Guardian's synthetic first-phone checks do not prove real-contact alerts, recorder integration,
+two-phone behavior, crash detection, or emergency reliability. Sync, rankings, and Guardian permissions
+have separate consent boundaries; no raw-route auto-upload. ML, model-backed commentary, and public
+release remain future M7/M8 work. Preserve implemented/planned distinctions from the pinned public source.
 
 ### NeuraLoc-Core — local AI engineering case study
 

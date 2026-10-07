@@ -1,4 +1,5 @@
 import type { Project } from "../types";
+import { traelyxProject } from "./traelyx";
 
 export const projectCategories = [
   "All",
@@ -12,61 +13,7 @@ export const projectCategories = [
 ] as const;
 
 export const projects: Project[] = [
-  {
-    slug: "traelyx",
-    name: "Traelyx",
-    tagline: "Driving telemetry that explains itself.",
-    summary:
-      "An open-source, local-first Android platform that records verified GNSS and IMU evidence, then turns it into deterministic, confidence-aware telemetry without requiring an account or cloud.",
-    categories: ["Mobile & telemetry"],
-    technologies: ["Flutter", "Dart", "Kotlin", "Riverpod", "Drift", "SQLite", "Android"],
-    status: "active",
-    featured: true,
-    repoUrl: "https://github.com/atrx07/Traelyx",
-    proofPoints: [
-      "M0–M2 are complete: the accountless Android app records real GNSS and dual-IMU evidence, recovers interrupted sessions, finalizes verified chunk indexes into Drift, and exports a strictly verified local-private fixture.",
-      "The accepted M2.8 field proof covered a 39m17.1s approximately 99%-locked motorcycle trip with 3,689 ordered chunks, 2,322 GNSS fixes, and 939,895 dual-IMU samples; device and host archive hashes matched exactly.",
-      "M3.1–M3.5 now decode raw trips fail-closed, align the analysis timeline, classify GNSS evidence and distance, calibrate stationary IMU evidence, transform frames, and derive filtered motion channels with provenance.",
-      "M3.6–M3.7 add explainable categorical confidence, metric-scoped eligibility, and a bounded evidence-preserving replay timeline without inventing a global percentage or scoring signal.",
-    ],
-    constraints: [
-      "M3.8 remains pending explicit authorization and must add a governed deterministic regression corpus across representative car, motorcycle, device-move, and GNSS-loss cases.",
-      "The accepted physical fixture is grounded in one pocket-carried motorcycle trip on one Android 14 Tecno device; it does not establish mounted vehicle-frame validity, broad OEM reliability, deep-sleep/reboot behavior, or calibrated probability.",
-      "The replay timeline is local, ephemeral, display-only processing. Event detection, Drive DNA, scoring, replay UI, maps, connected/social features, Guardian, commentary, and ML remain later milestones.",
-    ],
-    next: "M3.8 fixture regression corpus: after explicit authorization, turn governed private/synthetic evidence into deterministic regression coverage across car, motorcycle, device-move, and GNSS-loss cases before M4 event intelligence begins.",
-    architecture: [
-      {
-        id: "evidence",
-        label: "Native evidence",
-        detail:
-          "The completed M2 recorder owns GNSS and dual-IMU acquisition, bounded checksummed chunks, lifecycle recovery, Drift finalization, and explicit private export. Raw precise evidence remains under native local authority.",
-        signal: "light",
-      },
-      {
-        id: "timeline",
-        label: "Analysis timeline",
-        detail:
-          "M3.1 reconstructs complete chunk order and produces a deterministic monotonic analysis timebase. Corrupt, mixed, gapped, overlapping, reordered, or unsupported evidence fails closed instead of being repaired silently.",
-        signal: "blue",
-      },
-      {
-        id: "channels",
-        label: "Explainable channels",
-        detail:
-          "M3.2–M3.6 classify GNSS evidence, accumulate qualified distance, calibrate stationary IMU evidence, transform device/vehicle/world frames, derive filtered motion, and scope categorical confidence to each dependent metric.",
-        signal: "red",
-      },
-      {
-        id: "replay",
-        label: "Replay reduction",
-        detail:
-          "M3.7 reduces synchronized derived/confidence frames into a lazy bounded display timeline while preserving extrema, missingness, movement transitions, provenance, confidence, and eligibility. It is not scoring evidence or a finished replay UI.",
-        signal: "neutral",
-      },
-    ],
-    visual: "telemetry",
-  },
+  traelyxProject,
   {
     slug: "neuraloc",
     name: "NeuraLoc-Core",

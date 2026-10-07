@@ -108,7 +108,7 @@ flowchart TD
 | `godui/magic-tab.tsx` | Controlled/uncontrolled tab primitive with roving focus, manual activation, raised selection layers, and off-screen rainbow pausing |
 | `godui/orbiting-circles.tsx` | Reusable counter-rotating orbital tracks with fixed geometry, counter-rotated children, and a static reduced-motion fallback |
 | `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
-| `Flagship.tsx` | Traelyx current-build narrative, pinned desktop title, local telemetry pipeline visual, architecture strip, verified M3.7 proof and M3.8 checkpoint |
+| `Flagship.tsx` | Traelyx current-build narrative, pinned desktop title, drive-evidence schematic, architecture strip, M0–M5/M6.1–M6.7 delivery and partial M6.8 checkpoint |
 | `ProjectLab.tsx` | Project filters, accordion state, mobile tap behavior, discovery, and detail-dialog coordination |
 | `ProjectVisual.tsx` | Deterministic project-specific visual fragments for seven visual types, including Traelyx's local telemetry pipeline and void.chat's layered edge architecture orbit |
 | `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
@@ -141,12 +141,14 @@ final available width. The linear variant may enlarge to a bounded 1.28x to fill
 stacked variants retain the component's 1:1 maximum. The collapsed card does
 not run the autoplay sequence.
 
-Traelyx has its own code-native local telemetry pipeline rather than sharing Aveline's `AgentFlow`.
-Three responsive SVG traces identify the GNSS, accelerometer, and gyroscope evidence paths; an accepted
-private-fixture ledger grounds the M2 field proof, while a seven-stage rail communicates the publicly
-verified M3.1-M3.7 decode/filter/calibrate/transform/derive/confidence/reduce path. These are deterministic
-schematics with no runtime telemetry, generated sensor values, network work, simulated trip state, or
-global score. Reduced motion disables trace movement while preserving every label. The canonical
+Traelyx has its own code-native drive-evidence schematic rather than sharing Aveline's `AgentFlow`.
+Three responsive SVG traces identify GNSS, accelerometer, and gyroscope evidence paths. The ledger
+describes the local M5 experience, deterministic rules, implemented connected features, and partial
+alerts. The seven-stage rail marks record/process/analyze/replay/sync/pair as implemented and alerts as
+partial, with an explicit experimental-scoring label. `src/data/traelyx.ts` owns the pinned public
+evidence snapshot, typed project, and shared presentation labels. These are explanatory schematics
+with no runtime telemetry, generated sensor values, network work, simulated trip state, or invented
+score. Reduced motion disables trace movement while preserving every label. The canonical
 `/public/traelyx-mark.png` launcher mark remains a local owned asset copied from the public repository.
 
 ## Data Ownership
@@ -158,6 +160,10 @@ global score. Reduced motion disables trace movement while preserving every labe
   Notes collection metadata.
 - `src/data/projects.ts` owns all featured project claims, categories, technologies, maturity, public
   links, proof points, constraints, architecture nodes, roadmap text, and visual type.
+- `src/data/traelyx.ts` supplies the Traelyx entry plus its evidence snapshot/presentation labels.
+  `src/data/traelyxMetadata.ts` supplies the shared-route summary without an interactive component
+  dependency. The shared header retains its existing catalog-count dependency; portfolio components,
+  motion libraries, styles, and visuals remain behind the lazy homepage boundary.
 - `src/data/commands.ts` owns the terminal command catalog and help descriptions.
 - `src/types.ts` defines `VisitorMode`, `ProjectStatus`, `ArchitectureNode`, and `Project`.
 

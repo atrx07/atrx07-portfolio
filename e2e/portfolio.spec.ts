@@ -32,7 +32,7 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   expect(sitemapResponse.ok()).toBe(true);
   const sitemap = await sitemapResponse.text();
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
-  expect(sitemap).toContain("<lastmod>2026-08-16</lastmod>");
+  expect(sitemap).toContain("<lastmod>2026-10-07</lastmod>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog/a-security-tool-should-know-when-it-is-guessing</loc>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog/local-ai-is-a-systems-problem</loc>");
@@ -542,17 +542,23 @@ test("mask actions and visitor mode motion preserve their interaction contracts"
   );
 });
 
-test("Traelyx telemetry pipeline stays honest and contained across flagship, card, and dialog", async ({ page }) => {
+test("Traelyx drive system stays honest and contained across flagship, card, and dialog", async ({ page }) => {
   await page.goto("/#projects");
+  await page.getByRole("tab", { name: "developer", exact: true }).click();
+  await expect(page.locator(".current-build")).toContainText("M6.8 Guardian alerts in progress");
+  await expect(page.locator("#now")).toContainText("M0–M5 and M6.1–M6.7 are complete");
+  await expect(page.locator(".traelyx-source-link")).toHaveAttribute(
+    "href", "https://github.com/atrx07/Traelyx/blob/9508af2d808c3394905fe106ade4755914b900ad/README.md",
+  );
 
   const viewport = page.viewportSize();
-  const flagshipVisual = page.locator('#now [data-visual="traelyx-telemetry-pipeline"]');
+  const flagshipVisual = page.locator('#now [data-visual="traelyx-drive-system"]');
   await expect(flagshipVisual).toBeVisible();
   await expect(flagshipVisual.locator('[data-slot="agent-flow"]')).toHaveCount(0);
   await expect(flagshipVisual.locator("[data-channel]")).toHaveCount(3);
-  await expect(flagshipVisual.locator(".traelyx-proof-ledger > strong")).toHaveText("39:17");
+  await expect(flagshipVisual.locator(".traelyx-proof-ledger > strong")).toHaveText("M5");
   await expect(flagshipVisual.locator(".traelyx-proof-ledger > small")).toHaveText(
-    "locked ride / exact archive verification",
+    "record / analyze / replay",
   );
 
   const card = page.locator('[data-project-slug="traelyx"]');
@@ -567,7 +573,7 @@ test("Traelyx telemetry pipeline stays honest and contained across flagship, car
   await expect(card).toHaveClass(/is-expanded/);
   await page.waitForTimeout(850);
   const cardVisual = card.locator(".telemetry-visual");
-  await expect(cardVisual).toHaveAttribute("data-visual", "traelyx-telemetry-pipeline");
+  await expect(cardVisual).toHaveAttribute("data-visual", "traelyx-drive-system");
   await expect(cardVisual.locator('.traelyx-recorder-brand img')).toHaveAttribute(
     "src",
     "/traelyx-mark.png",
@@ -578,7 +584,8 @@ test("Traelyx telemetry pipeline stays honest and contained across flagship, car
     "calibrated / framed",
   );
   await expect(cardVisual.locator(".traelyx-chunk-strip i")).toHaveCount(12);
-  await expect(cardVisual.locator('[data-state="verified"]')).toHaveCount(7);
+  await expect(cardVisual.locator('.traelyx-lifecycle [data-state="verified"]')).toHaveCount(6);
+  await expect(cardVisual.locator('.traelyx-lifecycle [data-state="partial"]')).toContainText("ALERTS");
 
   const overflowItems = await cardVisual.evaluate((visual) => {
     const frame = visual.getBoundingClientRect();
@@ -605,9 +612,13 @@ test("Traelyx telemetry pipeline stays honest and contained across flagship, car
   await card.getByRole("button", { name: "Inspect system" }).click();
   const dialog = page.getByRole("dialog", { name: /Traelyx/ });
   await expect(dialog).toBeVisible();
-  await expect(dialog.locator('[data-visual="traelyx-telemetry-pipeline"]')).toBeVisible();
+  await expect(dialog.locator('[data-visual="traelyx-drive-system"]')).toBeVisible();
   await expect(dialog.locator('[data-slot="agent-flow"]')).toHaveCount(0);
   await expect(dialog.locator(".traelyx-lifecycle [data-state]")).toHaveCount(7);
+  await expect(dialog).toContainText("Scoring remains an experimental synthetic baseline");
+  await expect(dialog).toContainText("Guardian M6.8 is partial");
+  await expect(dialog).toContainText("hosted delivery remains disabled");
+  await expect(dialog).not.toContainText("M3.8 remains pending");
   await expect(dialog.getByRole("link", { name: "Open repository" })).toHaveAttribute(
     "href",
     "https://github.com/atrx07/Traelyx",

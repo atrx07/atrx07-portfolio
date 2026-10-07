@@ -1,5 +1,6 @@
 import { ArrowDownRight, Github, Radio } from "lucide-react";
 import { profile } from "../data/profile";
+import { traelyxPresentation } from "../data/traelyx";
 import type { VisitorMode } from "../types";
 import { MaskLink } from "./godui/mask-button";
 import { VisitorModeSwitch } from "./VisitorModeSwitch";
@@ -86,7 +87,7 @@ export function Hero({ mode, onModeChange }: Props) {
           <a className="current-build" href="#now">
             <span>Currently building</span>
             <strong>Traelyx</strong>
-            <i>M3.7 telemetry verified</i>
+            <i>{traelyxPresentation.heroSignal}</i>
           </a>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { Project } from "../types";
+import { traelyxPresentation } from "../data/traelyx";
 import { AgentFlow, type AgentFlowEdge, type AgentFlowNode } from "./godui/agent-flow";
 import { OrbitingCircles } from "./godui/orbiting-circles";
 
@@ -91,17 +92,17 @@ export function ProjectVisual({
     return (
       <div
         className={`project-visual telemetry-visual ${compact ? "is-compact" : ""}`}
-        data-visual="traelyx-telemetry-pipeline"
+        data-visual="traelyx-drive-system"
         aria-hidden="true"
       >
         <div className="traelyx-recorder-shell">
           <div className="traelyx-recorder-header">
             <span className="traelyx-recorder-brand">
               <img src="/traelyx-mark.png" alt="" width="192" height="192" />
-              <b>TRAELYX / LOCAL TELEMETRY PIPELINE</b>
+              <b>TRAELYX / DRIVE EVIDENCE SYSTEM</b>
             </span>
             <i>
-              <b /> M3.7 VERIFIED
+              <b /> M6.8 IN PROGRESS
             </i>
           </div>
 
@@ -137,45 +138,37 @@ export function ProjectVisual({
               </div>
 
               <div className="traelyx-chunk-strip">
-                <span>M2 FIELD FIXTURE</span>
+                <span>LOCAL CORE</span>
                 <div>
                   {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
                 </div>
-                <strong>39:17 / 3,689 CHUNKS</strong>
+                <strong>M0–M5 COMPLETE</strong>
               </div>
             </div>
 
             <aside className="traelyx-proof-ledger">
-              <span>ACCEPTED PRIVATE FIXTURE</span>
-              <strong>39:17</strong>
-              <small>locked ride / exact archive verification</small>
+              <span>LOCAL EXPERIENCE</span>
+              <strong>M5</strong>
+              <small>record / analyze / replay</small>
               <dl>
-                <div><dt>RAW RECORD</dt><dd>3,689 CHUNKS</dd></div>
-                <div><dt>GNSS</dt><dd>2,322 FIXES</dd></div>
-                <div><dt>DUAL IMU</dt><dd>939,895 SAMPLES</dd></div>
+                <div><dt>RULES</dt><dd>DETERMINISTIC V1</dd></div>
+                <div><dt>CONNECTED</dt><dd>M6.1–M6.7</dd></div>
+                <div><dt>ALERTS</dt><dd data-state="partial">IN PROGRESS</dd></div>
               </dl>
-              <em>ONE ANDROID 14 DEVICE</em>
+              <em>SCORING / EXPERIMENTAL</em>
             </aside>
           </div>
 
-          <div className="traelyx-lifecycle" aria-label="Verified local telemetry processing stages">
-            {[
-              ["01", "DECODE"],
-              ["02", "FILTER"],
-              ["03", "CALIBRATE"],
-              ["04", "TRANSFORM"],
-              ["05", "DERIVE"],
-              ["06", "CONFIDENCE"],
-              ["07", "REDUCE"],
-            ].map(([step, label]) => (
-              <span key={step} data-state="verified"><b>{step}</b>{label}</span>
+          <div className="traelyx-lifecycle" aria-label="Implemented capabilities and partial Guardian alerts">
+            {traelyxPresentation.stages.map(({ label, state }, index) => (
+              <span key={label} data-state={state}><b>{String(index + 1).padStart(2, "0")}</b>{label}</span>
             ))}
           </div>
 
           <div className="traelyx-recorder-footer">
-            <span>LOCAL ONLY</span>
-            <strong>NO GLOBAL SCORE / EVIDENCE STAYS EXPLAINABLE</strong>
-            <span>NEXT / M3.8 FIXTURES</span>
+            <span>LOCAL FIRST</span>
+            <strong>CONNECTED BY CONSENT / SCORING EXPERIMENTAL</strong>
+            <span>NEXT / GUARDIAN GATES</span>
           </div>
         </div>
       </div>

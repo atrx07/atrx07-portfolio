@@ -93,7 +93,8 @@ The portfolio should communicate three things immediately:
 - A strong hero with clear role/value copy, project and GitHub calls to action, a currently-building
   signal, boot copy, and Recruiter / Developer / Chaos modes.
 - A deep Traelyx current-build section with a pinned narrative, architecture responsibilities, verified
-  native recording and M3.7 processing boundary, explicit fixture-corpus gate, next milestone, and
+  native recording, local intelligence/replay, optional connected features, partial Guardian-alert
+  boundary, experimental-scoring caveat, next milestone, and
   repository path.
 - A seven-project lab for Traelyx, NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
   and AtrxInstaDown.
@@ -123,6 +124,16 @@ The portfolio should communicate three things immediately:
 These entries describe behavior and governance at each historical commit. Older ignore rules, project
 counts, and deployment milestones are historical observations; current ownership and counts are
 defined above and in the workstream registry.
+
+### 21. Traelyx Connected Experience Refresh — 2026-10-07
+
+- Re-verified public Traelyx `main` at `9508af2`: M0–M5 and M6.1–M6.7 complete, M6.8 partial.
+- Updated the portfolio's hero, flagship, project/dialog, architecture, schematic, terminal, stack,
+  raw/hydrated metadata, and home sitemap date. The schematic distinguishes completed capabilities
+  from in-progress alerts rather than displaying invented driving scores or a fake live dashboard.
+- Kept experimental synthetic scoring, deferred personal baselines/replay graphs/basemaps, first-phone
+  synthetic push limitations, and future M7/M8 work explicit. External source files were read-only.
+- Current verification and source delivery are recorded only in `project-display-traelyx`.
 
 ### 20. Traelyx M3.7 Local Telemetry Pipeline Refresh - `3cde4fc`
 

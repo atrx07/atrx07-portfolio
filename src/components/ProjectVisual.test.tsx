@@ -3,12 +3,12 @@ import { projects } from "../data/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 describe("ProjectVisual", () => {
-  it("renders Traelyx as a verified local telemetry pipeline instead of an agent flow", () => {
+  it("separates implemented Traelyx capabilities from partial Guardian delivery", () => {
     const project = projects.find((item) => item.slug === "traelyx");
     expect(project).toBeDefined();
 
     const { container } = render(<ProjectVisual project={project!} />);
-    const visual = container.querySelector('[data-visual="traelyx-telemetry-pipeline"]');
+    const visual = container.querySelector('[data-visual="traelyx-drive-system"]');
 
     expect(visual).toBeInTheDocument();
     expect(container.querySelector('[data-slot="agent-flow"]')).not.toBeInTheDocument();
@@ -18,11 +18,13 @@ describe("ProjectVisual", () => {
       "calibrated / framed",
     );
     expect(container.querySelectorAll(".traelyx-chunk-strip i")).toHaveLength(12);
-    expect(screen.getByText("39:17")).toBeInTheDocument();
-    expect(screen.getByText("locked ride / exact archive verification")).toBeInTheDocument();
-    expect(container.querySelectorAll('[data-state="verified"]')).toHaveLength(7);
-    expect(screen.getByText("CONFIDENCE")).toBeInTheDocument();
-    expect(screen.getByText("REDUCE")).toBeInTheDocument();
+    expect(screen.getByText("M5")).toBeInTheDocument();
+    expect(screen.getByText("record / analyze / replay")).toBeInTheDocument();
+    expect(container.querySelectorAll('.traelyx-lifecycle [data-state="verified"]')).toHaveLength(6);
+    expect(container.querySelector('.traelyx-lifecycle [data-state="partial"]')).toHaveTextContent("ALERTS");
+    expect(screen.getByText("M6.8 IN PROGRESS")).toBeInTheDocument();
+    expect(screen.getByText("SCORING / EXPERIMENTAL")).toBeInTheDocument();
+    expect(container).not.toHaveTextContent("M3.8 FIXTURES");
     expect(container.querySelector('.traelyx-recorder-brand img')).toHaveAttribute(
       "src",
       "/traelyx-mark.png",

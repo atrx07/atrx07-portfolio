@@ -1,6 +1,7 @@
 import { commandStrings, terminalCommands } from "../data/commands";
 import { profile } from "../data/profile";
 import { projects } from "../data/projects";
+import { traelyxPresentation } from "../data/traelyx";
 import type { VisitorMode } from "../types";
 
 export type TerminalAction = "clear" | "open-github" | "mode" | "signal" | "sound";
@@ -87,7 +88,8 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
       lines: current
           ? [
             `${current.name} // active development`,
-            "Current checkpoint: M2 complete and M3.1–M3.7 validated; verified local GNSS/dual-IMU evidence now flows through fail-closed decoding, filtering, calibration, derived channels, categorical confidence, and bounded replay reduction.",
+            `Current checkpoint: ${traelyxPresentation.checkpoint}`,
+            "Scoring is an experimental synthetic baseline. Guardian delivery has controlled first-phone proof; broader validation and recorder integration remain pending.",
             `Next: ${current.next}`,
           ]
         : ["Current project signal unavailable."],

@@ -58,9 +58,20 @@ Every status/next-step sentence must keep the subject clear:
 
 Avoid subjectless language that sounds like this agent is building Traelyx itself.
 
-## Current truth boundary carried into this workstream
+## Current verified portfolio content boundary — 2026-10-07
 
-The last known portfolio content baseline represents:
+Public Traelyx evidence snapshot: `9508af2d808c3394905fe106ade4755914b900ad`.
+
+- M0–M5 and M6.1–M6.7 complete in the public source.
+- M6.8 partial: first-phone synthetic background/cold-process receipt, notice and tap proof; further
+  receiver, recorder and two-phone gates remain. Hosted delivery is disabled after controlled checks.
+- Deterministic scores are experimental synthetic baselines; personal-baseline persistence, native
+  replay-channel graphs, online basemaps/downloaded regions, ML and public release remain unavailable/deferred.
+- The portfolio preserves separate consent for connected features and the local-first raw-data boundary.
+
+## Initial portfolio content baseline — historical
+
+The pre-refresh portfolio content baseline represented:
 
 - M0–M2 complete;
 - M3.1–M3.7 verified local processing;

@@ -39,7 +39,7 @@ export const siteMetadata = {
   canonicalUrl: "https://atrx07.pages.dev/",
   socialImagePath: "/atrx-wide.jpg",
   socialImageAlt: "ATRX artwork for Arppith Andrews, engineering student and AI automation builder",
-  lastModified: "2026-08-16",
+  lastModified: "2026-10-07",
 } as const;
 
 export const fieldNotesMetadata = {
@@ -65,7 +65,7 @@ export const capabilityGroups = [
   },
   {
     title: "Real-time & cloud",
-    items: ["Cloudflare Workers", "Durable Objects", "D1", "WebSockets", "Firebase", "Upstash Redis"],
+    items: ["Cloudflare Workers", "Durable Objects", "D1", "WebSockets", "Supabase", "PostgreSQL", "Firebase / FCM", "Upstash Redis"],
   },
   {
     title: "Hardware & media",

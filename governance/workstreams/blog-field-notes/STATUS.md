@@ -2,6 +2,11 @@
 
 ## Documentation dependency and live recheck — 2026-10-07
 
+Shared dependency: the `project-display-traelyx` refresh updates the shared Traelyx metadata summary and
+homepage modification date, adding a raw/hydrated metadata-agreement regression. Article prose,
+publication dates, collection date, route ownership, and blog continuation remain unchanged. The full
+blog/route regression matrix must pass before the portfolio refresh is delivered.
+
 - The user-authorized `documentation-health` audit corrected stale zero-note descriptions, component
   ownership, and singleton handoff references in shared durable docs. No article, runtime source,
   publication status, or approved evidence boundary changed.

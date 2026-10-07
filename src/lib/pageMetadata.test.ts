@@ -1,4 +1,7 @@
 import type { BlogPostMeta } from "../blog/types";
+import { readFileSync } from "node:fs";
+import { siteMetadata } from "../data/profile";
+import { traelyxSummary } from "../data/traelyxMetadata";
 import {
   applyPageMetadata,
   articlePageMetadata,
@@ -42,6 +45,18 @@ describe("route metadata", () => {
     expect(canonicalUrl("blog/native-boundaries")).toBe(
       "https://atrx07.pages.dev/blog/native-boundaries",
     );
+  });
+
+  it("keeps the raw homepage Traelyx description and modification date aligned with hydrated metadata", () => {
+    const html = readFileSync("index.html", "utf8");
+    const json = html.match(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    expect(json).toBeDefined();
+    const raw = JSON.parse(json!) as { "@graph": Array<Record<string, unknown>> };
+    const hydrated = homePageMetadata.structuredData as typeof raw;
+    for (const graph of [raw["@graph"], hydrated["@graph"]]) {
+      expect(graph.find((item) => item.name === "Traelyx")?.description).toBe(traelyxSummary);
+      expect(graph.find((item) => item["@type"] === "ProfilePage")?.dateModified).toBe(siteMetadata.lastModified);
+    }
   });
 
   it("describes published and archived notes as indexable technical articles", () => {

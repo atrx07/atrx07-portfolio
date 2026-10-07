@@ -5,10 +5,10 @@ describe("ArchitecturePlayground", () => {
   it("updates the explanation when a node is selected", () => {
     render(<ArchitecturePlayground onDiscover={vi.fn()} />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Analysis timeline" }));
+    fireEvent.click(screen.getByRole("button", { name: "Local intelligence" }));
 
-    expect(screen.getByRole("heading", { name: "Analysis timeline" })).toBeInTheDocument();
-    expect(screen.getByText(/deterministic monotonic analysis timebase/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Local intelligence" })).toBeInTheDocument();
+    expect(screen.getByText(/synthetic scoring is still experimental/)).toBeInTheDocument();
   });
 
   it("moves between nodes with arrow keys", () => {
@@ -18,6 +18,6 @@ describe("ArchitecturePlayground", () => {
     firstNode.focus();
     fireEvent.keyDown(firstNode, { key: "ArrowRight" });
 
-    expect(screen.getByRole("button", { name: "Analysis timeline" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Local intelligence" })).toHaveFocus();
   });
 });

@@ -467,7 +467,7 @@ section[id] {
 }
 
 .current-build i {
-  color: var(--success);
+  color: var(--warning);
 }
 
 .signal-stripe--hero {
@@ -863,7 +863,7 @@ section[id] {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--success);
+  color: var(--warning);
   font-style: normal;
 }
 
@@ -871,8 +871,8 @@ section[id] {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 0 4px rgb(49 180 84 / 10%);
+  background: var(--warning);
+  box-shadow: 0 0 0 4px rgb(222 169 45 / 10%);
 }
 
 .traelyx-recorder-body {
@@ -1065,6 +1065,20 @@ section[id] {
 
 .traelyx-proof-ledger dt { color: var(--muted); }
 .traelyx-proof-ledger dd { margin: 0; color: var(--success); }
+.traelyx-proof-ledger dd[data-state="partial"] { color: var(--warning); }
+
+.traelyx-source-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 20px;
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+.traelyx-source-link:hover { color: var(--ink); }
 
 .traelyx-lifecycle {
   position: relative;
@@ -1092,6 +1106,8 @@ section[id] {
 .traelyx-lifecycle b { color: var(--success); font-size: inherit; }
 .traelyx-lifecycle [data-state="pending"] { color: var(--warning); }
 .traelyx-lifecycle [data-state="pending"] b { color: var(--warning); }
+.traelyx-lifecycle [data-state="partial"] { color: var(--warning); }
+.traelyx-lifecycle [data-state="partial"] b { color: var(--warning); }
 
 .traelyx-recorder-footer {
   padding-top: 12px;

@@ -1,5 +1,6 @@
 import type { BlogPostMeta } from "../blog/types";
 import { fieldNotesMetadata, profile, siteMetadata } from "../data/profile";
+import { traelyxSummary } from "../data/traelyxMetadata";
 
 const INDEX_ROBOTS = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 const NOINDEX_ROBOTS = "noindex, nofollow";
@@ -197,8 +198,7 @@ export const homePageMetadata: RouteMetadata = {
         "@type": "SoftwareSourceCode",
         "@id": `${siteMetadata.canonicalUrl}#software-traelyx`,
         name: "Traelyx",
-        description:
-          "An open-source, local-first Android driving telemetry platform with verified native recording, a strict private field fixture, deterministic telemetry processing, categorical confidence, and replay reduction.",
+        description: traelyxSummary,
         codeRepository: "https://github.com/atrx07/Traelyx",
         programmingLanguage: ["Dart", "Kotlin"],
         runtimePlatform: "Android",
