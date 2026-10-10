@@ -2,10 +2,10 @@
 
 ## State
 
-`verified-local` / `pending delivery` — 2026-10-11, branch `main`.
+`completed` / `verified-live` — 2026-10-11, branch `main`.
 
-Pending source commit: add Sable-AI's completed v2 foundation, original receipt visual and explanatory
-controls, catalog/architecture/terminal/metadata integration, and scoped documentation/tests.
+Source commit `27a9de9` pushed to `origin/main`: Sable-AI's completed v2 foundation, original receipt
+visual and explanatory controls, catalog/architecture/terminal/metadata integration, and scoped docs/tests.
 
 ## Verified facts
 
@@ -41,7 +41,22 @@ controls, catalog/architecture/terminal/metadata integration, and scoped documen
 
 ## Blockers
 
-None for implementation. Source delivery and live Cloudflare verification remain pending.
+None. Source delivery and the deployed portfolio representation are verified.
+
+## Live verification
+
+- A first post-push HTTP 200 response still served the prior build. A subsequent fresh response
+  contained Sable's raw SoftwareSourceCode entry, the 2026-10-11 homepage date, and the new published
+  `index-Ca1A-3fz.js` entry. Live bundle names differ from the local Windows build; contract checks,
+  rather than byte identity, establish the representation described here.
+- Read-only Chromium checks of `https://atrx07.pages.dev/` passed at 1280, 1024, 768, 640, and 360 px:
+  eight projects, completed Sable, original receipt/caption containment, blocked-check explanation,
+  preservation of later edits, dialog/document containment, `project sable`, and hydrated metadata.
+  All five runs had zero page errors or console warnings/errors. Live screenshots were captured.
+- A separate normal-motion live check passed for palette search/open, repository URL, missing-tool
+  outcome, the short receipt-stamp animation, architecture selection, and the 2026-10-11 sitemap date.
+- Traelyx remains the current-build entry. The live Field Notes archive still contains its two
+  published notes. No Sable code, model inference, or external repository workflow was executed.
 
 ## Shared-file dependencies
 

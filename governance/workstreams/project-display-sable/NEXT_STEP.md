@@ -6,18 +6,21 @@
 
 - Portfolio baseline `871f69d`; read-only Sable evidence `5a727c9`.
 - Scope: project-list addition; keep Traelyx current.
-- Implementation and local verification complete; source delivery and live verification pending.
+- Source `27a9de9` is implemented, validated locally, and pushed to `origin/main`.
+- Workstream completed / verified-live on 2026-10-11. The deployed portfolio passes the Sable surface,
+  discovery, metadata, responsive, console, and unchanged-Traelyx checks recorded in STATUS.md.
+- No required implementation or deployment action remains.
 
 ## Implementation sequence
 
-1. Commit and push the validated portfolio source to `origin/main`, excluding unrelated experiment
-   lockfiles and ignored QA artifacts.
-2. Observe Cloudflare's published HTML/assets and compare the homepage and portfolio bundle with the
-   local build. A push alone does not establish deployment.
-3. Verify Sable's card/dialog, explanatory controls, terminal, architecture/palette access, repository
-   link, structured data, sitemap date, console, overflow, and the unchanged Traelyx current-build slot
-   on the deployed portfolio. Record a precise blocker if the deployed surface cannot be observed.
-4. Update only this workstream's status/continuation and registry row, then commit/push the handoff.
+1. On a future authorized portfolio refresh, re-read the public Sable README, evidence map, architecture,
+   roadmap, and relevant implemented contracts. Keep external development read-only.
+2. Update the portfolio's pinned claims and explanatory states only when public implementation evidence
+   supports the change. Preserve the completed foundation, hosted-inference boundary, and proposed
+   upgrade distinction; never adopt an external roadmap as portfolio implementation work.
+3. Re-run affected local and deployed checks after changes, including the eight-project rack and the
+   receipt at desktop/tablet/mobile widths. Keep Traelyx current unless the user explicitly changes it.
+4. Record future observed maintenance evidence only in this workstream; retain other goals and handoffs.
 
 ## Constraints
 
@@ -27,5 +30,5 @@
 
 ## Exit criteria
 
-- SCOPE.md criteria are satisfied with observed validation evidence.
-- Remaining deployment or maintenance work is recorded only here.
+- Current SCOPE.md criteria are satisfied with local and live evidence in STATUS.md.
+- Future maintenance continues only this portfolio representation goal; no active delivery work remains.
