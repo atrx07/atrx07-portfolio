@@ -96,9 +96,9 @@ The portfolio should communicate three things immediately:
   native recording, local intelligence/replay, optional connected features, partial Guardian-alert
   boundary, experimental-scoring caveat, next milestone, and
   repository path.
-- A seven-project lab for Traelyx, NeuraLoc-Core, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
+- An eight-project lab for Traelyx, NeuraLoc-Core, Sable-AI, void.chat, Aveline Bot, StyleForge Lite, SecureScope,
   and AtrxInstaDown.
-- Interactive architecture diagrams for Traelyx, NeuraLoc-Core, void.chat, and Aveline Bot.
+- Interactive architecture diagrams for Traelyx, NeuraLoc-Core, Sable-AI, void.chat, and Aveline Bot.
 - A fixed-command simulated terminal with history, tab completion, safe links, mode switching, and no
   arbitrary shell execution.
 - An experiment rack, capability map, operating principles, and direct email/GitHub contact section.
@@ -124,6 +124,14 @@ The portfolio should communicate three things immediately:
 These entries describe behavior and governance at each historical commit. Older ignore rules, project
 counts, and deployment milestones are historical observations; current ownership and counts are
 defined above and in the workstream registry.
+
+### 22. Sable-AI Project Representation — 2026-10-11
+
+- Added the completed Sable v2 foundation to the selected projects, with ongoing proposed upgrades,
+  hosted-inference boundaries, and public source evidence.
+- Created an original change receipt and interactive verification/undo explanation; integrated
+  project filtering, detail inspection, architecture, palette, terminal, discovery, and metadata.
+- Traelyx remains the current build. Operational evidence belongs to `project-display-sable`.
 
 ### 21. Traelyx Connected Experience Refresh — `f5c68f9` (2026-10-07)
 
@@ -351,7 +359,7 @@ site with two connected evidence layers:
 2. **Field Notes (`/blog` and `/blog/:slug`)** — durable written evidence explaining engineering
    decisions, experiments, failures, constraints, model evaluations, debugging, and lessons learned.
 
-This is an extension of the existing product, not a replacement or redesign of the homepage. The seven
+This is an extension of the existing product, not a replacement or redesign of the homepage. The eight
 featured projects retain their custom visual and interaction treatments. The blog does not require the
 project system to become a generic content-management framework.
 

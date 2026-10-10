@@ -1,5 +1,5 @@
 export type VisitorMode = "recruiter" | "developer" | "chaos";
-export type ProjectStatus = "active" | "shipped" | "experimental" | "prototype";
+export type ProjectStatus = "active" | "shipped" | "completed" | "experimental" | "prototype";
 
 export type ArchitectureNode = {
   id: string;
@@ -23,5 +23,5 @@ export type Project = {
   constraints?: string[];
   architecture?: ArchitectureNode[];
   next?: string;
-  visual: "telemetry" | "runtime" | "chat" | "memory" | "sequencer" | "security" | "mobile";
+  visual: "telemetry" | "runtime" | "receipt" | "chat" | "memory" | "sequencer" | "security" | "mobile";
 };

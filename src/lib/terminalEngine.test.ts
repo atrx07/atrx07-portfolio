@@ -27,6 +27,16 @@ describe("terminalEngine", () => {
     expect(result.action).toBeUndefined();
   });
 
+  it("finds the completed Sable foundation while keeping Traelyx current", () => {
+    const result = executeTerminalCommand("project sable");
+    expect(result.lines[0]).toBe("Sable-AI // COMPLETED");
+    expect(result.lines.join(" ")).toContain("hosted Groq inference");
+    expect(result.lines.join(" ")).toContain("https://github.com/atrx07/Sable-AI");
+    expect(result.action).toBeUndefined();
+    expect(completeTerminalCommand("project sab")).toBe("project sable");
+    expect(executeTerminalCommand("now").lines[0]).toContain("Traelyx");
+  });
+
   it("changes only allowlisted visitor modes", () => {
     expect(executeTerminalCommand("mode developer")).toMatchObject({
       action: "mode",

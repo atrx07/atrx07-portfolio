@@ -1,10 +1,12 @@
 import type { Project } from "../types";
 import { traelyxProject } from "./traelyx";
+import { sableProject } from "./sable";
 
 export const projectCategories = [
   "All",
   "Mobile & telemetry",
   "Local AI",
+  "Developer tools",
   "Real-time",
   "Bots & automation",
   "Music tech",
@@ -64,6 +66,7 @@ export const projects: Project[] = [
     ],
     visual: "runtime",
   },
+  sableProject,
   {
     slug: "voidchat",
     name: "void.chat",
@@ -203,5 +206,5 @@ export const projects: Project[] = [
 ];
 
 export const architectureProjects = projects.filter((project) =>
-  ["traelyx", "neuraloc", "voidchat", "aveline"].includes(project.slug),
+  ["traelyx", "neuraloc", "sable", "voidchat", "aveline"].includes(project.slug),
 );

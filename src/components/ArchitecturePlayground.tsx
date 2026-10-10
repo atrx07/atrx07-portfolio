@@ -46,7 +46,7 @@ export function ArchitecturePlayground({ onDiscover }: Props) {
         <p className="eyebrow">Architecture playground</p>
         <h2 id="architecture-title">FOLLOW THE STATE. FIND THE RESPONSIBILITY.</h2>
         <p>
-          Four systems, reduced to the boundaries that matter. Focus, hover, or select a node to inspect its
+          {architectureProjects.length} systems, reduced to the boundaries that matter. Focus, hover, or select a node to inspect its
           job.
         </p>
       </div>

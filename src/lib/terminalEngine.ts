@@ -15,6 +15,7 @@ export type TerminalResult = {
 const projectByCommand: Record<string, string> = {
   traelyx: "traelyx",
   neuraloc: "neuraloc",
+  sable: "sable",
   voidchat: "voidchat",
   aveline: "aveline",
   styleforge: "styleforge",
@@ -66,7 +67,7 @@ export function executeTerminalCommand(rawInput: string): TerminalResult {
     return {
       lines: slug
         ? projectLines(slug)
-        : ["Unknown project. Try: traelyx, neuraloc, voidchat, aveline, styleforge."],
+        : ["Unknown project. Try: traelyx, neuraloc, sable, voidchat, aveline, styleforge."],
     };
   }
 

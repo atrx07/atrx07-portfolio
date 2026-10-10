@@ -2,6 +2,7 @@ import type { BlogPostMeta } from "../blog/types";
 import { readFileSync } from "node:fs";
 import { siteMetadata } from "../data/profile";
 import { traelyxSummary } from "../data/traelyxMetadata";
+import { sableSummary } from "../data/sableMetadata";
 import {
   applyPageMetadata,
   articlePageMetadata,
@@ -55,6 +56,11 @@ describe("route metadata", () => {
     const hydrated = homePageMetadata.structuredData as typeof raw;
     for (const graph of [raw["@graph"], hydrated["@graph"]]) {
       expect(graph.find((item) => item.name === "Traelyx")?.description).toBe(traelyxSummary);
+      expect(graph.find((item) => item.name === "Sable-AI")).toMatchObject({
+        description: sableSummary,
+        codeRepository: "https://github.com/atrx07/Sable-AI",
+        creativeWorkStatus: "Completed v2 foundation; ongoing upgrades",
+      });
       expect(graph.find((item) => item["@type"] === "ProfilePage")?.dateModified).toBe(siteMetadata.lastModified);
     }
   });

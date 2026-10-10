@@ -2,6 +2,7 @@ import type { Project } from "../types";
 import { traelyxPresentation } from "../data/traelyx";
 import { AgentFlow, type AgentFlowEdge, type AgentFlowNode } from "./godui/agent-flow";
 import { OrbitingCircles } from "./godui/orbiting-circles";
+import { SableVisual } from "./SableVisual";
 
 type VoidNodeProps = {
   code: string;
@@ -81,13 +82,19 @@ type ProjectVisualProps = {
   project: Project;
   compact?: boolean;
   avelineLayout?: "stacked" | "linear";
+  interactive?: boolean;
 };
 
 export function ProjectVisual({
   project,
   compact = false,
   avelineLayout = "stacked",
+  interactive = false,
 }: ProjectVisualProps) {
+  if (project.visual === "receipt") {
+    return <SableVisual compact={compact} interactive={interactive} />;
+  }
+
   if (project.visual === "telemetry") {
     return (
       <div

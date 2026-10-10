@@ -9,6 +9,7 @@ export const terminalCommands: TerminalCommand[] = [
   { command: "projects", description: "List featured projects" },
   { command: "project traelyx", description: "Inspect Traelyx" },
   { command: "project neuraloc", description: "Inspect NeuraLoc-Core" },
+  { command: "project sable", description: "Inspect Sable-AI" },
   { command: "project voidchat", description: "Inspect void.chat" },
   { command: "project aveline", description: "Inspect Aveline Bot" },
   { command: "project styleforge", description: "Inspect StyleForge Lite" },

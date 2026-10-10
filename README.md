@@ -13,6 +13,18 @@ social comparisons, and Guardian pairing. M6.8 remains in progress despite contr
 first-phone background/cold-process push proof. Scoring remains an experimental synthetic baseline;
 ML and public-release hardening remain future M7/M8 work.
 
+## Selected completed work
+
+[Sable-AI](https://github.com/atrx07/Sable-AI) joins the project list as a completed v2 coding-agent
+foundation with ongoing proposed upgrades. Its Python CLI combines bounded repository context,
+capability approvals, transactional file tools, conflict-aware undo, deterministic verification,
+JSON automation, and local traces. Controls and evidence are local; inference uses hosted Groq.
+Source installation is supported; public package publication is not implied.
+
+The Sable detail view includes an original change receipt with interactive explanations of required
+check outcomes and undo conflicts. It executes no code and labels the documented fixture as expected
+behavior. Traelyx remains the current build.
+
 ## Stack
 
 - Vite, React, and strict TypeScript
@@ -51,6 +63,7 @@ Public profile content is centralized in:
 
 - `src/data/profile.ts`
 - `src/data/projects.ts` (Traelyx delegates to `src/data/traelyx.ts`)
+- `src/data/sable.ts` (Sable project claims, pinned evidence, and explanatory receipt states)
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.
@@ -61,6 +74,13 @@ scores do not establish population calibration or emergency reliability. Governe
 persistence, native replay-channel graphs, online basemaps/downloaded regions, ML, and public release
 remain unavailable or deferred. Raw routes are not auto-uploaded; sync, comparisons, and Guardian
 permissions require their own consent. New public claims must be re-verified before advancing them.
+
+Sable's shared-route description lives in `src/data/sableMetadata.ts`. Keep the completed v2 foundation
+distinct from proposed offline inference, other providers, task resume, and IDE/server integrations.
+The 53-scenario baseline is a declared deterministic contract, not an observed live-model success rate.
+Transactions cover Sable file tools; native/PRoot processes do not provide kernel isolation. Re-read
+the public evidence map and roadmap before advancing claims. `project sable`, project filtering,
+command-palette search, architecture selection, and discovery derive from the local catalog.
 
 Field Notes content lives in paired files under `src/blog/posts/`:
 

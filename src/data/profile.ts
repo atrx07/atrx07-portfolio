@@ -39,7 +39,7 @@ export const siteMetadata = {
   canonicalUrl: "https://atrx07.pages.dev/",
   socialImagePath: "/atrx-wide.jpg",
   socialImageAlt: "ATRX artwork for Arppith Andrews, engineering student and AI automation builder",
-  lastModified: "2026-10-07",
+  lastModified: "2026-10-11",
 } as const;
 
 export const fieldNotesMetadata = {

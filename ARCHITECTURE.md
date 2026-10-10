@@ -121,7 +121,8 @@ flowchart TD
 | `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
 | `Flagship.tsx` | Traelyx current-build narrative, pinned desktop title, drive-evidence schematic, architecture strip, M0–M5/M6.1–M6.7 delivery and partial M6.8 checkpoint |
 | `ProjectLab.tsx` | Project filters, accordion state, mobile tap behavior, discovery, and detail-dialog coordination |
-| `ProjectVisual.tsx` | Deterministic project-specific visual fragments for seven visual types, including Traelyx's local telemetry pipeline and void.chat's layered edge architecture orbit |
+| `ProjectVisual.tsx` | Project-specific visual fragments for eight visual types, including Traelyx's drive schematic, Sable's change receipt, and void.chat's layered edge architecture orbit |
+| `SableVisual.tsx` | Original receipt illustration and opt-in detail-view explanation of verification states and fingerprint-aware undo; transient local state only |
 | `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
 | `ArchitecturePlayground.tsx` | Project tabs, keyboard node navigation, pinned responsibility explanation |
 | `PortfolioTerminal.tsx` | Fixed-height terminal UI, input history, completion, safe action dispatch, internal output scrolling |
@@ -163,6 +164,15 @@ score. Reduced motion disables trace movement while preserving every label. The 
 `/public/traelyx-mark.png` launcher mark remains a local owned asset copied from the public repository.
 
 ## Data Ownership
+
+Sable's catalog entry and pinned public evidence live in `src/data/sable.ts`, alongside immutable
+explanatory fixture/check/undo states. `src/data/sableMetadata.ts` supplies only the shared-route
+summary, preserving the homepage visual's lazy boundary. `ProjectVisual` renders a decorative receipt
+in accordions; `ProjectDetail` enables its accessible check buttons and later-edit toggle. These update
+explanatory text and stamps without executing code, contacting a provider, or persisting state. Sable
+is marked `completed` for its v2 source foundation; proposed upgrades and release boundaries remain
+explicit. Traelyx still owns the current-build slot. The eight-project desktop rack narrows its title
+rails to retain a readable expanded surface; mobile remains tap-controlled.
 
 ### Canonical local data
 
@@ -341,6 +351,7 @@ source
 - `src/components/PortfolioTerminal.test.tsx`
 - `src/components/ProjectLab.test.tsx`
 - `src/components/ProjectVisual.test.tsx`
+- `src/components/SableVisual.test.tsx`
 - `src/blog/validation.test.ts`
 - `src/blog/registry.test.ts`
 - `src/blog/preview.test.ts`
@@ -372,6 +383,9 @@ Aveline's desktop-linear/mobile-and-dialog-stacked flow contracts.
 `e2e/routes.spec.ts` covers cross-route Field Notes navigation, browser history, direct development
 preview, semantic article primitives, code/table containment, unpublished recovery, and reduced-motion
 route behavior across desktop and mobile projects.
+`e2e/sable.spec.ts` covers Sable discovery, project filtering, palette/terminal/architecture access,
+required-check outcomes, undo conflicts, focus restoration, keyboard/reduced-motion interaction,
+desktop/mobile/tablet/reflow containment, and preservation of Traelyx's current-build slot.
 
 The build isolates the complete interactive portfolio behind one route boundary. Exact bundle hashes
 and measured sizes are dated release observations in workstream status files, not fixed architectural

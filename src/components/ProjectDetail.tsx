@@ -34,7 +34,7 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
       {project && (
         <div
           className={`project-dialog-inner ${
-            project.slug === "traelyx" ? "project-dialog-inner--traelyx" : ""
+            ["traelyx", "sable"].includes(project.slug) ? `project-dialog-inner--${project.slug}` : ""
           }`}
         >
           <button
@@ -47,7 +47,7 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
           </button>
 
           <div className="project-dialog-visual">
-            <ProjectVisual project={project} />
+            <ProjectVisual project={project} interactive={project.slug === "sable"} />
           </div>
 
           <div className="project-dialog-copy">
@@ -86,7 +86,7 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
 
             {project.next && (
               <div className="next-block">
-                <h3>Next checkpoint</h3>
+                <h3>{project.status === "completed" ? "Completed foundation / ongoing upgrades" : "Next checkpoint"}</h3>
                 <p>{project.next}</p>
               </div>
             )}

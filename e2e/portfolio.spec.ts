@@ -21,7 +21,7 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
     true,
   );
   expect(graph["@graph"]?.some((item) => item["@type"] === "ProfilePage")).toBe(true);
-  expect(graph["@graph"]?.filter((item) => item["@type"] === "SoftwareSourceCode")).toHaveLength(4);
+  expect(graph["@graph"]?.filter((item) => item["@type"] === "SoftwareSourceCode")).toHaveLength(5);
   expect(
     graph["@graph"]?.some(
       (item) => item["@type"] === "SoftwareSourceCode" && item.name === "Traelyx",
@@ -32,7 +32,7 @@ test("technical SEO signals agree on the canonical profile", async ({ page, requ
   expect(sitemapResponse.ok()).toBe(true);
   const sitemap = await sitemapResponse.text();
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/</loc>");
-  expect(sitemap).toContain("<lastmod>2026-10-07</lastmod>");
+  expect(sitemap).toContain("<lastmod>2026-10-11</lastmod>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog</loc>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog/a-security-tool-should-know-when-it-is-guessing</loc>");
   expect(sitemap).toContain("<loc>https://atrx07.pages.dev/blog/local-ai-is-a-systems-problem</loc>");
@@ -152,7 +152,8 @@ test("mobile navigation and layout smoke", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  // Wait for the actual portfolio, not the lazy route's temporary loading heading/header.
+  await expect(page.locator(".current-build")).toContainText("Traelyx");
   await page.getByRole("button", { name: "Open navigation" }).click();
   const mobileNavigation = page.getByRole("navigation", { name: "Mobile navigation" });
   await expect(mobileNavigation).toBeVisible();
