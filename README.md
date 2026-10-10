@@ -4,7 +4,7 @@ Interactive portfolio for Arppith Andrews (`atrx07`), built as a compact softwar
 
 ## Current build
 
-[Traelyx](https://github.com/atrx07/Traelyx) is the active project: an open-source, local-first Android
+[Traelyx](https://github.com/atrx07/Traelyx) is the front-page current build: an open-source, local-first Android
 driving platform built around explainable evidence and data ownership. The portfolio's
 [public evidence snapshot](https://github.com/atrx07/Traelyx/blob/9508af2d808c3394905fe106ade4755914b900ad/README.md)
 was checked on 2026-10-07. M0–M5 and M6.1–M6.7 are complete: verified recording, deterministic
@@ -13,17 +13,17 @@ social comparisons, and Guardian pairing. M6.8 remains in progress despite contr
 first-phone background/cold-process push proof. Scoring remains an experimental synthetic baseline;
 ML and public-release hardening remain future M7/M8 work.
 
-## Selected completed work
+## Selected work
 
-[Sable-AI](https://github.com/atrx07/Sable-AI) joins the project list as a completed v2 coding-agent
-foundation with ongoing proposed upgrades. Its Python CLI combines bounded repository context,
+[Sable-AI](https://github.com/atrx07/Sable-AI) is tagged active, with a completed v2 coding-agent
+foundation and ongoing proposed upgrades. Its Python CLI combines bounded repository context,
 capability approvals, transactional file tools, conflict-aware undo, deterministic verification,
 JSON automation, and local traces. Controls and evidence are local; inference uses hosted Groq.
 Source installation is supported; public package publication is not implied.
 
-The Sable detail view includes an original change receipt with interactive explanations of required
-check outcomes and undo conflicts. It executes no code and labels the documented fixture as expected
-behavior. Traelyx remains the current build.
+Sable's art combines the ui-assets Agent Timeline with a scoped patch and layered recovery journal.
+The detail view expands contract details and explains required-check outcomes and undo conflicts.
+It executes no code and labels the documented fixture as expected behavior. Traelyx remains current.
 
 ## Stack
 
@@ -32,7 +32,7 @@ behavior. Traelyx remains the current build.
 - Build-time MDX with GFM tables and lazy article chunks
 - Tailwind CSS plus eager shared-route and lazy portfolio-owned visual layers
 - GSAP and ScrollTrigger for restrained scroll motion
-- Framer Motion for reduced-motion-aware orbital system visuals
+- Framer Motion for reduced-motion-aware orbital visuals and collapsible agent timeline details
 - Lucide React icons
 - Vitest, React Testing Library, and Playwright
 
@@ -63,7 +63,7 @@ Public profile content is centralized in:
 
 - `src/data/profile.ts`
 - `src/data/projects.ts` (Traelyx delegates to `src/data/traelyx.ts`)
-- `src/data/sable.ts` (Sable project claims, pinned evidence, and explanatory receipt states)
+- `src/data/sable.ts` (Sable claims, pinned evidence, timeline stages, and explanatory check/undo states)
 - `src/data/commands.ts`
 
 Project claims should remain grounded in the linked public repositories. Do not add private repository details, college information, personal contact details beyond the public email, or unverified metrics.

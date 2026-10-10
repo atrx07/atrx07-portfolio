@@ -7,12 +7,12 @@ describe("Sable's portfolio explanation", () => {
     expect(screen.getByText("VERIFIED")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Tool missing" }));
-    expect(screen.getByText("INCOMPLETE")).toBeInTheDocument();
+    expect(screen.getAllByText("INCOMPLETE")).toHaveLength(2);
     expect(screen.queryByText("VERIFIED")).not.toBeInTheDocument();
     expect(screen.getByText(/Missing tools do not trigger model repair/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Policy blocks" }));
-    expect(screen.getByText("BLOCKED")).toBeInTheDocument();
+    expect(screen.getAllByText("BLOCKED")).toHaveLength(2);
     expect(screen.getByRole("button", { name: "Policy blocks" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByText(/model output cannot override/)).toBeInTheDocument();
 
@@ -34,10 +34,28 @@ describe("Sable's portfolio explanation", () => {
     expect(screen.getByText("Interactive explanation. No code executes.")).toBeInTheDocument();
   });
 
-  it("keeps the accordion receipt decorative and leaves controls to the detail view", () => {
+  it("keeps the accordion timeline decorative and leaves controls to the detail view", () => {
     const { container } = render(<SableVisual compact />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
     expect(container).toHaveTextContent("DOCUMENTED FIXTURE / EXPECTED BEHAVIOR");
+    expect(container.querySelectorAll('[data-slot="agent-step"]')).toHaveLength(5);
+    expect(container.querySelector('[data-status="running"]')).toBeNull();
+  });
+
+  it("expands real contract details and derives check-step state from the selected outcome", () => {
+    const { container } = render(<SableVisual interactive />);
+    const context = screen.getByRole("button", { name: /Gather context/ });
+    expect(context).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(context);
+    expect(context).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText(/Selected context is sent to hosted Groq inference/)).toBeInTheDocument();
+    const checkStep = container.querySelectorAll('[data-slot="agent-step"]')[3];
+    expect(checkStep).toHaveAttribute("data-status", "success");
+    fireEvent.click(screen.getByRole("button", { name: "Tool missing" }));
+    expect(checkStep).toHaveAttribute("data-status", "pending");
+    fireEvent.click(screen.getByRole("button", { name: "Policy blocks" }));
+    expect(checkStep).toHaveAttribute("data-status", "error");
+    expect(container.querySelector('[data-status="running"]')).toBeNull();
   });
 });

@@ -91,7 +91,7 @@ export function ProjectVisual({
   avelineLayout = "stacked",
   interactive = false,
 }: ProjectVisualProps) {
-  if (project.visual === "receipt") {
+  if (project.visual === "timeline") {
     return <SableVisual compact={compact} interactive={interactive} />;
   }
 

@@ -121,8 +121,9 @@ flowchart TD
 | `godui/agent-flow.tsx` | Reusable measured-node workflow canvas with fixed or draggable coordinates, SVG edge packets, autoplay sequencing, and reduced-motion resolution |
 | `Flagship.tsx` | Traelyx current-build narrative, pinned desktop title, drive-evidence schematic, architecture strip, M0–M5/M6.1–M6.7 delivery and partial M6.8 checkpoint |
 | `ProjectLab.tsx` | Project filters, accordion state, mobile tap behavior, discovery, and detail-dialog coordination |
-| `ProjectVisual.tsx` | Project-specific visual fragments for eight visual types, including Traelyx's drive schematic, Sable's change receipt, and void.chat's layered edge architecture orbit |
-| `SableVisual.tsx` | Original receipt illustration and opt-in detail-view explanation of verification states and fingerprint-aware undo; transient local state only |
+| `ProjectVisual.tsx` | Project-specific visual fragments for eight visual types, including Traelyx's drive schematic, Sable's execution dossier, and void.chat's layered edge architecture orbit |
+| `SableVisual.tsx` | Agent Timeline, patch/recovery journal, and opt-in verification/undo explanation; transient local state only |
+| `godui/agent-timeline.tsx` | Bundled ui-assets ordered timeline and expandable steps; reduced-motion-aware transitions, no timer-driven state |
 | `ProjectDetail.tsx` | Accessible project case-study dialog with proof points, stack, repository, and constraints |
 | `ArchitecturePlayground.tsx` | Project tabs, keyboard node navigation, pinned responsibility explanation |
 | `PortfolioTerminal.tsx` | Fixed-height terminal UI, input history, completion, safe action dispatch, internal output scrolling |
@@ -167,10 +168,11 @@ score. Reduced motion disables trace movement while preserving every label. The 
 
 Sable's catalog entry and pinned public evidence live in `src/data/sable.ts`, alongside immutable
 explanatory fixture/check/undo states. `src/data/sableMetadata.ts` supplies only the shared-route
-summary, preserving the homepage visual's lazy boundary. `ProjectVisual` renders a decorative receipt
-in accordions; `ProjectDetail` enables its accessible check buttons and later-edit toggle. These update
-explanatory text and stamps without executing code, contacting a provider, or persisting state. Sable
-is marked `completed` for its v2 source foundation; proposed upgrades and release boundaries remain
+summary, preserving the homepage visual's lazy boundary. `ProjectVisual` renders a decorative execution
+dossier in accordions; `ProjectDetail` enables expandable Agent Timeline details, check buttons, and a
+later-edit toggle. Selected expected outcomes drive check-step state and explanations without executing
+code, contacting a provider, or persisting state. Sable is marked `active` per the user's refinement;
+its completed v2 source foundation, proposed upgrades, and release boundaries remain
 explicit. Traelyx still owns the current-build slot. The eight-project desktop rack narrows its title
 rails to retain a readable expanded surface; mobile remains tap-controlled.
 

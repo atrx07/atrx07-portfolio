@@ -15,7 +15,7 @@ export const sableProject: Project = {
   summary: sableSummary,
   categories: ["Developer tools", "Bots & automation"],
   technologies: ["Python", "Groq", "AST context", "JSONL traces", "Native / PRoot"],
-  status: "completed",
+  status: "active",
   featured: true,
   repoUrl: "https://github.com/atrx07/Sable-AI",
   proofPoints: [
@@ -38,7 +38,7 @@ export const sableProject: Project = {
     { id: "sable-transaction", label: "Recoverable edits", signal: "neutral", detail: "File-tool mutations snapshot their baseline and record post-state fingerprints. Undo restores matching paths and preserves later user edits as conflicts." },
     { id: "sable-verification", label: "Verification evidence", signal: "red", detail: "Required checks classify PASS, FAIL, INCOMPLETE, and BLOCKED. Only a genuine failure enters bounded repair; JSON results and local traces expose the outcome." },
   ],
-  visual: "receipt",
+  visual: "timeline",
 };
 
 // A portfolio explanation of documented contracts, not an execution or recorded run.
@@ -59,3 +59,12 @@ export const sableReceipt = {
     changed: { status: "LATER EDIT PRESERVED", detail: "The current fingerprint differs from Sable's post-state. Undo reports a conflict and preserves the newer user edit." },
   },
 } as const;
+
+// Expected stages of the documented fixture, not a live run or measured timing.
+export const sableTimeline = [
+  { id: "context", title: "Gather context", meta: "AST", detail: "Bounded repository paths, Python symbols, imports, and test neighbors supply context. Selected context is sent to hosted Groq inference." },
+  { id: "baseline", title: "Capture baseline", meta: "SNAPSHOT", detail: "Before a Sable file-tool mutation, the runtime captures the original file. This transaction boundary does not cover arbitrary subprocess effects." },
+  { id: "patch", title: "Apply scoped edit", meta: "FILE TOOL", detail: "The documented calculator fixture changes subtraction to addition while preserving tests/test_calculator.py. The runtime owns workspace and capability checks." },
+  { id: "checks", title: "Required checks", meta: "PASS", detail: "Required-check evidence determines the outcome; model output cannot declare a pass." },
+  { id: "evidence", title: "Record evidence", meta: "JSONL", detail: "Local redacted traces and schema-versioned results expose the outcome, including incomplete or blocked evidence. Verified auto-commit is eligible only after required checks pass." },
+] as const;

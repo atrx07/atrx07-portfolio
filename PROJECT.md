@@ -125,6 +125,14 @@ These entries describe behavior and governance at each historical commit. Older 
 counts, and deployment milestones are historical observations; current ownership and counts are
 defined above and in the workstream registry.
 
+### 23. Sable-AI Timeline Refinement — 2026-10-11
+
+- Replaced the simpler receipt art with a ui-assets Agent Timeline execution dossier, scoped patch,
+  and layered recovery journal. Expandable details explain the documented contracts.
+- Changed the catalog, terminal, and metadata status to active; the completed v2 foundation and
+  proposed-upgrade distinction remain accurate. Traelyx is still the front-page current build.
+- Operational evidence remains isolated under `project-display-sable`.
+
 ### 22. Sable-AI Project Representation — 2026-10-11
 
 - Added the completed Sable v2 foundation to the selected projects, with ongoing proposed upgrades,

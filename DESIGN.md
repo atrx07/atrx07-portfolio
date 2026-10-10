@@ -567,15 +567,16 @@ schematic traces into a claim of live telemetry, calibrated scoring, or emergenc
 Reduced motion freezes the traces without removing evidence. Do not invent speeds, routes, sensor
 readings, drive scores, global confidence percentages, or live telemetry.
 
-Sable-AI owns an original change-receipt composition: a geometric S glyph, a lightly offset paper
-ledger, the documented calculator diff, preserved-test notation, and a blue verification stamp.
-It is the project list's intentional light-surface accent within the black ATRX shell. Red denotes an
-incomplete/blocked verdict or a later-edit conflict. The receipt's torn edge and snapshot layers are
-code-native CSS/SVG, not generated screenshots or a reused workflow/orbit/terminal component.
-The dialog enables required-check choices and a later-user-edit toggle. Stamps and explanations change
-immediately, with textual state and visible keyboard focus; no simulated execution, typing loop,
-network request, or live benchmark is implied. Mobile gives the receipt and copy a single scrollable
-sheet. All labels remain present with reduced motion. Decorative card receipts expose no controls.
+Sable-AI owns a dark execution-dossier composition: a geometric S glyph, the bundled ui-assets Agent
+Timeline, the documented calculator patch, test-integrity notation, and layered pre/post-edit records.
+Precise blue rails and offset journal sheets distinguish it from Aveline's Agent Flow, the project
+orbits, and terminal art. Red denotes a blocked/unverified verdict or a later-edit conflict.
+The dialog expands meaningful step details and enables required-check choices and a later-user-edit
+toggle. Check-step states derive from selected expected outcomes, never a timer or cosmetic autoplay.
+Visible text and keyboard focus accompany every state. No simulated execution, typing loop, network
+request, or live benchmark is implied. Mobile uses a single scrollable sheet; narrower dialogs stack
+timeline and journal. Reduced motion removes spring transitions without hiding details. Decorative
+card timelines expose no interactive controls. The project tag is active; Traelyx remains current.
 
 8. When in doubt about emphasis: bigger photography before bigger type.
 

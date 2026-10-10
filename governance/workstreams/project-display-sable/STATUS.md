@@ -2,7 +2,41 @@
 
 ## State
 
-`completed` / `verified-live` — 2026-10-11, branch `main`.
+`verified-local` / pending source commit and live verification — 2026-10-11, branch `main`.
+
+Pending commit: enrich Sable's portfolio art with ui-assets Agent Timeline and an active tag.
+Traelyx's current-build representation remains unchanged. Prior delivery history is retained below.
+
+## Current refinement observations
+
+- Copied the bundled `godui/agent-timeline.tsx`; added linked panel IDs for expandable details.
+- Built a dark execution dossier with a five-stage ordered rail, scoped calculator patch, test
+  integrity notation, layered recovery journal, and fingerprint comparison.
+- Selected explanatory outcomes drive check-step states: pass/success, missing/pending, blocked/error.
+  No timer-driven progress, execution, provider request, unsupported metric, or fake live trace.
+- Dialog details expand the pinned contracts. Later-edit controls retain conflict-aware undo behavior.
+- Catalog, terminal, raw/hydrated metadata, and visual identity now say active; the completed v2
+  foundation, hosted inference, proposed upgrades, and release boundaries remain explicit.
+- TypeScript lint and final production build passed. Vitest: 78 passed across 27 files.
+- Final Playwright matrix: 43 passed, one expected desktop-only skip. Shared project, Field Notes,
+  navigation, metadata, and route-boundary regressions pass.
+- Added full-rack containment checks at 1280, 1024, 768, 640, and 360 px. QA found caption clipping;
+  explicit visual-row minimums and non-shrinking dossier elements corrected it before final checks.
+- Production-preview audit passed at all five widths, including normal motion at 1280, reduced
+  motion elsewhere, expandable details, blocked/missing checks, undo conflicts, source link,
+  terminal, raw/hydrated metadata, document/dialog containment, and zero console/page errors.
+- Card and dialog screenshots were inspected. Narrow dialogs stack the timeline and journal;
+  mobile keeps a single scrollable sheet. Keyboard and 640 px reflow checks pass.
+- Final bundle: shared CSS 42.62 kB / 9.09 gzip; portfolio CSS 70.77 / 13.95; shared JS 252.23 / 82.63;
+  portfolio JS 322.60 / 112.31. Existing lazy route/article boundaries are preserved.
+- Other workstream handoffs and the two unrelated untracked experiment lockfiles are untouched.
+
+## Current blockers / next verification
+
+No local blocker. Commit/push and deployed-portfolio verification remain pending; do not infer live
+delivery from the successful local build.
+
+## Prior completed delivery — original receipt baseline
 
 Source commit `27a9de9` pushed to `origin/main`: Sable-AI's completed v2 foundation, original receipt
 visual and explanatory controls, catalog/architecture/terminal/metadata integration, and scoped docs/tests.

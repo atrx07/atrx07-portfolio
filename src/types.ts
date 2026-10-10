@@ -23,5 +23,5 @@ export type Project = {
   constraints?: string[];
   architecture?: ArchitectureNode[];
   next?: string;
-  visual: "telemetry" | "runtime" | "receipt" | "chat" | "memory" | "sequencer" | "security" | "mobile";
+  visual: "telemetry" | "runtime" | "timeline" | "chat" | "memory" | "sequencer" | "security" | "mobile";
 };

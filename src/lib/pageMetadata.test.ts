@@ -59,7 +59,7 @@ describe("route metadata", () => {
       expect(graph.find((item) => item.name === "Sable-AI")).toMatchObject({
         description: sableSummary,
         codeRepository: "https://github.com/atrx07/Sable-AI",
-        creativeWorkStatus: "Completed v2 foundation; ongoing upgrades",
+        creativeWorkStatus: "Active development; v2 foundation complete",
       });
       expect(graph.find((item) => item["@type"] === "ProfilePage")?.dateModified).toBe(siteMetadata.lastModified);
     }

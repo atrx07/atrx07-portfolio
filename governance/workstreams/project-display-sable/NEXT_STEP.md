@@ -2,7 +2,14 @@
 
 > This roadmap belongs only to `project-display-sable`.
 
-## Handoff
+## Current refinement
+
+1. The Agent Timeline dossier and active status are implemented and verified locally.
+2. Commit/push the scoped portfolio source; record its real hash in this workstream.
+3. Observe the deployed portfolio's timeline, status, controls, metadata, and unchanged Traelyx slot.
+4. Record only observed live results and complete this refinement when delivery is verified.
+
+## Prior delivery handoff
 
 - Portfolio baseline `871f69d`; read-only Sable evidence `5a727c9`.
 - Scope: project-list addition; keep Traelyx current.
@@ -19,7 +26,7 @@
    supports the change. Preserve the completed foundation, hosted-inference boundary, and proposed
    upgrade distinction; never adopt an external roadmap as portfolio implementation work.
 3. Re-run affected local and deployed checks after changes, including the eight-project rack and the
-   receipt at desktop/tablet/mobile widths. Keep Traelyx current unless the user explicitly changes it.
+   timeline dossier at desktop/tablet/mobile widths. Keep Traelyx current unless the user changes it.
 4. Record future observed maintenance evidence only in this workstream; retain other goals and handoffs.
 
 ## Constraints

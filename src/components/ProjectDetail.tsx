@@ -86,7 +86,7 @@ export function ProjectDetail({ project, mode, onClose }: Props) {
 
             {project.next && (
               <div className="next-block">
-                <h3>{project.status === "completed" ? "Completed foundation / ongoing upgrades" : "Next checkpoint"}</h3>
+                <h3>{project.slug === "sable" ? "Ongoing upgrades" : project.status === "completed" ? "Completed foundation / ongoing upgrades" : "Next checkpoint"}</h3>
                 <p>{project.next}</p>
               </div>
             )}

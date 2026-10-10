@@ -226,7 +226,7 @@ export const homePageMetadata: RouteMetadata = {
         codeRepository: "https://github.com/atrx07/Sable-AI",
         programmingLanguage: "Python",
         runtimePlatform: "Python CLI",
-        creativeWorkStatus: "Completed v2 foundation; ongoing upgrades",
+        creativeWorkStatus: "Active development; v2 foundation complete",
         author: { "@id": `${siteMetadata.canonicalUrl}#person` },
       },
       {
