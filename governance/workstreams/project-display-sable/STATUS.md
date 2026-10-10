@@ -2,9 +2,10 @@
 
 ## State
 
-`verified-local` / pending source commit and live verification — 2026-10-11, branch `main`.
+`completed` / `verified-live` — 2026-10-11, branch `main`.
 
-Pending commit: enrich Sable's portfolio art with ui-assets Agent Timeline and an active tag.
+Source `ea0e749` committed and pushed to `origin/main`: enrich Sable's portfolio art with ui-assets
+Agent Timeline and an active tag.
 Traelyx's current-build representation remains unchanged. Prior delivery history is retained below.
 
 ## Current refinement observations
@@ -31,10 +32,19 @@ Traelyx's current-build representation remains unchanged. Prior delivery history
   portfolio JS 322.60 / 112.31. Existing lazy route/article boundaries are preserved.
 - Other workstream handoffs and the two unrelated untracked experiment lockfiles are untouched.
 
-## Current blockers / next verification
+## Current live verification
 
-No local blocker. Commit/push and deployed-portfolio verification remain pending; do not infer live
-delivery from the successful local build.
+- Initial post-push HTTP 200 still served the prior completed/receipt build. A later fresh response
+  served active Sable metadata and published entry `index-HWLelizj.js`. Live bundle names differ from
+  the local Windows build; observed surface contracts establish delivery, not byte identity.
+- Read-only Chromium audit of `https://atrx07.pages.dev/` passed at 1280, 1024, 768, 640, and 360 px:
+  eight projects, active Sable, five timeline steps, art/caption containment, expandable linked panels,
+  missing/blocked check-step states, later-edit preservation/fingerprint mismatch, repository evidence,
+  dialog/document containment, `project sable`, and raw/hydrated active metadata.
+- Normal motion at 1280 and reduced motion at the other widths passed. Every live run had zero
+  console warnings/errors and page errors. Live card/dialog screenshots were inspected.
+- Traelyx remains the front-page current-build entry. No external repository was mutated and no
+  Sable execution or model inference was performed. No required refinement action remains.
 
 ## Prior completed delivery — original receipt baseline
 

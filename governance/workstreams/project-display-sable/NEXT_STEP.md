@@ -2,12 +2,13 @@
 
 > This roadmap belongs only to `project-display-sable`.
 
-## Current refinement
+## Current refinement handoff
 
-1. The Agent Timeline dossier and active status are implemented and verified locally.
-2. Commit/push the scoped portfolio source; record its real hash in this workstream.
-3. Observe the deployed portfolio's timeline, status, controls, metadata, and unchanged Traelyx slot.
-4. Record only observed live results and complete this refinement when delivery is verified.
+- Source `ea0e749` is committed and pushed to `origin/main`.
+- Agent Timeline dossier and active tag are implemented, verified locally, and verified live.
+- Five-width deployed checks pass for timeline/status/controls/metadata and unchanged Traelyx.
+- Refinement completed on 2026-10-11; no required implementation or deployment action remains.
+- Future authorized maintenance follows the evidence-only sequence below, not Sable development.
 
 ## Prior delivery handoff
 
