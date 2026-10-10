@@ -1,5 +1,77 @@
 import { expect, test } from "@playwright/test";
 
+test("Sable reveals steps and rails once per expansion and bypasses the sequence with reduced motion", async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  await expect(page.locator(".current-build")).toContainText("Traelyx");
+  const card = page.locator('[data-project-slug="sable"]');
+  const visual = card.locator(".sable-visual");
+  const mobile = (page.viewportSize()?.width ?? 0) <= 900;
+  await card.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  const expand = async () => {
+    if (mobile) await card.locator(".project-slice-hit").click();
+    else await card.locator(".project-slice-hit").focus();
+    await expect(visual).toHaveClass(/has-timeline-reveal/);
+  };
+  const collapse = async () => {
+    if (mobile) await card.locator(".project-slice-hit").click();
+    else await page.locator('[data-project-slug="traelyx"] .project-slice-hit').focus();
+    await expect(visual).not.toHaveClass(/has-timeline-reveal/);
+  };
+  const revealAnimations = () => visual.evaluate(root => root.getAnimations({ subtree: true })
+    .filter(animation => animation instanceof CSSAnimation && animation.animationName.startsWith("sable-"))
+    .map(animation => ({ name: (animation as CSSAnimation).animationName, delay: animation.effect!.getTiming().delay, iterations: animation.effect!.getTiming().iterations })));
+
+  expect(await revealAnimations()).toEqual([]);
+  await expand();
+  const animations = await revealAnimations();
+  expect(animations.filter(animation => animation.name === "sable-step-reveal").map(animation => Math.round(animation.delay))).toEqual([420, 580, 740, 900, 1060]);
+  expect(animations.filter(animation => animation.name === "sable-rail-draw")).toHaveLength(4);
+  expect(animations.filter(animation => animation.name === "sable-marker-reveal")).toHaveLength(5);
+  expect(animations.every(animation => animation.iterations === 1)).toBe(true);
+  await visual.evaluate(root => root.getAnimations({ subtree: true }).forEach(animation => {
+    if (animation instanceof CSSAnimation && animation.animationName.startsWith("sable-")) {
+      animation.pause();
+      animation.currentTime = 900;
+    }
+  }));
+  const steps = visual.locator('[data-slot="agent-step"]');
+  await expect(steps.first()).toHaveCSS("opacity", "1");
+  await expect(steps.last()).toHaveCSS("opacity", "0");
+  const rail = steps.first().locator(":scope > div").first().locator(":scope > span").nth(1);
+  const scale = await rail.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m22);
+  expect(scale).toBeGreaterThan(0);
+  expect(scale).toBeLessThan(1);
+  await card.screenshot({ path: testInfo.outputPath("sable-reveal-midpoint.png"), style: "header, .skip-link { visibility: hidden !important; }" });
+  await visual.evaluate(root => root.getAnimations({ subtree: true }).forEach(animation => {
+    if (animation instanceof CSSAnimation && animation.animationName.startsWith("sable-")) animation.play();
+  }));
+  await expect(steps.last()).toHaveCSS("opacity", "1");
+  await expect.poll(() => rail.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m22)).toBe(1);
+  await expect(visual.locator('[data-status="running"]')).toHaveCount(0);
+  await card.screenshot({ path: testInfo.outputPath("sable-reveal-complete.png"), style: "header, .skip-link { visibility: hidden !important; }" });
+  await collapse();
+  expect(await revealAnimations()).toEqual([]);
+  await expand();
+  expect(await revealAnimations()).toHaveLength(14);
+  await expect(steps.last()).toHaveCSS("opacity", "0");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect.poll(revealAnimations).toEqual([]);
+  for (const step of await steps.all()) await expect(step).toHaveCSS("opacity", "1");
+  await expect(rail).toHaveCSS("transform", "none");
+  await collapse();
+  await expand();
+  expect(await revealAnimations()).toEqual([]);
+  await expect(steps.last()).toHaveCSS("opacity", "1");
+  await card.getByRole("button", { name: "Inspect system" }).click();
+  const dialog = page.getByRole("dialog", { name: "Sable-AI", exact: true });
+  await expect(dialog.locator(".sable-visual")).not.toHaveClass(/has-timeline-reveal/);
+  await dialog.getByRole("button", { name: "Policy blocks" }).click();
+  await expect(dialog).toContainText("BLOCKED");
+});
+
 test("Sable is discoverable through the project list, palette, and safe terminal without replacing Traelyx", async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));

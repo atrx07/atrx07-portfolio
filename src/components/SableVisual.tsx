@@ -1,5 +1,5 @@
 import { FileCode2, Fingerprint, Layers3, RotateCcw, ShieldCheck } from "lucide-react";
-import { useId, useState } from "react";
+import { useId, useState, type CSSProperties } from "react";
 import { sableEvidence, sableReceipt, sableTimeline } from "../data/sable";
 import { AgentStep, AgentTimeline, type StepStatus } from "./godui/agent-timeline";
 
@@ -15,7 +15,7 @@ export function SableVisual({ compact = false, interactive = false }: Props) {
 
   return (
     <div
-      className={`project-visual sable-visual ${compact ? "is-compact" : ""} ${interactive ? "is-interactive" : ""}`}
+      className={`project-visual sable-visual ${compact ? "is-compact" : ""} ${interactive ? "is-interactive" : ""} ${!compact && !interactive ? "has-timeline-reveal" : ""}`}
       data-visual="sable-agent-timeline"
       aria-hidden={interactive ? undefined : true}
       role={interactive ? "region" : undefined}
@@ -42,6 +42,7 @@ export function SableVisual({ compact = false, interactive = false }: Props) {
               {sableTimeline.map((step, index) => (
                 <AgentStep
                   key={step.id}
+                  style={{ "--sable-step-index": index } as CSSProperties}
                   status={step.id === "checks" ? checkStatus : "success"}
                   title={step.title}
                   meta={step.id === "checks" ? check.status : step.meta}

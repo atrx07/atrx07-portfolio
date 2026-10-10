@@ -171,7 +171,10 @@ explanatory fixture/check/undo states. `src/data/sableMetadata.ts` supplies only
 summary, preserving the homepage visual's lazy boundary. `ProjectVisual` renders a decorative execution
 dossier in accordions; `ProjectDetail` enables expandable Agent Timeline details, check buttons, and a
 later-edit toggle. Selected expected outcomes drive check-step state and explanations without executing
-code, contacting a provider, or persisting state. Sable is marked `active` per the user's refinement;
+code, contacting a provider, or persisting state. Accordion `compact` transitions toggle a one-shot
+CSS reveal on Sable only; indexed delays animate presentation, not runtime status. Collapse cancels
+and resets it, reduced motion bypasses it, and interactive dialog controls remain immediate.
+Sable is marked `active` per the user's refinement;
 its completed v2 source foundation, proposed upgrades, and release boundaries remain
 explicit. Traelyx still owns the current-build slot. The eight-project desktop rack narrows its title
 rails to retain a readable expanded surface; mobile remains tap-controlled.

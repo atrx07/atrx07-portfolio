@@ -14,6 +14,8 @@ project-specific visual and interaction. Traelyx remains the front-page current 
 - Refine the original receipt into an execution dossier using the ui-assets Agent Timeline;
   retain explanatory verification/undo controls and use the user-requested `active` project tag.
 - Verify responsive, keyboard, reduced-motion, route, and existing-project behavior; commit and push.
+- Add a one-shot staggered step reveal and connector draw on card expansion, with reduced-motion
+  bypass; this is presentation only, never simulated execution or timer-driven status changes.
 
 ## Out of scope
 

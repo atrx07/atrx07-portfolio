@@ -2278,6 +2278,42 @@ section[id] {
 .project-slice .sable-outcome { padding-block: 9px; }
 .project-slice .sable-undo { display: none; }
 
+/* Reveal the documented sequence, not a simulated run. Removing the expansion class resets it. */
+.sable-visual.has-timeline-reveal [data-slot="agent-step"] {
+  animation: sable-step-reveal 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(420ms + var(--sable-step-index) * 160ms);
+}
+.sable-visual.has-timeline-reveal [data-slot="agent-step"] > div:first-child > span:first-child {
+  animation: sable-marker-reveal 480ms ease-out both;
+  animation-delay: calc(420ms + var(--sable-step-index) * 160ms);
+}
+.sable-visual.has-timeline-reveal [data-slot="agent-step"] > div:first-child > span:nth-child(2) {
+  transform-origin: top;
+  animation: sable-rail-draw 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(660ms + var(--sable-step-index) * 160ms);
+}
+@keyframes sable-step-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sable-marker-reveal {
+  from { transform: scale(0.7); box-shadow: 0 0 0 0 #7bbcff50; }
+  60% { transform: scale(1.08); box-shadow: 0 0 0 6px #7bbcff00; }
+  to { transform: scale(1); box-shadow: 0 0 0 8px #7bbcff00; }
+}
+@keyframes sable-rail-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sable-visual.has-timeline-reveal [data-slot="agent-step"],
+  .sable-visual.has-timeline-reveal [data-slot="agent-step"] > div:first-child > span {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @container (max-width: 350px) {
   .sable-identity { gap: 9px; }
   .sable-identity b { font-size: 1.05rem; }

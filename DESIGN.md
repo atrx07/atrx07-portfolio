@@ -576,7 +576,10 @@ toggle. Check-step states derive from selected expected outcomes, never a timer 
 Visible text and keyboard focus accompany every state. No simulated execution, typing loop, network
 request, or live benchmark is implied. Mobile uses a single scrollable sheet; narrower dialogs stack
 timeline and journal. Reduced motion removes spring transitions without hiding details. Decorative
-card timelines expose no interactive controls. The project tag is active; Traelyx remains current.
+card timelines expose no interactive controls. Card expansion adds a one-shot staggered reveal,
+marker accent, and top-to-bottom rail draw; collapse resets the reveal for the next expansion.
+This presentation never changes fixture statuses or loops as simulated execution. Reduced motion
+removes the entire reveal and its delays. The project tag is active; Traelyx remains current.
 
 8. When in doubt about emphasis: bigger photography before bigger type.
 

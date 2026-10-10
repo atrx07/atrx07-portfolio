@@ -41,6 +41,24 @@ describe("Sable's portfolio explanation", () => {
     expect(container).toHaveTextContent("DOCUMENTED FIXTURE / EXPECTED BEHAVIOR");
     expect(container.querySelectorAll('[data-slot="agent-step"]')).toHaveLength(5);
     expect(container.querySelector('[data-status="running"]')).toBeNull();
+    expect(container.firstChild).not.toHaveClass("has-timeline-reveal");
+  });
+
+  it("restarts presentation motion on expansion without fabricating execution status", () => {
+    const { container, rerender } = render(<SableVisual compact />);
+    rerender(<SableVisual />);
+    expect(container.firstChild).toHaveClass("has-timeline-reveal");
+    const steps = container.querySelectorAll('[data-slot="agent-step"]');
+    steps.forEach((step, index) => {
+      expect(step).toHaveStyle({ "--sable-step-index": String(index) });
+      expect(step).toHaveAttribute("data-status", "success");
+    });
+    rerender(<SableVisual compact />);
+    expect(container.firstChild).not.toHaveClass("has-timeline-reveal");
+    rerender(<SableVisual />);
+    expect(container.firstChild).toHaveClass("has-timeline-reveal");
+    rerender(<SableVisual interactive />);
+    expect(container.firstChild).not.toHaveClass("has-timeline-reveal");
   });
 
   it("expands real contract details and derives check-step state from the selected outcome", () => {

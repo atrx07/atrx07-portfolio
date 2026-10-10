@@ -22,6 +22,7 @@ JSON automation, and local traces. Controls and evidence are local; inference us
 Source installation is supported; public package publication is not implied.
 
 Sable's art combines the ui-assets Agent Timeline with a scoped patch and layered recovery journal.
+Card expansion reveals the steps and draws their rails once; reduced motion shows them immediately.
 The detail view expands contract details and explains required-check outcomes and undo conflicts.
 It executes no code and labels the documented fixture as expected behavior. Traelyx remains current.
 

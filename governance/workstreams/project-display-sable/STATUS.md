@@ -2,7 +2,34 @@
 
 ## State
 
-`completed` / `verified-live` — 2026-10-11, branch `main`.
+`verified-local` animation refinement / pending commit and live verification — 2026-10-11, `main`.
+
+Pending source commit: add the user-approved staggered step reveal and connecting-rail animation
+on card expansion. Prior verified delivery is retained below.
+
+## Animation refinement observations
+
+- Sable's existing `compact` prop toggles a presentation-only reveal class on the decorative card.
+  Expansion animates five steps and markers with indexed 160 ms offsets, then draws four rails.
+  Collapse removes/cancels the CSS sequence; re-expansion replays it once.
+- No runtime status is timed or invented. The documented fixture and selected check outcomes retain
+  their status authority; the interactive dialog does not receive entrance-animation delays.
+- Reduced motion disables all new animations and delays; switching preference mid-reveal immediately
+  restores the complete static timeline.
+- Production build/typecheck passed; 79 unit tests passed across 27 files.
+- Final Playwright matrix: 45 passed, one expected desktop-only skip. New tests measure actual
+  animation timing, mid-reveal opacity and partial rail scale, natural completion, replay/cancellation,
+  reduced-motion bypass, and unaffected dialog controls on desktop and mobile.
+- An initial animation assertion exposed CSS floating-point precision (899.9999999999999 ms);
+  rounding the timing assertion corrected the test, without changing implementation behavior.
+- Production-preview audits passed at 1280, 1024, 768, 640, and 360 px, exercising the same intermediate
+  frames, natural completion, replay, reduced motion, blocked-check dialog, and document/dialog bounds.
+  All runs had zero page errors or console warnings/errors. Desktop/mobile frames were inspected.
+- Final portfolio CSS: 71.98 kB / 14.15 gzip; portfolio JS: 322.66 / 112.34. No dependency added.
+- Traelyx stays current, Sable stays active, other workstream state and experiment lockfiles are preserved.
+- Remaining: commit/push scoped source and directly verify the deployed animation.
+
+## Prior timeline-art delivery
 
 Source `ea0e749` committed and pushed to `origin/main`: enrich Sable's portfolio art with ui-assets
 Agent Timeline and an active tag.

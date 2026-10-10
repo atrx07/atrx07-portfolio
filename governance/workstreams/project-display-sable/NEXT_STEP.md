@@ -2,7 +2,14 @@
 
 > This roadmap belongs only to `project-display-sable`.
 
-## Current refinement handoff
+## Current animation refinement
+
+1. Reveal/rail motion, replay, cancellation, reduced-motion bypass, and regressions are verified locally.
+2. Commit/push the scoped portfolio source and record its real hash.
+3. Directly observe deployed intermediate frames, completion, replay, and reduced-motion behavior.
+4. Record actual live evidence and complete only this animation refinement.
+
+## Prior refinement handoff
 
 - Source `ea0e749` is committed and pushed to `origin/main`.
 - Agent Timeline dossier and active tag are implemented, verified locally, and verified live.
