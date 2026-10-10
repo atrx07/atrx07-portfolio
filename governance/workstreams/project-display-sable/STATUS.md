@@ -2,9 +2,9 @@
 
 ## State
 
-`verified-local` animation refinement / pending commit and live verification — 2026-10-11, `main`.
+`completed` / `verified-live` animation refinement — 2026-10-11, `main`.
 
-Pending source commit: add the user-approved staggered step reveal and connecting-rail animation
+Source `0248744` committed and pushed to `origin/main`: add the staggered step reveal and rail animation
 on card expansion. Prior verified delivery is retained below.
 
 ## Animation refinement observations
@@ -27,7 +27,17 @@ on card expansion. Prior verified delivery is retained below.
   All runs had zero page errors or console warnings/errors. Desktop/mobile frames were inspected.
 - Final portfolio CSS: 71.98 kB / 14.15 gzip; portfolio JS: 322.66 / 112.34. No dependency added.
 - Traelyx stays current, Sable stays active, other workstream state and experiment lockfiles are preserved.
-- Remaining: commit/push scoped source and directly verify the deployed animation.
+
+## Animation live verification
+
+- Initial post-push response served prior entry `index-HWLelizj.js`; a later fresh HTTP 200 served
+  `index-W2sSGif6.js`. Deployment was then observed directly, not inferred from the push.
+- Live Chromium audits passed at 1280, 1024, 768, 640, and 360 px: staggered timing, partially
+  revealed steps and rails, natural completion, one-shot replay after collapse, cancellation,
+  mid-animation reduced-motion switch, static reduced mode, unaffected blocked-check dialog,
+  and document/dialog containment. All five runs had zero page errors or console warnings/errors.
+- Live motion frames were captured. Traelyx remains current; Sable remains active.
+- No required animation implementation or verification action remains.
 
 ## Prior timeline-art delivery
 
